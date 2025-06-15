@@ -308,7 +308,7 @@ graph LR
             <!-- Animated RAG Flow Demonstration -->
             <div class="rag-animation-container">
                 <h4>🎬 Interactive RAG Flow Animation</h4>
-                <p>Follow along as we trace a question through the complete RAG pipeline:</p>
+                <p style="margin-bottom: var(--space-3); font-size: 0.9rem;">Follow along as we trace a question through the complete RAG pipeline:</p>
                 
                 <!-- Query Input Section -->
                 <div class="rag-step user-query" id="step-1">
@@ -346,16 +346,16 @@ graph LR
                     </div>
                     <div class="knowledge-sources">
                         <div class="source-doc">
-                            <h6>🍂 Seasonal Recipe Database</h6>
-                            <p>"Pumpkin Spice Almond Flour Cookies - Gluten-free, 90 min prep..."</p>
+                            <h6>🍂 Seasonal Database</h6>
+                            <p>"Pumpkin Spice Almond Cookies - Gluten-free, 90 min..."</p>
                         </div>
                         <div class="source-doc">
-                            <h6>🥧 Dessert Cookbook Collection</h6>
-                            <p>"Apple Crisp with Oat Topping - No gluten, uses seasonal apples..."</p>
+                            <h6>🥧 Dessert Collection</h6>
+                            <p>"Apple Crisp with Oat Topping - No gluten, seasonal..."</p>
                         </div>
                         <div class="source-doc">
-                            <h6>⏰ Quick Recipe Blog</h6>
-                            <p>"45-Minute Pear and Walnut Crumble - Gluten-free flour blend..."</p>
+                            <h6>⏰ Quick Recipes</h6>
+                            <p>"45-Min Pear Walnut Crumble - Gluten-free flour..."</p>
                         </div>
                     </div>
                 </div>
@@ -400,25 +400,22 @@ graph LR
                     </div>
                     <div class="chat-bubble assistant">
                         <p><strong>Perfect! Here are 3 gluten-free fall desserts under 2 hours:</strong></p>
-                        <p><strong>1. Pumpkin Spice Almond Flour Cookies (90 min)</strong><br>
-                        Uses seasonal pumpkin puree and warm spices...</p>
-                        <p><strong>2. Apple Crisp with Oat Topping (75 min)</strong><br>
-                        Features fresh fall apples with a crunchy gluten-free topping...</p>
-                        <p><strong>3. Pear and Walnut Crumble (45 min)</strong><br>
-                        Quick option using ripe pears and a simple crumble...</p>
-                        <p><em>All recipes verified from our seasonal database and tested for gluten-free preparation!</em></p>
+                        <p><strong>1. Pumpkin Spice Cookies (90 min)</strong> - Seasonal pumpkin puree and warm spices</p>
+                        <p><strong>2. Apple Crisp with Oat Topping (75 min)</strong> - Fresh fall apples with gluten-free topping</p>
+                        <p><strong>3. Pear Walnut Crumble (45 min)</strong> - Quick option using ripe pears and simple crumble</p>
+                        <p><em>All recipes verified from our seasonal database!</em></p>
                     </div>
+                </div>
+
+                <div class="animation-explanation">
+                    <p><strong>🎯 Key Insight:</strong> RAG combines the LLM's language understanding with real, specific knowledge from external sources. Without RAG, you get generic advice. With RAG, you get specific, relevant, and up-to-date information!</p>
                 </div>
 
                 <!-- Animation Controls -->
                 <div class="animation-controls">
-                    <button class="control-btn" id="play-rag-animation">▶️ Play Animation</button>
+                    <button class="control-btn" id="play-rag-animation">▶️ Play</button>
                     <button class="control-btn" id="reset-rag-animation">🔄 Reset</button>
-                    <button class="control-btn" id="step-through-rag">👆 Step Through</button>
-                </div>
-
-                <div class="animation-explanation">
-                    <p><strong>🎯 Key Insight:</strong> Notice how RAG combines the best of both worlds - the LLM's language understanding with real, specific knowledge from external sources. Without RAG, the LLM might give generic advice. With RAG, it provides specific, relevant, and up-to-date recipes!</p>
+                    <button class="control-btn" id="step-through-rag">👆 Step</button>
                 </div>
             </div>
 

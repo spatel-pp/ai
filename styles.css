@@ -523,10 +523,12 @@ pre {
 .code-block .token.doctype,
 .code-block .token.cdata {
   color: #6b7280 !important;
+  background: none !important;
 }
 
 .code-block .token.punctuation {
   color: #d1d5db !important;
+  background: none !important;
 }
 
 .code-block .token.property,
@@ -535,11 +537,13 @@ pre {
 .code-block .token.symbol,
 .code-block .token.deleted {
   color: #f87171 !important;
+  background: none !important;
 }
 
 .code-block .token.boolean,
 .code-block .token.number {
-  color: #fbbf24 !important;
+  color: #f59e0b !important;
+  background: none !important;
 }
 
 .code-block .token.selector,
@@ -548,7 +552,8 @@ pre {
 .code-block .token.char,
 .code-block .token.builtin,
 .code-block .token.inserted {
-  color: #34d399 !important;
+  color: #10b981 !important;
+  background: none !important;
 }
 
 .code-block .token.operator,
@@ -558,6 +563,7 @@ pre {
 .code-block .style .token.string,
 .code-block .token.variable {
   color: #60a5fa !important;
+  background: none !important;
 }
 
 .code-block .token.atrule,
@@ -565,16 +571,19 @@ pre {
 .code-block .token.function,
 .code-block .token.class-name {
   color: #a78bfa !important;
+  background: none !important;
 }
 
 .code-block .token.keyword {
   color: #f472b6 !important;
   font-weight: 600;
+  background: none !important;
 }
 
 .code-block .token.regex,
 .code-block .token.important {
   color: #fb7185 !important;
+  background: none !important;
 }
 
 .code-block .token.important,
@@ -584,6 +593,11 @@ pre {
 
 .code-block .token.italic {
   font-style: italic;
+}
+
+/* Remove all token backgrounds */
+.code-block .token {
+  background: none !important;
 }
 
 /* Interactive diagrams */
@@ -1458,30 +1472,35 @@ td:nth-child(4) {
   font-style: italic;
 }
 
-/* RAG Animation Styles */
+/* RAG Animation Styles - Compact Version */
 .rag-animation-container {
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   border: 2px solid var(--accent-blue);
   border-radius: var(--radius-lg);
-  padding: var(--space-6);
-  margin: var(--space-6) 0;
+  padding: var(--space-3);
+  margin: var(--space-4) 0;
+  max-height: 500px;
+  overflow-y: auto;
+  position: relative;
 }
 
 .rag-animation-container h4 {
-  margin: 0 0 var(--space-4) 0;
+  margin: 0 0 var(--space-3) 0;
   color: var(--text-primary);
   text-align: center;
+  font-size: 1.1rem;
 }
 
 .rag-step {
   background: white;
   border-radius: var(--radius);
-  padding: var(--space-4);
-  margin: var(--space-4) 0;
+  padding: var(--space-2);
+  margin: var(--space-1) 0;
   border-left: 4px solid var(--primary-200);
   opacity: 0.3;
   transform: translateX(-20px);
   transition: all 0.6s ease;
+  font-size: 0.85rem;
 }
 
 .rag-step.active {
@@ -1494,35 +1513,38 @@ td:nth-child(4) {
 .step-header {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  margin-bottom: var(--space-3);
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
 }
 
 .step-number {
   background: var(--accent-blue);
   color: white;
-  width: 2rem;
-  height: 2rem;
+  width: 1.8rem;
+  height: 1.8rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
   flex-shrink: 0;
+  font-size: 0.8rem;
 }
 
 .step-header h5 {
   margin: 0;
   color: var(--text-primary);
+  font-size: 1rem;
 }
 
-/* Chat Bubbles */
+/* Chat Bubbles - Compact */
 .chat-bubble {
-  padding: var(--space-4);
+  padding: var(--space-3);
   border-radius: var(--radius-lg);
   margin: var(--space-2) 0;
-  max-width: 80%;
-  line-height: 1.5;
+  max-width: 85%;
+  line-height: 1.4;
+  font-size: 0.9rem;
 }
 
 .chat-bubble.user {
@@ -1555,10 +1577,10 @@ td:nth-child(4) {
   font-weight: 500;
 }
 
-/* Knowledge Sources */
+/* Knowledge Sources - Compact Grid */
 .knowledge-sources {
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-2);
   margin-top: var(--space-2);
 }
 
@@ -1566,20 +1588,22 @@ td:nth-child(4) {
   background: var(--primary-50);
   border: 1px solid var(--primary-200);
   border-radius: var(--radius);
-  padding: var(--space-3);
+  padding: var(--space-1);
+  margin-bottom: var(--space-1);
 }
 
 .source-doc h6 {
-  margin: 0 0 var(--space-2) 0;
+  margin: 0 0 var(--space-1) 0;
   color: var(--accent-amber);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .source-doc p {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   font-style: italic;
+  line-height: 1.2;
 }
 
 /* Context Augmentation */
@@ -1636,24 +1660,32 @@ td:nth-child(4) {
   }
 }
 
-/* Animation Controls */
+/* Animation Controls - Always Visible */
 .animation-controls {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  border-top: 2px solid var(--primary-200);
   display: flex;
   justify-content: center;
-  gap: var(--space-3);
-  margin: var(--space-5) 0 var(--space-4) 0;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  margin: var(--space-3) -var(--space-3) -var(--space-3) -var(--space-3);
   flex-wrap: wrap;
+  z-index: 10;
 }
 
 .control-btn {
   background: var(--accent-blue);
   color: white;
   border: none;
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-2) var(--space-3);
   border-radius: var(--radius);
   cursor: pointer;
   font-weight: 500;
+  font-size: 0.85rem;
   transition: all 0.3s ease;
+  min-width: 80px;
 }
 
 .control-btn:hover {
@@ -1671,15 +1703,15 @@ td:nth-child(4) {
   background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
   border: 2px solid var(--accent-amber);
   border-radius: var(--radius);
-  padding: var(--space-4);
-  margin-top: var(--space-4);
+  padding: var(--space-3);
+  margin: var(--space-3) 0;
 }
 
 .animation-explanation p {
   margin: 0;
   color: #92400e;
-  font-size: 0.95rem;
-  line-height: 1.6;
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 /* Additional Animation Keyframes for RAG Demo */
@@ -1727,5 +1759,77 @@ td:nth-child(4) {
   .control-btn {
     width: 100%;
     max-width: 200px;
+  }
+}
+
+/* Responsive Design for RAG Animation */
+@media (max-width: 768px) {
+  .rag-animation-container {
+    padding: var(--space-3);
+    max-height: 500px;
+  }
+  
+  .rag-step {
+    padding: var(--space-2);
+    font-size: 0.85rem;
+  }
+  
+  .chat-bubble {
+    max-width: 95%;
+    padding: var(--space-2);
+    font-size: 0.85rem;
+  }
+  
+  .animation-controls {
+    gap: var(--space-1);
+    padding: var(--space-2);
+  }
+  
+  .control-btn {
+    padding: var(--space-1) var(--space-2);
+    font-size: 0.8rem;
+    min-width: 70px;
+  }
+  
+  .knowledge-sources {
+    gap: var(--space-1);
+  }
+  
+  .source-doc {
+    padding: var(--space-1);
+  }
+  
+  .source-doc h6 {
+    font-size: 0.8rem;
+  }
+  
+  .source-doc p {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .rag-animation-container {
+    max-height: 400px;
+  }
+  
+  .step-number {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .step-header h5 {
+    font-size: 0.9rem;
+  }
+  
+  .animation-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .control-btn {
+    width: 100%;
+    max-width: 150px;
   }
 }

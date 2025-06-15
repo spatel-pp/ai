@@ -144,11 +144,7 @@ class ModernAI {
       transformerDemo.setup();
     }
 
-    // RAG flow demo
-    if (window.RAGFlowDemo) {
-      const ragDemo = new RAGFlowDemo();
-      ragDemo.setup();
-    }
+    // RAG flow animation is initialized directly in rag-flow.js
   }
 }
 
