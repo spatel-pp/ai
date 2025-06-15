@@ -772,6 +772,32 @@ pre {
   font-size: 0.9rem;
 }
 
+/* Compact Transformer Diagram */
+.compact-transformer {
+  text-align: center;
+  background: var(--primary-50);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+  margin: var(--space-4) 0;
+}
+
+.compact-transformer h5 {
+  margin: 0 0 var(--space-3) 0;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.compact-transformer .diagram-caption {
+  margin: var(--space-3) 0 0 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.compact-transformer .mermaid {
+  max-height: 150px;
+}
+
 /* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
   .vector-space-1d canvas,

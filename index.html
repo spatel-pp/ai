@@ -238,30 +238,29 @@ print(results)  # Returns most similar recipes</code></pre>
             <p><strong>Large Language Models (LLMs)</strong> are a type of neural network distinguished by their massive scale and the groundbreaking <strong>Transformer architecture</strong>.</p>
 
             <h3>The Transformer Architecture: The Engine of Modern LLMs</h3>
-            <p>The Transformer, introduced in the 2017 paper "Attention Is All You Need," revolutionized how machines process language. Unlike older models that read text sequentially, the Transformer processes the entire input at once.</p>
+            <p>The Transformer, introduced in the groundbreaking 2017 paper "Attention Is All You Need," revolutionized how machines process language. Unlike older recurrent models that read text sequentially word-by-word, the Transformer processes the <strong>entire input simultaneously</strong>, making it both faster and more capable of understanding long-range relationships in text.</p>
 
-            <p>The core innovation is the <strong>self-attention mechanism</strong>, which allows every word to look at all other words in the sequence using multiple "attention heads" to capture different types of relationships:</p>
+            <p>Think of it this way: when you read a sentence like <em>"The chef who trained in Paris prepared an exquisite dish,"</em> you instantly understand that "chef" and "prepared" are connected, and that "exquisite" describes "dish" - even though these words are separated by other words. The Transformer learns these connections automatically.</p>
 
-            <div class="mermaid-diagram">
+            <p>The core innovation is the <strong>self-attention mechanism</strong>, which allows every word to "look at" and "pay attention to" all other words in the sequence. It uses multiple "attention heads" simultaneously - each one specialized to capture different types of relationships between words:</p>
+
+            <div class="mermaid-diagram compact-transformer">
+                <h5>Simplified Transformer Block Flow</h5>
                 <pre class="mermaid">
-graph TD
-    A[Input Tokens] --> B[Positional Encoding]
-    B --> C[Multi-Head Attention]
-    C --> D[Add & Norm]
-    D --> E[Feed Forward]
-    E --> F[Add & Norm]
-    F --> G[Output Layer]
+graph LR
+    A[Input<br/>Tokens] --> B[Multi-Head<br/>Attention]
+    B --> C[Feed Forward<br/>Layer]
+    C --> D[Output<br/>Embeddings]
     
-    C --> H[Query]
-    C --> I[Key] 
-    C --> J[Value]
-    
-    style C fill:#3b82f6,color:#fff
-    style H fill:#10b981,color:#fff
-    style I fill:#f59e0b,color:#fff
-    style J fill:#f43f5e,color:#fff
+    style A fill:#e2e8f0,color:#1e293b
+    style B fill:#3b82f6,color:#fff
+    style C fill:#10b981,color:#fff
+    style D fill:#f59e0b,color:#fff
 </pre>
+                <p class="diagram-caption">Each transformer block processes all words simultaneously through attention and feed-forward layers</p>
             </div>
+
+            <p><strong>Why is this so powerful?</strong> Traditional models had to "remember" earlier words when processing later ones, which was both slow and led to forgetting important context. Transformers can instantly see all relationships, making them much better at understanding complex sentences and generating coherent text.</p>
 
             <!-- Attention Heads Explanation - moved closer to demo -->
             <div class="attention-heads-explanation">
