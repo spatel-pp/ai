@@ -133,8 +133,6 @@ function setup2D() {
         { name: 'Crème Brûlée', x: 0.8, y: 0.4, category: 'dessert', color: '#10b981' }
     ];
     
-    let hoveredRecipe = null;
-    
     function draw2D() {
         ctx.clearRect(0, 0, 800, 600);
         
@@ -178,7 +176,7 @@ function setup2D() {
         ctx.fillText('← Cooking Time', 0, 0);
         ctx.restore();
         
-        // Draw recipe points
+        // Draw recipe points with always visible labels
         recipes.forEach(recipe => {
             const x = 80 + recipe.x * 700;
             const y = 550 - recipe.y * 500;
@@ -186,23 +184,21 @@ function setup2D() {
             // White outline
             ctx.fillStyle = '#ffffff';
             ctx.beginPath();
-            ctx.arc(x, y, hoveredRecipe === recipe ? 10 : 7, 0, 2 * Math.PI);
+            ctx.arc(x, y, 7, 0, 2 * Math.PI);
             ctx.fill();
             
             ctx.fillStyle = recipe.color;
             ctx.beginPath();
-            ctx.arc(x, y, hoveredRecipe === recipe ? 8 : 5, 0, 2 * Math.PI);
+            ctx.arc(x, y, 5, 0, 2 * Math.PI);
             ctx.fill();
             
-            if (hoveredRecipe === recipe) {
-                // Draw recipe label
-                ctx.fillStyle = '#000';
-                ctx.font = 'bold 14px system-ui';
-                ctx.textAlign = 'center';
-                ctx.fillText(recipe.name, x, y - 20);
-                ctx.font = '12px system-ui';
-                ctx.fillText(`[${recipe.x.toFixed(2)}, ${recipe.y.toFixed(2)}]`, x, y + 30);
-            }
+            // Always show recipe labels
+            ctx.fillStyle = '#000';
+            ctx.font = 'bold 12px system-ui';
+            ctx.textAlign = 'center';
+            ctx.fillText(recipe.name, x, y - 15);
+            ctx.font = '10px system-ui';
+            ctx.fillText(`[${recipe.x.toFixed(2)}, ${recipe.y.toFixed(2)}]`, x, y + 25);
         });
         
         // Legend
@@ -222,30 +218,6 @@ function setup2D() {
             ctx.fillText(labels[i], x + 22, 37);
         });
     }
-    
-    // Mouse interaction
-    canvas.addEventListener('mousemove', (e) => {
-        const rect = canvas.getBoundingClientRect();
-        const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
-        const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
-        
-        hoveredRecipe = null;
-        recipes.forEach(recipe => {
-            const x = 80 + recipe.x * 700;
-            const y = 550 - recipe.y * 500;
-            const distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
-            if (distance < 25) {
-                hoveredRecipe = recipe;
-            }
-        });
-        
-        draw2D();
-    });
-    
-    canvas.addEventListener('mouseleave', () => {
-        hoveredRecipe = null;
-        draw2D();
-    });
     
     draw2D();
     container.appendChild(canvas);
@@ -445,45 +417,101 @@ function setup3D() {
         ctx.fillText('Temperature', zAxis.x, zAxis.y - 15);
     }
     
-    // Mouse interaction for rotation
+    // Mouse interaction for rotation - Fixed
     canvas.addEventListener('mousedown', (e) => {
         isDragging = true;
-        lastMouse.x = e.clientX;
-        lastMouse.y = e.clientY;
+        const rect = canvas.getBoundingClientRect();
+        lastMouse.x = e.clientX - rect.left;
+        lastMouse.y = e.clientY - rect.top;
+        canvas.style.cursor = 'grabbing';
+        e.preventDefault();
     });
     
     canvas.addEventListener('mousemove', (e) => {
         if (isDragging) {
-            const deltaX = e.clientX - lastMouse.x;
-            const deltaY = e.clientY - lastMouse.y;
+            const rect = canvas.getBoundingClientRect();
+            const currentX = e.clientX - rect.left;
+            const currentY = e.clientY - rect.top;
+            
+            const deltaX = currentX - lastMouse.x;
+            const deltaY = currentY - lastMouse.y;
+            
             rotation.y += deltaX * 0.01;
             rotation.x += deltaY * 0.01;
-            lastMouse.x = e.clientX;
-            lastMouse.y = e.clientY;
-            canvas.style.cursor = 'grabbing';
+            
+            lastMouse.x = currentX;
+            lastMouse.y = currentY;
+            
             draw3D();
+            e.preventDefault();
         } else {
             canvas.style.cursor = 'grab';
         }
     });
     
-    canvas.addEventListener('mouseup', () => {
+    canvas.addEventListener('mouseup', (e) => {
         isDragging = false;
         canvas.style.cursor = 'grab';
+        e.preventDefault();
     });
     
-    canvas.addEventListener('mouseleave', () => {
+    canvas.addEventListener('mouseleave', (e) => {
         isDragging = false;
         canvas.style.cursor = 'default';
     });
     
-    // Add controls
+    // Also handle touch events for mobile
+    canvas.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        lastMouse.x = touch.clientX - rect.left;
+        lastMouse.y = touch.clientY - rect.top;
+        e.preventDefault();
+    });
+    
+    canvas.addEventListener('touchmove', (e) => {
+        if (isDragging) {
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            const currentX = touch.clientX - rect.left;
+            const currentY = touch.clientY - rect.top;
+            
+            const deltaX = currentX - lastMouse.x;
+            const deltaY = currentY - lastMouse.y;
+            
+            rotation.y += deltaX * 0.01;
+            rotation.x += deltaY * 0.01;
+            
+            lastMouse.x = currentX;
+            lastMouse.y = currentY;
+            
+            draw3D();
+            e.preventDefault();
+        }
+    });
+    
+    canvas.addEventListener('touchend', (e) => {
+        isDragging = false;
+        e.preventDefault();
+    });
+    
+    // Add controls with better styling
     const controls = document.createElement('div');
     controls.style.textAlign = 'center';
     controls.style.marginTop = '10px';
+    controls.style.padding = '8px';
+    controls.style.backgroundColor = '#f8f9fa';
+    controls.style.borderRadius = '4px';
     controls.style.color = '#666';
-    controls.innerHTML = 'Click and drag to rotate • Recipe names shown as labels';
+    controls.style.fontSize = '14px';
+    controls.style.border = '1px solid #e9ecef';
+    controls.innerHTML = '🖱️ Click and drag to rotate • 📱 Touch and drag on mobile • 🔄 Auto-rotation when idle';
     container.appendChild(controls);
+    
+    // Set initial cursor style
+    canvas.style.cursor = 'grab';
+    canvas.style.touchAction = 'none'; // Prevent default touch behaviors
     
     draw3D();
     container.appendChild(canvas);
