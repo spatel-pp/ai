@@ -209,22 +209,3 @@ document.addEventListener('DOMContentLoaded', () => {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = RAGAnimation;
 }
-
-// Add to window for manual testing
-window.testRAGAnimation = function() {
-    if (window.ragAnimationInstance) {
-        window.ragAnimationInstance.stepForward();
-        return 'Step forward called';
-    } else {
-        return 'RAG animation not initialized';
-    }
-};
-
-window.resetRAGAnimation = function() {
-    if (window.ragAnimationInstance) {
-        window.ragAnimationInstance.resetAnimation();
-        return 'Animation reset';
-    } else {
-        return 'RAG animation not initialized';
-    }
-};
