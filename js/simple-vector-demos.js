@@ -417,7 +417,7 @@ function setup3D() {
         ctx.fillText('Temperature', zAxis.x, zAxis.y - 15);
     }
     
-    // Mouse interaction for rotation - Fixed
+    // Enhanced mouse interaction for rotation
     canvas.addEventListener('mousedown', (e) => {
         isDragging = true;
         const rect = canvas.getBoundingClientRect();
@@ -425,6 +425,7 @@ function setup3D() {
         lastMouse.y = e.clientY - rect.top;
         canvas.style.cursor = 'grabbing';
         e.preventDefault();
+        console.log('3D rotation started');
     });
     
     canvas.addEventListener('mousemove', (e) => {
@@ -436,14 +437,19 @@ function setup3D() {
             const deltaX = currentX - lastMouse.x;
             const deltaY = currentY - lastMouse.y;
             
-            rotation.y += deltaX * 0.01;
-            rotation.x += deltaY * 0.01;
+            // Increase sensitivity for more responsive rotation
+            rotation.y += deltaX * 0.015;
+            rotation.x += deltaY * 0.015;
+            
+            // Constrain X rotation to avoid flipping
+            rotation.x = Math.max(-Math.PI/3, Math.min(Math.PI/3, rotation.x));
             
             lastMouse.x = currentX;
             lastMouse.y = currentY;
             
             draw3D();
             e.preventDefault();
+            console.log(`3D rotation: x=${rotation.x.toFixed(2)}, y=${rotation.y.toFixed(2)}`);
         } else {
             canvas.style.cursor = 'grab';
         }
@@ -453,14 +459,16 @@ function setup3D() {
         isDragging = false;
         canvas.style.cursor = 'grab';
         e.preventDefault();
+        console.log('3D rotation stopped');
     });
     
     canvas.addEventListener('mouseleave', (e) => {
         isDragging = false;
         canvas.style.cursor = 'default';
+        console.log('3D mouse left canvas');
     });
     
-    // Also handle touch events for mobile
+    // Enhanced touch events for mobile
     canvas.addEventListener('touchstart', (e) => {
         isDragging = true;
         const rect = canvas.getBoundingClientRect();
@@ -468,6 +476,7 @@ function setup3D() {
         lastMouse.x = touch.clientX - rect.left;
         lastMouse.y = touch.clientY - rect.top;
         e.preventDefault();
+        console.log('3D touch rotation started');
     });
     
     canvas.addEventListener('touchmove', (e) => {
@@ -480,8 +489,12 @@ function setup3D() {
             const deltaX = currentX - lastMouse.x;
             const deltaY = currentY - lastMouse.y;
             
-            rotation.y += deltaX * 0.01;
-            rotation.x += deltaY * 0.01;
+            // Increase sensitivity for touch too
+            rotation.y += deltaX * 0.015;
+            rotation.x += deltaY * 0.015;
+            
+            // Constrain X rotation
+            rotation.x = Math.max(-Math.PI/3, Math.min(Math.PI/3, rotation.x));
             
             lastMouse.x = currentX;
             lastMouse.y = currentY;
@@ -494,19 +507,25 @@ function setup3D() {
     canvas.addEventListener('touchend', (e) => {
         isDragging = false;
         e.preventDefault();
+        console.log('3D touch rotation stopped');
     });
     
-    // Add controls with better styling
+    // Add enhanced controls with better styling
     const controls = document.createElement('div');
     controls.style.textAlign = 'center';
-    controls.style.marginTop = '10px';
-    controls.style.padding = '8px';
+    controls.style.marginTop = '15px';
+    controls.style.padding = '12px';
     controls.style.backgroundColor = '#f8f9fa';
-    controls.style.borderRadius = '4px';
-    controls.style.color = '#666';
+    controls.style.borderRadius = '8px';
+    controls.style.color = '#495057';
     controls.style.fontSize = '14px';
-    controls.style.border = '1px solid #e9ecef';
-    controls.innerHTML = '🖱️ Click and drag to rotate • 📱 Touch and drag on mobile • 🔄 Auto-rotation when idle';
+    controls.style.border = '2px solid #3b82f6';
+    controls.style.fontWeight = '500';
+    controls.innerHTML = `
+        <div style="margin-bottom: 8px; font-weight: bold; color: #1e40af;">🎮 INTERACTIVE 3D CONTROLS</div>
+        <div>🖱️ Click and DRAG to rotate the 3D space • 📱 Touch and drag on mobile</div>
+        <div style="margin-top: 4px; font-size: 12px; color: #666;">🔄 Auto-rotation when idle • All recipe labels always visible</div>
+    `;
     container.appendChild(controls);
     
     // Set initial cursor style
