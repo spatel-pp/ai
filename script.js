@@ -509,44 +509,23 @@ class ModernAIArticle {
     });
   }
 
-  // Enhanced navigation with scroll-based highlighting
+  // Enhanced navigation with scroll-based highlighting for docked TOC
   setupNavigationHighlight() {
     const tocLinks = document.querySelectorAll('.toc-link[data-section]');
     const sections = document.querySelectorAll('section[id]');
     const tocToggle = document.querySelector('.toc-toggle');
-    const toc = document.querySelector('.table-of-contents');
+    const toc = document.querySelector('.table-of-contents.docked');
     
     if (!tocLinks.length || !sections.length) return;
 
-    // TOC toggle functionality
+    // TOC collapse/expand functionality
     let tocCollapsed = false;
     if (tocToggle && toc) {
       tocToggle.addEventListener('click', () => {
         tocCollapsed = !tocCollapsed;
         toc.classList.toggle('collapsed', tocCollapsed);
-        tocToggle.textContent = tocCollapsed ? '☰' : '≡';
+        tocToggle.textContent = tocCollapsed ? '⌄' : '⌄';
       });
-
-      // Auto-show on larger screens
-      const checkScreenSize = () => {
-        if (window.innerWidth >= 1200) {
-          toc.classList.add('visible');
-        } else {
-          toc.classList.remove('visible');
-        }
-      };
-      
-      checkScreenSize();
-      window.addEventListener('resize', checkScreenSize);
-
-      // Mobile toggle
-      if (window.innerWidth <= 1200) {
-        toc.addEventListener('click', (e) => {
-          if (e.target === toc || e.target.closest('.toc-header')) {
-            toc.classList.toggle('visible');
-          }
-        });
-      }
     }
 
     // Scroll tracking with improved logic
@@ -573,11 +552,15 @@ class ModernAIArticle {
           link.classList.toggle('active', isActive);
         });
 
-        // Update main nav highlighting
-        const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
-        navLinks.forEach(link => {
-          const href = link.getAttribute('href').substring(1);
-          link.classList.toggle('active', href === activeSection);
+        // Update main nav highlighting  
+        const navSections = document.querySelectorAll('.nav-section');
+        navSections.forEach(section => {
+          // Mark "Fundamentals" as active when on main page sections
+          if (section.dataset.section === 'fundamentals') {
+            section.classList.add('active');
+          } else {
+            section.classList.remove('active');
+          }
         });
       }
     }, observerOptions);
@@ -595,9 +578,13 @@ class ModernAIArticle {
         const section = document.getElementById(sectionId);
         
         if (section) {
-          section.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start'
+          // Calculate offset for docked TOC
+          const tocHeight = toc ? toc.offsetHeight : 0;
+          const targetPosition = section.offsetTop - tocHeight - 20;
+          
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
           });
           
           // Update URL without jumping

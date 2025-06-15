@@ -212,31 +212,35 @@ body {
   background: var(--bg-tertiary);
 }
 
-/* Enhanced Navigation Structure */
-.nav-section {
-  position: relative;
-}
-
-.nav-section-title {
-  font-weight: 600;
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 0 var(--space-3);
-}
-
-.nav-subsection {
+/* Simplified Navigation Structure */
+.nav-links {
+  display: flex;
+  gap: var(--space-6);
   list-style: none;
   padding: 0;
-  margin: var(--space-2) 0;
-  display: flex;
-  gap: var(--space-4);
+  margin: 0;
+  align-items: center;
 }
 
-.nav-subsection li a {
-  font-size: 0.9rem;
-  padding: var(--space-2) var(--space-3);
+.nav-section {
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.nav-section:hover {
+  background: var(--bg-secondary);
+  color: var(--primary-color);
+}
+
+.nav-section.active {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
 }
 
 /* Main Content */
@@ -252,100 +256,129 @@ body {
   margin-bottom: var(--space-8);
 }
 
-/* Floating Table of Contents */
-.table-of-contents {
-  position: fixed;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 280px;
+/* Docked Table of Contents */
+.table-of-contents.docked {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
   background: var(--card-background);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  z-index: 100;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 90;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
 }
 
-.table-of-contents.collapsed {
-  width: 60px;
+.table-of-contents.docked.collapsed {
+  height: 60px;
   overflow: hidden;
 }
 
-.toc-header {
+.table-of-contents.docked .toc-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-4);
+  padding: var(--space-4) var(--space-6);
   border-bottom: 1px solid var(--border-color);
 }
 
-.toc-header h3 {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
+.table-of-contents.docked.collapsed .toc-header {
+  border-bottom: none;
 }
 
-.toc-toggle {
+.table-of-contents.docked .toc-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.table-of-contents.docked .toc-toggle {
   background: none;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   cursor: pointer;
-  padding: var(--space-1);
+  padding: var(--space-2);
   border-radius: var(--radius);
-  transition: background-color 0.2s ease;
-}
-
-.toc-toggle:hover {
-  background: var(--bg-secondary);
-}
-
-.toc-nav {
-  padding: var(--space-3);
-  max-height: 60vh;
-  overflow-y: auto;
-}
-
-.toc-section {
-  margin-bottom: var(--space-6);
-}
-
-.toc-section h4 {
-  margin: 0 0 var(--space-3) 0;
-  font-size: 0.85rem;
-  font-weight: 600;
+  transition: all 0.2s ease;
   color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
-.toc-list {
+.table-of-contents.docked .toc-toggle:hover {
+  background: var(--bg-secondary);
+  color: var(--primary-color);
+}
+
+.table-of-contents.docked.collapsed .toc-toggle {
+  transform: rotate(-90deg);
+}
+
+.table-of-contents.docked .toc-nav {
+  padding: var(--space-4) var(--space-6);
+  background: var(--bg-primary);
+}
+
+.table-of-contents.docked .toc-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-3);
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.toc-link {
+.table-of-contents.docked .toc-link {
   display: flex;
   align-items: center;
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-3) var(--space-4);
   border-radius: var(--radius);
   text-decoration: none;
   color: var(--text-primary);
   transition: all 0.2s ease;
-  margin-bottom: var(--space-1);
+  background: var(--card-background);
+  border: 1px solid var(--border-color);
 }
 
-.toc-link:hover {
+.table-of-contents.docked .toc-link:hover {
   background: var(--bg-secondary);
   color: var(--primary-color);
+  border-color: var(--primary-color);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.toc-link.active {
+.table-of-contents.docked .toc-link.active {
   background: var(--primary-color);
   color: white;
+  border-color: var(--primary-color);
   font-weight: 600;
+}
+
+.table-of-contents.docked .toc-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--bg-tertiary);
+  border-radius: 50%;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-right: var(--space-4);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.table-of-contents.docked .toc-link.active .toc-number {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.table-of-contents.docked .toc-title {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  font-weight: 500;
 }
 
 .toc-link.external {
@@ -618,26 +651,58 @@ pre {
   margin: 0 auto;
 }
 
-/* Layout adjustments for sidebar */
+/* Layout adjustments for docked TOC */
 .has-sidebar {
   padding-left: 0;
 }
 
 .has-sidebar .main-content {
-  margin-left: 320px;
+  margin-left: 0;
   padding: var(--space-6);
-  transition: margin-left 0.3s ease;
-}
-
-@media (max-width: 1200px) {
-  .has-sidebar .main-content {
-    margin-left: 0;
-  }
 }
 
 /* Active nav link styling */
-.nav-links a.active {
+.nav-section.active {
   background: var(--primary-color);
   color: white;
   border-radius: var(--radius);
+}
+
+/* Mobile responsive adjustments for docked TOC */
+@media (max-width: 768px) {
+  .table-of-contents.docked .toc-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .table-of-contents.docked .toc-nav {
+    padding: var(--space-3);
+  }
+  
+  .table-of-contents.docked .toc-header {
+    padding: var(--space-3);
+  }
+  
+  .nav-links {
+    gap: var(--space-3);
+  }
+  
+  .nav-section {
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.9rem;
+  }
+  
+  .table-of-contents.docked .toc-link {
+    padding: var(--space-2) var(--space-3);
+  }
+  
+  .table-of-contents.docked .toc-number {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+    margin-right: var(--space-3);
+  }
+  
+  .table-of-contents.docked .toc-title {
+    font-size: 0.9rem;
+  }
 }
