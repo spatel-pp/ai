@@ -238,111 +238,52 @@ print(results)  # Returns most similar recipes</code></pre>
             <p><strong>Large Language Models (LLMs)</strong> are a type of neural network distinguished by their massive scale and the groundbreaking <strong>Transformer architecture</strong>.</p>
 
             <h3>The Transformer Architecture: The Engine of Modern LLMs</h3>
-            <p>The Transformer, introduced in the groundbreaking 2017 paper "Attention Is All You Need," fundamentally changed how machines understand language. Instead of reading text word-by-word like humans do, Transformers process <strong>all words simultaneously</strong> and figure out how they relate to each other.</p>
+            <p>The Transformer, introduced in the 2017 paper "Attention Is All You Need," revolutionized how machines process language. Unlike older models that read text sequentially, the Transformer processes the entire input at once.</p>
 
-            <h4>Understanding Self-Attention: The Key Innovation</h4>
-            <p>Imagine you're reading the sentence: <em>"The chef prepared a delicious chocolate cake for the birthday party."</em></p>
-            
-            <p>When a human reads this, we instantly understand that:</p>
-            <ul>
-                <li><strong>"chef"</strong> is the person doing the action</li>
-                <li><strong>"delicious"</strong> describes the cake, not the chef</li>
-                <li><strong>"birthday party"</strong> is the reason for making the cake</li>
-                <li><strong>"chocolate"</strong> is the type of cake</li>
-            </ul>
+            <p>The core innovation is the <strong>self-attention mechanism</strong>, which allows every word to look at all other words in the sequence using multiple "attention heads" to capture different types of relationships:</p>
 
-            <p>The Transformer's <strong>self-attention mechanism</strong> learns these relationships by allowing every word to "look at" and "pay attention to" every other word in the sentence. It uses multiple <strong>"attention heads"</strong> - think of them as different perspectives or types of analysis happening simultaneously.</p>
-
-            <!-- Interactive Attention Demonstration -->
-            <div class="attention-demo-container">
-                <h4>🎯 Interactive Self-Attention Demo</h4>
-                <p>Click on any word below to see what it pays attention to. Each color represents a different type of relationship:</p>
-                
-                <div class="sentence-container">
-                    <div class="word-token" data-word="the" data-pos="0">The</div>
-                    <div class="word-token" data-word="chef" data-pos="1">chef</div>
-                    <div class="word-token" data-word="prepared" data-pos="2">prepared</div>
-                    <div class="word-token" data-word="a" data-pos="3">a</div>
-                    <div class="word-token" data-word="delicious" data-pos="4">delicious</div>
-                    <div class="word-token" data-word="chocolate" data-pos="5">chocolate</div>
-                    <div class="word-token" data-word="cake" data-pos="6">cake</div>
-                    <div class="word-token" data-word="for" data-pos="7">for</div>
-                    <div class="word-token" data-word="the" data-pos="8">the</div>
-                    <div class="word-token" data-word="birthday" data-pos="9">birthday</div>
-                    <div class="word-token" data-word="party" data-pos="10">party</div>
-                </div>
-
-                <div class="attention-controls">
-                    <button class="attention-btn" data-head="semantic">🔗 Semantic Attention</button>
-                    <button class="attention-btn" data-head="syntactic">🏗️ Syntactic Attention</button>
-                    <button class="attention-btn" data-head="contextual">🌐 Contextual Attention</button>
-                    <button class="attention-btn clear-btn">Clear</button>
-                </div>
-
-                <div class="attention-explanation-live">
-                    <p id="attention-feedback">Click on a word and select an attention type to see the relationships!</p>
-                </div>
-            </div>
-
-            <!-- Simplified Architecture Overview -->
-            <h4>How Transformers Process Information</h4>
-            <div class="transformer-process">
-                <div class="process-step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h5>🔤 Tokenization</h5>
-                        <p>Break text into tokens (words/subwords) and convert to numbers</p>
-                    </div>
-                </div>
-                <div class="process-step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h5>📍 Position Encoding</h5>
-                        <p>Add position information since all words are processed simultaneously</p>
-                    </div>
-                </div>
-                <div class="process-step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h5>🎯 Multi-Head Attention</h5>
-                        <p>Each word attends to all others using multiple "attention heads"</p>
-                    </div>
-                </div>
-                <div class="process-step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h5>🧠 Feed Forward</h5>
-                        <p>Process the attention results through neural networks</p>
-                    </div>
-                </div>
-                <div class="process-step">
-                    <div class="step-number">5</div>
-                    <div class="step-content">
-                        <h5>📤 Output</h5>
-                        <p>Generate predictions for next words or classifications</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Compact Architecture Diagram -->
-            <div class="compact-diagram">
-                <h5>Transformer Block (Simplified)</h5>
-                <div class="mermaid-diagram transformer-compact">
-                    <pre class="mermaid">
-graph LR
-    A[Input] --> B[Multi-Head<br/>Attention]
-    B --> C[Feed Forward<br/>Network]
-    C --> D[Output]
+            <div class="mermaid-diagram">
+                <pre class="mermaid">
+graph TD
+    A[Input Tokens] --> B[Positional Encoding]
+    B --> C[Multi-Head Attention]
+    C --> D[Add & Norm]
+    D --> E[Feed Forward]
+    E --> F[Add & Norm]
+    F --> G[Output Layer]
     
-    style B fill:#3b82f6,color:#fff
-    style C fill:#10b981,color:#fff
+    C --> H[Query]
+    C --> I[Key] 
+    C --> J[Value]
+    
+    style C fill:#3b82f6,color:#fff
+    style H fill:#10b981,color:#fff
+    style I fill:#f59e0b,color:#fff
+    style J fill:#f43f5e,color:#fff
 </pre>
+            </div>
+
+            <!-- Attention Heads Explanation - moved closer to demo -->
+            <div class="attention-heads-explanation">
+                <div class="head-explanation">
+                    <h5><span class="head-icon semantic">🔗</span> Semantic Head</h5>
+                    <p>Focuses on <strong>meaning relationships</strong> - connecting words that are conceptually related, like "chef" with "recipe" or "delicious" with "chocolate".</p>
+                </div>
+                
+                <div class="head-explanation">
+                    <h5><span class="head-icon syntactic">🏗️</span> Syntactic Head</h5>
+                    <p>Focuses on <strong>grammatical relationships</strong> - connecting articles to nouns ("the" → "chef"), adjectives to the words they modify, and other structural patterns.</p>
+                </div>
+                
+                <div class="head-explanation">
+                    <h5><span class="head-icon contextual">🌐</span> Contextual Head</h5>
+                    <p>Focuses on <strong>broader context</strong> - understanding how words relate within the overall meaning of the sentence, considering long-range dependencies.</p>
                 </div>
             </div>
 
-            <div class="key-insight">
-                <h5>💡 Key Insight</h5>
-                <p>The "magic" of Transformers is that they learn to automatically focus on the most relevant words for understanding context and meaning, without being explicitly programmed with grammar rules. This is why they're so effective at understanding and generating human-like text.</p>
+            <!-- Interactive Transformer Demo -->
+            <div class="diagram-container transformer-demo">
+                <!-- JavaScript will populate this with the interactive demo -->
             </div>
         </section>
 

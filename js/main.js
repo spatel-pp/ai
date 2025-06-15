@@ -144,12 +144,6 @@ class ModernAI {
       transformerDemo.setup();
     }
 
-    // Interactive Attention Demo
-    if (window.InteractiveAttentionDemo) {
-      const attentionDemo = new InteractiveAttentionDemo();
-      attentionDemo.setup();
-    }
-
     // RAG flow demo
     if (window.RAGFlowDemo) {
       const ragDemo = new RAGFlowDemo();
