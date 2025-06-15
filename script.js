@@ -428,69 +428,74 @@ class ModernAIArticle {
     canvas.height = 600;
     const ctx = canvas.getContext('2d');
     
-    // 3D data: recipes with complexity, time, and difficulty dimensions
+    // 3D data: recipes with truly orthogonal dimensions
+    // X-axis: Cooking Time (minutes)
+    // Y-axis: Number of Ingredients 
+    // Z-axis: Serving Temperature (cold to hot)
     const recipes3D = [
-      // Simple recipes
-      { name: 'Instant Noodles', x: 0.05, y: 0.05, z: 0.1, category: 'instant', color: '#22c55e' },
-      { name: 'PB&J Sandwich', x: 0.1, y: 0.08, z: 0.05, category: 'instant', color: '#22c55e' },
-      { name: 'Microwave Popcorn', x: 0.02, y: 0.03, z: 0.02, category: 'instant', color: '#22c55e' },
+      // Quick & Cold
+      { name: 'Caesar Salad', x: 0.15, y: 0.6, z: 0.1, category: 'salads', color: '#22c55e' },
+      { name: 'Fruit Smoothie', x: 0.1, y: 0.3, z: 0.15, category: 'beverages', color: '#06b6d4' },
+      { name: 'Gazpacho', x: 0.2, y: 0.7, z: 0.05, category: 'soups', color: '#8b5cf6' },
       
-      // Quick meals
-      { name: 'Fried Rice', x: 0.3, y: 0.2, z: 0.25, category: 'quick', color: '#3b82f6' },
-      { name: 'Quesadilla', x: 0.2, y: 0.15, z: 0.2, category: 'quick', color: '#3b82f6' },
-      { name: 'Grilled Cheese', x: 0.15, y: 0.1, z: 0.15, category: 'quick', color: '#3b82f6' },
+      // Quick & Hot
+      { name: 'Scrambled Eggs', x: 0.1, y: 0.2, z: 0.8, category: 'breakfast', color: '#f59e0b' },
+      { name: 'Grilled Cheese', x: 0.15, y: 0.25, z: 0.85, category: 'sandwiches', color: '#3b82f6' },
+      { name: 'Instant Ramen', x: 0.05, y: 0.15, z: 0.9, category: 'noodles', color: '#ef4444' },
       
-      // Intermediate dishes
-      { name: 'Chicken Stir-fry', x: 0.5, y: 0.4, z: 0.45, category: 'intermediate', color: '#f59e0b' },
-      { name: 'Pasta Bolognese', x: 0.6, y: 0.5, z: 0.4, category: 'intermediate', color: '#f59e0b' },
-      { name: 'Fish Tacos', x: 0.55, y: 0.35, z: 0.5, category: 'intermediate', color: '#f59e0b' },
+      // Medium Time & Ingredients
+      { name: 'Chicken Curry', x: 0.6, y: 0.8, z: 0.9, category: 'mains', color: '#dc2626' },
+      { name: 'Pasta Carbonara', x: 0.3, y: 0.4, z: 0.85, category: 'pasta', color: '#f97316' },
+      { name: 'Beef Stir-fry', x: 0.25, y: 0.5, z: 0.8, category: 'mains', color: '#dc2626' },
       
-      // Advanced recipes
-      { name: 'Beef Bourguignon', x: 0.85, y: 0.9, z: 0.8, category: 'advanced', color: '#dc2626' },
-      { name: 'Homemade Pasta', x: 0.7, y: 0.6, z: 0.75, category: 'advanced', color: '#dc2626' },
-      { name: 'Duck Confit', x: 0.9, y: 0.85, z: 0.9, category: 'advanced', color: '#dc2626' },
+      // Long Time, Many Ingredients
+      { name: 'Beef Bourguignon', x: 0.9, y: 0.9, z: 0.95, category: 'stews', color: '#7c2d12' },
+      { name: 'Paella', x: 0.7, y: 0.95, z: 0.9, category: 'rice', color: '#f59e0b' },
+      { name: 'Coq au Vin', x: 0.8, y: 0.85, z: 0.9, category: 'mains', color: '#dc2626' },
       
-      // Baking/Desserts
-      { name: 'Chocolate Cake', x: 0.6, y: 0.7, z: 0.65, category: 'baking', color: '#8b5cf6' },
-      { name: 'Croissants', x: 0.95, y: 0.8, z: 0.95, category: 'baking', color: '#8b5cf6' },
-      { name: 'Sugar Cookies', x: 0.3, y: 0.4, z: 0.3, category: 'baking', color: '#8b5cf6' }
+      // Cold Desserts
+      { name: 'Ice Cream', x: 0.05, y: 0.3, z: 0.05, category: 'desserts', color: '#ec4899' },
+      { name: 'Tiramisu', x: 0.4, y: 0.6, z: 0.1, category: 'desserts', color: '#ec4899' },
+      
+      // Hot Desserts
+      { name: 'Apple Pie', x: 0.8, y: 0.7, z: 0.75, category: 'baking', color: '#a855f7' },
+      { name: 'Chocolate Soufflé', x: 0.5, y: 0.5, z: 0.8, category: 'desserts', color: '#ec4899' }
     ];
     
     let rotation = { x: 0.2, y: 0.3 };
     let isDragging = false;
     let lastMouse = { x: 0, y: 0 };
-    let hoveredRecipe = null;
     
-    // 3D to 2D projection - centered rotation
+    // 3D to 2D projection - adjusted for proper cube containment
     const project3D = (x, y, z) => {
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
-      const scale = 250;
+      const scale = 300; // Increased scale for zoom
       
-      // Center the coordinates around 0.5 for proper rotation
-      const centeredX = x - 0.5;
-      const centeredY = y - 0.5;
-      const centeredZ = z - 0.5;
+      // Use raw coordinates [0,1] without centering for cube edge rotation
+      const rawX = x;
+      const rawY = y;
+      const rawZ = z;
       
-      // Apply rotation
+      // Apply rotation around the origin (0,0,0) so cube rotates around edge
       const cosX = Math.cos(rotation.x);
       const sinX = Math.sin(rotation.x);
       const cosY = Math.cos(rotation.y);
       const sinY = Math.sin(rotation.y);
       
-      // Rotate around Y axis
-      const rotatedX = centeredX * cosY - centeredZ * sinY;
-      const rotatedZ = centeredX * sinY + centeredZ * cosY;
+      // Rotate around Y axis first
+      const rotatedX = rawX * cosY - rawZ * sinY;
+      const rotatedZ = rawX * sinY + rawZ * cosY;
       
-      // Rotate around X axis
-      const finalY = centeredY * cosX - rotatedZ * sinX;
-      const finalZ = centeredY * sinX + rotatedZ * cosX;
+      // Then rotate around X axis
+      const finalY = rawY * cosX - rotatedZ * sinX;
+      const finalZ = rawY * sinX + rotatedZ * cosX;
       
-      // Project to 2D with perspective
-      const perspective = 1 / (1 + finalZ * 0.3);
+      // Project to 2D with minimal perspective for better zoom view
+      const perspective = 1 / (1 + finalZ * 0.2);
       return {
-        x: centerX + rotatedX * scale * perspective,
-        y: centerY - finalY * scale * perspective,
+        x: centerX + rotatedX * scale * perspective - 150, // Offset to center the view
+        y: centerY - finalY * scale * perspective + 50,
         z: finalZ,
         scale: perspective
       };
@@ -512,10 +517,10 @@ class ModernAIArticle {
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, 800, 600);
       
-      // Draw 3D cube wireframe with better styling - centered around origin
+      // Draw 3D cube wireframe - positioned from origin (0,0,0) to (1,1,1)
       const cubeVertices = [
-        [-0.5, -0.5, -0.5], [0.5, -0.5, -0.5], [0.5, 0.5, -0.5], [-0.5, 0.5, -0.5],
-        [-0.5, -0.5, 0.5], [0.5, -0.5, 0.5], [0.5, 0.5, 0.5], [-0.5, 0.5, 0.5]
+        [0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0],
+        [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]
       ];
       
       const cubeEdges = [
@@ -541,139 +546,124 @@ class ModernAIArticle {
         return { ...recipe, projected, depth: projected.z };
       }).sort((a, b) => a.depth - b.depth);
       
-      // Draw recipes with hover effects
+      // Draw recipes with text labels
       sortedRecipes.forEach(recipe => {
         const { projected } = recipe;
-        const baseRadius = 6;
-        const radius = hoveredRecipe === recipe ? 
-          baseRadius * projected.scale * 1.5 : 
-          baseRadius * projected.scale;
+        const radius = 7;
+        
+        // Draw shadow for depth
+        if (projected.z < 0.5) {
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+          ctx.beginPath();
+          ctx.arc(projected.x + 3, projected.y + 3, radius, 0, 2 * Math.PI);
+          ctx.fill();
+        }
         
         // Draw white outline for visibility
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
-        ctx.arc(projected.x, projected.y, radius + 2, 0, 2 * Math.PI);
+        ctx.arc(projected.x, projected.y, radius + 3, 0, 2 * Math.PI);
         ctx.fill();
         
-        // Draw recipe point with hover highlight
-        ctx.fillStyle = hoveredRecipe === recipe ? 
-          recipe.color : 
-          recipe.color;
+        // Draw recipe point
+        ctx.fillStyle = recipe.color;
         ctx.beginPath();
         ctx.arc(projected.x, projected.y, radius, 0, 2 * Math.PI);
         ctx.fill();
         
-        // Add glow effect for hovered recipe
-        if (hoveredRecipe === recipe) {
-          ctx.shadowColor = recipe.color;
-          ctx.shadowBlur = 15;
-          ctx.fillStyle = recipe.color;
-          ctx.beginPath();
-          ctx.arc(projected.x, projected.y, radius, 0, 2 * Math.PI);
-          ctx.fill();
-          ctx.shadowBlur = 0;
-          
-          // Draw connecting lines to same category
-          recipes3D.forEach(other => {
-            if (other !== recipe && other.category === recipe.category) {
-              const otherProjected = project3D(other.x, other.y, other.z);
-              ctx.strokeStyle = recipe.color + '40';
-              ctx.lineWidth = 2;
-              ctx.beginPath();
-              ctx.moveTo(projected.x, projected.y);
-              ctx.lineTo(otherProjected.x, otherProjected.y);
-              ctx.stroke();
-            }
-          });
-          
-          // Draw detailed info box
-          const infoX = projected.x < canvas.width / 2 ? projected.x + 30 : projected.x - 180;
-          const infoY = projected.y - 60;
-          
-          // Draw info background
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
-          ctx.strokeStyle = recipe.color;
-          ctx.lineWidth = 2;
-          ctx.fillRect(infoX, infoY, 150, 80);
-          ctx.strokeRect(infoX, infoY, 150, 80);
-          
-          // Draw recipe info
-          ctx.fillStyle = '#000';
-          ctx.font = 'bold 14px system-ui';
-          ctx.textAlign = 'left';
-          ctx.fillText(recipe.name, infoX + 8, infoY + 18);
-          
-          ctx.font = '12px system-ui';
-          ctx.fillText(`Complexity: ${(recipe.x * 100).toFixed(0)}%`, infoX + 8, infoY + 35);
-          ctx.fillText(`Time: ${(recipe.y * 100).toFixed(0)}%`, infoX + 8, infoY + 50);
-          ctx.fillText(`Difficulty: ${(recipe.z * 100).toFixed(0)}%`, infoX + 8, infoY + 65);
-        }
+        // Always draw recipe name as label
+        ctx.fillStyle = '#000000';
+        ctx.font = 'bold 12px system-ui';
+        ctx.textAlign = 'left';
+        
+        // Position label to avoid overlapping with point
+        const labelX = projected.x + radius + 8;
+        const labelY = projected.y + 4;
+        
+        // Draw text background for better readability
+        const textWidth = ctx.measureText(recipe.name).width;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.fillRect(labelX - 2, labelY - 12, textWidth + 4, 16);
+        
+        // Draw border around text background
+        ctx.strokeStyle = recipe.color;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(labelX - 2, labelY - 12, textWidth + 4, 16);
+        
+        // Draw the recipe name
+        ctx.fillStyle = '#000000';
+        ctx.fillText(recipe.name, labelX, labelY);
       });
       
-      // Draw axes labels with proper positioning for centered cube
-      const axisLength = 0.8;
+      // Draw axes labels starting from origin (0,0,0)
+      const axisLength = 1.2;
+      const origin = project3D(0, 0, 0);
       const xAxis = project3D(axisLength, 0, 0);
       const yAxis = project3D(0, axisLength, 0);
       const zAxis = project3D(0, 0, axisLength);
       
-      ctx.fillStyle = '#374151';
       ctx.font = 'bold 14px system-ui';
       ctx.textAlign = 'center';
       
-      // Draw axis lines and labels
-      const origin = project3D(0, 0, 0);
-      
-      // X-axis (Complexity)
-      ctx.strokeStyle = '#f59e0b';
-      ctx.lineWidth = 3;
+      // X-axis (Cooking Time) - Red line
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 4;
       ctx.beginPath();
       ctx.moveTo(origin.x, origin.y);
       ctx.lineTo(xAxis.x, xAxis.y);
       ctx.stroke();
-      ctx.fillStyle = '#f59e0b';
-      ctx.fillText('Complexity', xAxis.x, xAxis.y - 10);
+      ctx.fillStyle = '#dc2626';
+      ctx.fillText('Time →', xAxis.x, xAxis.y - 15);
+      ctx.font = '11px system-ui';
+      ctx.fillText('(5min → 2hrs)', xAxis.x, xAxis.y - 2);
       
-      // Y-axis (Time)
-      ctx.strokeStyle = '#3b82f6';
-      ctx.lineWidth = 3;
+      // Y-axis (Number of Ingredients) - Blue line  
+      ctx.strokeStyle = '#2563eb';
+      ctx.lineWidth = 4;
       ctx.beginPath();
       ctx.moveTo(origin.x, origin.y);
       ctx.lineTo(yAxis.x, yAxis.y);
       ctx.stroke();
-      ctx.fillStyle = '#3b82f6';
-      ctx.fillText('Time', yAxis.x, yAxis.y - 10);
+      ctx.fillStyle = '#2563eb';
+      ctx.font = 'bold 14px system-ui';
+      ctx.fillText('↑ Ingredients', yAxis.x, yAxis.y - 15);
+      ctx.font = '11px system-ui';
+      ctx.fillText('(3 → 18)', yAxis.x, yAxis.y - 2);
       
-      // Z-axis (Difficulty)
-      ctx.strokeStyle = '#dc2626';
-      ctx.lineWidth = 3;
+      // Z-axis (Serving Temperature) - Orange line
+      ctx.strokeStyle = '#ea580c';
+      ctx.lineWidth = 4;
       ctx.beginPath();
       ctx.moveTo(origin.x, origin.y);
       ctx.lineTo(zAxis.x, zAxis.y);
       ctx.stroke();
-      ctx.fillStyle = '#dc2626';
-      ctx.fillText('Difficulty', zAxis.x, zAxis.y - 10);
+      ctx.fillStyle = '#ea580c';
+      ctx.font = 'bold 14px system-ui';
+      ctx.fillText('Temperature', zAxis.x, zAxis.y - 15);
+      ctx.font = '11px system-ui';
+      ctx.fillText('(Cold → Hot)', zAxis.x, zAxis.y - 2);
       
       // Draw horizontal legend at the bottom
-      const categories = ['instant', 'quick', 'intermediate', 'advanced', 'baking'];
-      const colors = ['#22c55e', '#3b82f6', '#f59e0b', '#dc2626', '#8b5cf6'];
-      const labels = ['Instant', 'Quick', 'Intermediate', 'Advanced', 'Baking'];
+      const categories = ['salads', 'beverages', 'breakfast', 'mains', 'desserts', 'baking'];
+      const colors = ['#22c55e', '#06b6d4', '#f59e0b', '#dc2626', '#ec4899', '#a855f7'];
+      const labels = ['Salads', 'Beverages', 'Breakfast', 'Main Dishes', 'Desserts', 'Baking'];
       
-      const legendStartX = 80;
+      const legendStartX = 50;
       const legendY = 580;
-      const legendSpacing = 130;
+      const legendSpacing = 115;
       
       categories.forEach((cat, i) => {
         const x = legendStartX + i * legendSpacing;
         
         // Draw colored square
         ctx.fillStyle = colors[i];
-        ctx.fillRect(x, legendY, 14, 14);
+        ctx.fillRect(x, legendY, 12, 12);
         
         // Draw label
         ctx.fillStyle = '#374151';
-        ctx.font = '12px system-ui';
+        ctx.font = '11px system-ui';
         ctx.textAlign = 'left';
-        ctx.fillText(labels[i], x + 20, legendY + 11);
+        ctx.fillText(labels[i], x + 18, legendY + 10);
       });
     };
     
@@ -685,10 +675,6 @@ class ModernAIArticle {
     });
     
     canvas.addEventListener('mousemove', (e) => {
-      const rect = canvas.getBoundingClientRect();
-      const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
-      const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
-      
       if (isDragging) {
         const deltaX = e.clientX - lastMouse.x;
         const deltaY = e.clientY - lastMouse.y;
@@ -699,26 +685,7 @@ class ModernAIArticle {
         canvas.style.cursor = 'grabbing';
         draw3D();
       } else {
-        // Check for hover - improved detection
-        hoveredRecipe = null;
-        let minDistance = Infinity;
-        let foundHover = false;
-        
-        recipes3D.forEach(recipe => {
-          const projected = project3D(recipe.x, recipe.y, recipe.z);
-          const distance = Math.sqrt((mouseX - projected.x) ** 2 + (mouseY - projected.y) ** 2);
-          const hitRadius = 15 * projected.scale; // Scale hit radius with perspective
-          
-          if (distance < hitRadius && distance < minDistance) {
-            hoveredRecipe = recipe;
-            minDistance = distance;
-            foundHover = true;
-          }
-        });
-        
-        // Update cursor based on hover state
-        canvas.style.cursor = foundHover ? 'pointer' : 'grab';
-        draw3D();
+        canvas.style.cursor = 'grab';
       }
     });
     
@@ -729,15 +696,13 @@ class ModernAIArticle {
     
     canvas.addEventListener('mouseleave', () => {
       isDragging = false;
-      hoveredRecipe = null;
       canvas.style.cursor = 'default';
-      draw3D();
     });
     
     // Add controls
     const controls = document.createElement('div');
     controls.className = 'controls-3d';
-    controls.innerHTML = 'Click and drag to rotate • Hover recipes for details';
+    controls.innerHTML = 'Click and drag to rotate • Recipe names shown as labels';
     container.appendChild(controls);
     
     draw3D();
@@ -756,60 +721,236 @@ class ModernAIArticle {
     const container = document.querySelector('.transformer-demo');
     if (!container) return;
 
+    // Recipe-themed transformer demo
+    const sentence = "The chef prepared delicious chocolate soufflé";
+    const tokens = sentence.split(' ');
+    
+    // Create the visualization container
     const diagram = document.createElement('div');
     diagram.className = 'transformer-visualization';
+    
+    // Set CSS custom property for grid layout
+    diagram.style.setProperty('--token-count', tokens.length);
+    
+    // Create attention matrix visualization
     diagram.innerHTML = `
-      <div class="transformer-layer">
+      <div class="transformer-header">
+        <h5>Self-Attention Mechanism</h5>
+        <p>Click any word to see how it "attends" to other words in the sentence</p>
+      </div>
+      
+      <div class="attention-controls">
         <div class="attention-heads">
-          <div class="attention-head" data-head="1">Head 1</div>
-          <div class="attention-head" data-head="2">Head 2</div>
-          <div class="attention-head" data-head="3">Head 3</div>
-          <div class="attention-head" data-head="4">Head 4</div>
+          <button class="head-btn active" data-head="0">Semantic Head</button>
+          <button class="head-btn" data-head="1">Syntactic Head</button>
+          <button class="head-btn" data-head="2">Context Head</button>
         </div>
-        <div class="token-sequence">
-          <div class="token" data-token="The">The</div>
-          <div class="token" data-token="cat">cat</div>
-          <div class="token" data-token="sat">sat</div>
-          <div class="token" data-token="on">on</div>
-          <div class="token" data-token="the">the</div>
-          <div class="token" data-token="mat">mat</div>
+      </div>
+      
+      <div class="attention-matrix">
+        <div class="token-row token-labels">
+          ${tokens.map((token, i) => `
+            <div class="token-label" data-pos="${i}">${token}</div>
+          `).join('')}
+        </div>
+        
+        ${tokens.map((token, i) => `
+          <div class="attention-row" data-row="${i}">
+            <div class="row-label">${token}</div>
+            ${tokens.map((_, j) => `
+              <div class="attention-cell" 
+                   data-from="${i}" 
+                   data-to="${j}"
+                   style="opacity: ${this.getAttentionWeight(i, j, 0)}">
+              </div>
+            `).join('')}
+          </div>
+        `).join('')}
+      </div>
+      
+      <div class="attention-explanation">
+        <div class="explanation-text">
+          <strong>How it works:</strong> Each word creates a "query" and looks at all other words' "keys" to determine relevance. 
+          The brighter the cell, the stronger the attention connection.
         </div>
       </div>
     `;
 
     container.appendChild(diagram);
 
-    // Add interactivity
-    const tokens = diagram.querySelectorAll('.token');
+    // Store attention patterns for different heads
+    this.attentionPatterns = {
+      0: this.generateSemanticAttention(tokens),  // Semantic relationships
+      1: this.generateSyntacticAttention(tokens), // Grammatical relationships  
+      2: this.generateContextualAttention(tokens) // Contextual relationships
+    };
 
-    tokens.forEach(token => {
-      token.addEventListener('click', () => {
-        // Clear previous attention
-        tokens.forEach(t => t.classList.remove('attending'));
+    let currentHead = 0;
+    let selectedToken = null;
 
-        // Show attention pattern
-        token.classList.add('attending');
-        
-        // Simulate attention to related words
-        const word = token.dataset.token.toLowerCase();
-        const attentionPatterns = {
-          'cat': ['the', 'sat'],
-          'sat': ['cat', 'on', 'mat'],
-          'mat': ['the', 'on']
-        };
+    // Add event listeners
+    const headButtons = diagram.querySelectorAll('.head-btn');
+    const attentionCells = diagram.querySelectorAll('.attention-cell');
+    const tokenLabels = diagram.querySelectorAll('.token-label');
+    const rowLabels = diagram.querySelectorAll('.row-label');
 
-        if (attentionPatterns[word]) {
-          attentionPatterns[word].forEach(targetWord => {
-            const targetToken = Array.from(tokens).find(t => 
-              t.dataset.token.toLowerCase() === targetWord
-            );
-            if (targetToken) {
-              targetToken.classList.add('attending');
-            }
-          });
+    // Head switching
+    headButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        headButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentHead = parseInt(btn.dataset.head);
+        this.updateAttentionMatrix(attentionCells, currentHead);
+        if (selectedToken !== null) {
+          this.highlightAttentions(selectedToken, currentHead, attentionCells, tokens);
         }
       });
     });
+
+    // Token clicking
+    [...tokenLabels, ...rowLabels].forEach(label => {
+      label.addEventListener('click', () => {
+        const pos = label.dataset.pos || label.closest('.attention-row').dataset.row;
+        selectedToken = parseInt(pos);
+        
+        // Remove previous highlights
+        [...tokenLabels, ...rowLabels].forEach(l => l.classList.remove('selected'));
+        attentionCells.forEach(cell => cell.classList.remove('highlighted'));
+        
+        // Add new highlights
+        label.classList.add('selected');
+        tokenLabels[selectedToken]?.classList.add('selected');
+        rowLabels[selectedToken]?.classList.add('selected');
+        
+        this.highlightAttentions(selectedToken, currentHead, attentionCells, tokens);
+        this.showAttentionExplanation(selectedToken, currentHead, tokens, diagram);
+      });
+    });
+
+    // Initialize with first token selected
+    tokenLabels[0].click();
+  }
+
+  getAttentionWeight(from, to, head) {
+    // Simple attention weight calculation for demo
+    if (from === to) return 0.9; // Self-attention
+    
+    const distance = Math.abs(from - to);
+    if (head === 0) { // Semantic head
+      const semanticPairs = [[1,3], [1,5], [3,4], [4,5]]; // chef-delicious, chef-soufflé, delicious-chocolate, chocolate-soufflé
+      if (semanticPairs.some(([a,b]) => (from === a && to === b) || (from === b && to === a))) {
+        return 0.8;
+      }
+    }
+    
+    // Distance-based fallback
+    return Math.max(0.1, 0.6 - distance * 0.1);
+  }
+
+  generateSemanticAttention(tokens) {
+    // Generate semantic attention patterns
+    const matrix = tokens.map(() => tokens.map(() => 0.1));
+    
+    // Chef -> delicious, prepared, soufflé
+    matrix[1][3] = 0.9; // chef -> delicious
+    matrix[1][2] = 0.8; // chef -> prepared
+    matrix[1][5] = 0.7; // chef -> soufflé
+    
+    // Delicious -> chocolate, soufflé
+    matrix[3][4] = 0.9; // delicious -> chocolate
+    matrix[3][5] = 0.8; // delicious -> soufflé
+    
+    // Chocolate -> soufflé (related ingredients)
+    matrix[4][5] = 0.9; // chocolate -> soufflé
+    
+    // Add self-attention
+    tokens.forEach((_, i) => matrix[i][i] = 1.0);
+    
+    return matrix;
+  }
+
+  generateSyntacticAttention(tokens) {
+    // Generate syntactic attention patterns
+    const matrix = tokens.map(() => tokens.map(() => 0.1));
+    
+    // Articles to nouns
+    matrix[0][1] = 0.9; // The -> chef
+    
+    // Adjectives to nouns
+    matrix[3][4] = 0.9; // delicious -> chocolate
+    matrix[4][5] = 0.8; // chocolate -> soufflé
+    
+    // Verb to object
+    matrix[2][5] = 0.8; // prepared -> soufflé
+    
+    // Add self-attention
+    tokens.forEach((_, i) => matrix[i][i] = 1.0);
+    
+    return matrix;
+  }
+
+  generateContextualAttention(tokens) {
+    // Generate contextual attention patterns
+    const matrix = tokens.map(() => tokens.map(() => 0.1));
+    
+    // Broader context connections
+    matrix[2][1] = 0.8; // prepared -> chef (who did the action)
+    matrix[2][5] = 0.7; // prepared -> soufflé (what was prepared)
+    matrix[1][5] = 0.6; // chef -> soufflé (chef's creation)
+    
+    // Add self-attention
+    tokens.forEach((_, i) => matrix[i][i] = 1.0);
+    
+    return matrix;
+  }
+
+  updateAttentionMatrix(cells, head) {
+    cells.forEach(cell => {
+      const from = parseInt(cell.dataset.from);
+      const to = parseInt(cell.dataset.to);
+      const attention = this.attentionPatterns[head][from][to];
+      cell.style.opacity = attention;
+      cell.style.backgroundColor = `rgba(59, 130, 246, ${attention})`;
+    });
+  }
+
+  highlightAttentions(tokenPos, head, cells, tokens) {
+    cells.forEach(cell => {
+      const from = parseInt(cell.dataset.from);
+      const to = parseInt(cell.dataset.to);
+      
+      if (from === tokenPos) {
+        const attention = this.attentionPatterns[head][from][to];
+        if (attention > 0.5) {
+          cell.classList.add('highlighted');
+        }
+      }
+    });
+  }
+
+  showAttentionExplanation(tokenPos, head, tokens, container) {
+    const explanationDiv = container.querySelector('.attention-explanation');
+    const token = tokens[tokenPos];
+    const headNames = ['Semantic', 'Syntactic', 'Contextual'];
+    
+    let explanation = `<strong>"${token}"</strong> in the ${headNames[head]} head attends to: `;
+    
+    const attentions = this.attentionPatterns[head][tokenPos];
+    const strongAttentions = attentions
+      .map((weight, i) => ({ token: tokens[i], weight, index: i }))
+      .filter(item => item.weight > 0.5 && item.index !== tokenPos)
+      .sort((a, b) => b.weight - a.weight)
+      .slice(0, 3);
+    
+    if (strongAttentions.length > 0) {
+      explanation += strongAttentions
+        .map(item => `<span class="attention-word">"${item.token}" (${(item.weight * 100).toFixed(0)}%)</span>`)
+        .join(', ');
+    } else {
+      explanation += 'mainly itself (self-attention)';
+    }
+    
+    explanationDiv.innerHTML = `<div class="explanation-text">${explanation}</div>`;
   }
 
   setupRAGFlowDiagram() {

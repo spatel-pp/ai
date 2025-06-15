@@ -111,8 +111,8 @@
                 <!-- 3D Vector Space -->
                 <div class="diagram-container vector-space-3d">
                     <div class="visualization-header">
-                        <h5>3D Vector Space: Multi-Dimensional Recipe Attributes</h5>
-                        <p class="visualization-description">Three-dimensional representation with complexity, time, and difficulty. Click and drag to rotate the space and explore recipes from different angles.</p>
+                        <h5>3D Vector Space: Recipe Attributes (Time × Ingredients × Temperature)</h5>
+                        <p class="visualization-description">Three truly orthogonal dimensions: cooking time (x-axis), number of ingredients (y-axis), and serving temperature (z-axis). Click and drag to rotate the space and explore how recipes cluster in this multi-dimensional space.</p>
                     </div>
                 </div>
             </div>
@@ -240,11 +240,7 @@ print(results)  # Returns most similar recipes</code></pre>
             <h3>The Transformer Architecture: The Engine of Modern LLMs</h3>
             <p>The Transformer, introduced in the 2017 paper "Attention Is All You Need," revolutionized how machines process language. Unlike older models that read text sequentially, the Transformer processes the entire input at once.</p>
 
-            <!-- Interactive Transformer Demo -->
-            <div class="diagram-container transformer-demo">
-                <h4>Interactive Transformer Attention</h4>
-                <p>Click on any word to see how the attention mechanism connects it to other words in the sentence.</p>
-            </div>
+            <p>The core innovation is the <strong>self-attention mechanism</strong>, which allows every word to look at all other words in the sequence using multiple "attention heads" to capture different types of relationships:</p>
 
             <div class="mermaid-diagram">
                 <pre class="mermaid">
@@ -267,7 +263,30 @@ graph TD
 </pre>
             </div>
 
-            <p>The core innovation is the <strong>self-attention mechanism</strong>, which allows every word to look at all other words in the sequence:</p>
+            <!-- Attention Heads Explanation - moved closer to demo -->
+            <div class="attention-heads-explanation">
+                <div class="head-explanation">
+                    <h5><span class="head-icon semantic">🔗</span> Semantic Head</h5>
+                    <p>Focuses on <strong>meaning relationships</strong> - connecting words that are conceptually related, like "chef" with "recipe" or "delicious" with "chocolate".</p>
+                </div>
+                
+                <div class="head-explanation">
+                    <h5><span class="head-icon syntactic">🏗️</span> Syntactic Head</h5>
+                    <p>Focuses on <strong>grammatical relationships</strong> - connecting articles to nouns ("the" → "chef"), adjectives to the words they modify, and other structural patterns.</p>
+                </div>
+                
+                <div class="head-explanation">
+                    <h5><span class="head-icon contextual">🌐</span> Contextual Head</h5>
+                    <p>Focuses on <strong>broader context</strong> - understanding how words relate within the overall meaning of the sentence, considering long-range dependencies.</p>
+                </div>
+            </div>
+
+            <!-- Interactive Transformer Demo -->
+            <div class="diagram-container transformer-demo">
+                <h4>Interactive Self-Attention Demo</h4>
+                <p>Explore how attention heads connect words in: <em>"The chef prepared delicious chocolate soufflé"</em></p>
+                <p class="demo-instructions">Click any word to see attention patterns, or switch heads to explore different connections.</p>
+            </div>
             <ul>
                 <li><strong>Query:</strong> "Who am I in this context?"</li>
                 <li><strong>Key:</strong> "Here's what information I hold"</li>
