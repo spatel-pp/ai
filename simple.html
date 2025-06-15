@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Architecture - Simple Test</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Fallback styles in case external CSS fails */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8fafc;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>AI Architecture Guide - Test Version</h1>
+        <p>This is a simplified version to test if the basic structure works.</p>
+        
+        <h2>Testing CSS Variables</h2>
+        <div style="background: var(--bg-primary, white); padding: 10px; border: 1px solid var(--border-color, #ccc);">
+            This should use CSS variables if they're loaded correctly.
+        </div>
+        
+        <h2>Testing Grid Layout</h2>
+        <div class="layout-grid" style="display: grid; gap: 20px;">
+            <div style="background: #e3f2fd; padding: 10px;">Grid Item 1</div>
+            <div style="background: #e8f5e8; padding: 10px;">Grid Item 2</div>
+        </div>
+        
+        <p><a href="index.html">View Full Version</a> | <a href="test.html">Simple Test</a></p>
+    </div>
+    
+    <script>
+        console.log('JavaScript is working');
+        console.log('CSS custom properties test:', getComputedStyle(document.documentElement).getPropertyValue('--primary-900'));
+    </script>
+</body>
+</html>

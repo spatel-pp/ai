@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Highlighting Test</title>
+    
+    <!-- Prism.js for syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        pre {
+            background: #2d3748 !important;
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+        code {
+            color: #e2e8f0 !important;
+            font-family: 'Fira Code', 'Cascadia Code', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Python Syntax Highlighting Test</h1>
+        
+        <h3>Test 1: Simple Python Code</h3>
+        <pre><code class="language-python"># This is a comment
+import numpy as np
+
+def hello_world():
+    print("Hello, World!")
+    return True
+
+# Variables and data types
+name = "Python"
+number = 42
+pi = 3.14159</code></pre>
+
+        <h3>Test 2: More Complex Python</h3>
+        <pre><code class="language-python"># Vector embeddings example
+import numpy as np
+from typing import List, Dict
+
+class EmbeddingModel:
+    def __init__(self, dimensions: int = 128):
+        self.dimensions = dimensions
+        self.vocab = {}
+    
+    def train(self, corpus: List[str]) -> None:
+        """Train the embedding model on a corpus"""
+        for sentence in corpus:
+            tokens = sentence.split()
+            for token in tokens:
+                if token not in self.vocab:
+                    # Random initialization
+                    self.vocab[token] = np.random.randn(self.dimensions)
+    
+    def get_embedding(self, word: str) -> np.ndarray:
+        return self.vocab.get(word, np.zeros(self.dimensions))</code></pre>
+
+        <p><a href="index.html">← Back to Main Page</a></p>
+    </div>
+
+    <script>
+        // Initialize Prism highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.Prism) {
+                console.log('Prism.js loaded successfully');
+                Prism.highlightAll();
+            } else {
+                console.error('Prism.js failed to load');
+            }
+        });
+    </script>
+</body>
+</html>

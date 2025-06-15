@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Architecture of Modern AI: Embeddings, Vector Databases, and LLMs</title>
+    <meta name="description" content="Explore the fundamentals of modern AI architecture including embeddings, vector databases, and large language models.">
+    <meta name="keywords" content="AI, machine learning, embeddings, vector databases, LLM, transformers, RAG">
+    <meta name="author" content="Sunny Patel">
+    
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="layout-grid">
+    <header class="site-header">
+        <h1>The Architecture of Modern AI</h1>
+        <p>Embeddings, Vector Databases, and Large Language Models</p>
+    </header>
+
+    <nav class="site-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <strong>AI Architecture Guide</strong>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#embeddings">Embeddings</a></li>
+                <li><a href="#vector-databases">Vector DBs</a></li>
+                <li><a href="#llms">LLMs</a></li>
+                <li><a href="#rag">RAG</a></li>
+                <li><a href="#agentic">Agentic AI</a></li>
+                <li><a href="embeddings.html">Deep Dive →</a></li>
+            </ul>
+            <button class="theme-toggle" aria-label="Toggle theme">🌙</button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="intro-section animate-fade-in">
+            <p>
+                The landscape of Artificial Intelligence has been profoundly reshaped by advancements in Machine Learning, particularly through the advent of 
+                <strong>embeddings</strong>, <strong>vector databases</strong>, and <strong>Large Language Models (LLMs)</strong>.
+                These components, while distinct, are deeply interconnected, forming the backbone of many cutting-edge AI applications.
+            </p>
+
+            <div class="example-box">
+                <p><strong>Example Scenario: A Smart Recipe Assistant</strong></p>
+                <p>Imagine we're building a "Smart Recipe Assistant" that can understand complex food-related queries, suggest recipes based on ingredients, dietary preferences, and even cooking styles, and provide a detailed cooking response.</p>
+            </div>
+        </section>
+
+        <section id="embeddings">
+            <h2>Embeddings: The Language of Machines</h2>
+            <p>At its core, an <strong>embedding</strong> is a dense numerical representation (a <strong>vector</strong>) of an object—be it a word, a sentence, or an entire recipe—in a high-dimensional space. Unlike simple text, these vectors are designed to capture semantic meaning and relationships.</p>
+
+            <h3>Understanding Dimensional Space and N-Dimensional Vectors</h3>
+            <p>To grasp embeddings, it's helpful to visualize "dimensional space." A vector is simply a list of numbers that defines a point's coordinates within that space. For example, <code>(3, 7)</code> is a 2D vector.</p>
+            
+            <!-- Interactive Vector Space Demo -->
+            <div class="diagram-container vector-space-demo">
+                <h4>Interactive Vector Space Visualization</h4>
+                <p>Hover over points to see relationships. Each color represents a different category of data.</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language">Python</span>
+                    <button class="copy-button">Copy</button>
+                </div>
+                <pre><code class="language-python"># Example: Word embeddings in action
+import numpy as np
+
+# Simple 3D word embeddings
+word_embeddings = {
+    "king": [0.2, 0.8, 0.1],
+    "queen": [0.3, 0.9, 0.2], 
+    "man": [0.1, 0.3, 0.8],
+    "woman": [0.2, 0.4, 0.9]
+}
+
+# Calculate similarity using cosine distance
+def cosine_similarity(vec1, vec2):
+    return np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
+
+# Find semantic relationships
+similarity = cosine_similarity(
+    word_embeddings["king"], 
+    word_embeddings["queen"]
+)
+print(f"King-Queen similarity: {similarity:.3f}")  # High similarity!</code></pre>
+            </div>
+
+            <p>An <strong>n-dimensional vector</strong> extends this concept to 'n' numbers. While we can't visualize this, the magic lies in proximity: objects with similar meanings will have vectors that are numerically "close" to each other in this high-dimensional space.</p>
+        </section>
+
+        <section id="vector-databases">
+            <h2>Vector Databases: Storing and Searching Semantic Space</h2>
+            <p><strong>Vector databases</strong> are specialized databases engineered to efficiently store and search these high-dimensional embeddings. Their primary function is to enable <strong>approximate nearest neighbor (ANN) search</strong>, which means finding the "closest" or most semantically similar items to a given query embedding.</p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Vector Database</th>
+                            <th>Type</th>
+                            <th>Best For</th>
+                            <th>Key Features</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Pinecone</td>
+                            <td>Cloud</td>
+                            <td>Production apps</td>
+                            <td>Managed, scalable, real-time</td>
+                        </tr>
+                        <tr>
+                            <td>Weaviate</td>
+                            <td>Open Source</td>
+                            <td>Complex schemas</td>
+                            <td>GraphQL, modules, hybrid search</td>
+                        </tr>
+                        <tr>
+                            <td>Chroma</td>
+                            <td>Embedded</td>
+                            <td>Development</td>
+                            <td>Python-native, simple API</td>
+                        </tr>
+                        <tr>
+                            <td>Qdrant</td>
+                            <td>Self-hosted</td>
+                            <td>High performance</td>
+                            <td>Rust-based, filtering, clustering</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language">Python</span>
+                    <button class="copy-button">Copy</button>
+                </div>
+                <pre><code class="language-python"># Example: Using Chroma for vector search
+import chromadb
+
+# Initialize client
+client = chromadb.Client()
+collection = client.create_collection(name="recipes")
+
+# Add documents with embeddings
+collection.add(
+    documents=["Spicy chicken curry with rice", "Vegetarian pasta salad"],
+    metadatas=[{"cuisine": "indian"}, {"cuisine": "italian"}],
+    ids=["recipe1", "recipe2"]
+)
+
+# Query for similar recipes
+results = collection.query(
+    query_texts=["hot chicken dish"],
+    n_results=2
+)
+
+print(results)  # Returns most similar recipes</code></pre>
+            </div>
+        </section>
+
+        <section id="llms">
+            <h2>Large Language Models (LLMs): Generative Powerhouses</h2>
+            <p><strong>Large Language Models (LLMs)</strong> are a type of neural network distinguished by their massive scale and the groundbreaking <strong>Transformer architecture</strong>.</p>
+
+            <h3>The Transformer Architecture: The Engine of Modern LLMs</h3>
+            <p>The Transformer, introduced in the 2017 paper "Attention Is All You Need," revolutionized how machines process language. Unlike older models that read text sequentially, the Transformer processes the entire input at once.</p>
+
+            <!-- Interactive Transformer Demo -->
+            <div class="diagram-container transformer-demo">
+                <h4>Interactive Transformer Attention</h4>
+                <p>Click on any word to see how the attention mechanism connects it to other words in the sentence.</p>
+            </div>
+
+            <div class="mermaid-diagram">
+                <pre class="mermaid">
+graph TD
+    A[Input Tokens] --> B[Positional Encoding]
+    B --> C[Multi-Head Attention]
+    C --> D[Add & Norm]
+    D --> E[Feed Forward]
+    E --> F[Add & Norm]
+    F --> G[Output Layer]
+    
+    C --> H[Query]
+    C --> I[Key] 
+    C --> J[Value]
+    
+    style C fill:#3b82f6,color:#fff
+    style H fill:#10b981,color:#fff
+    style I fill:#f59e0b,color:#fff
+    style J fill:#f43f5e,color:#fff
+</pre>
+            </div>
+
+            <p>The core innovation is the <strong>self-attention mechanism</strong>, which allows every word to look at all other words in the sequence:</p>
+            <ul>
+                <li><strong>Query:</strong> "Who am I in this context?"</li>
+                <li><strong>Key:</strong> "Here's what information I hold"</li>
+                <li><strong>Value:</strong> The actual meaning of each word</li>
+            </ul>
+        </section>
+
+        <section id="rag">
+            <h2>Retrieval Augmented Generation (RAG) Flow</h2>
+            <p>The true power emerges when these components are combined. <strong>Retrieval Augmented Generation (RAG)</strong> enhances LLMs by giving them access to external, up-to-date information.</p>
+
+            <!-- Interactive RAG Flow Demo -->
+            <div class="diagram-container rag-flow-demo">
+                <h4>Interactive RAG Process</h4>
+                <p>Click "Animate Flow" to see how RAG works step by step.</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language">Python</span>
+                    <button class="copy-button">Copy</button>
+                </div>
+                <pre><code class="language-python"># Example: Simple RAG implementation
+from langchain.vectorstores import Chroma
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.llms import OpenAI
+from langchain.chains import RetrievalQA
+
+# 1. Setup vector store with documents
+vectorstore = Chroma.from_texts(
+    texts=recipe_documents,
+    embedding=OpenAIEmbeddings(),
+    persist_directory="./recipe_db"
+)
+
+# 2. Create retrieval chain
+qa_chain = RetrievalQA.from_chain_type(
+    llm=OpenAI(),
+    chain_type="stuff",
+    retriever=vectorstore.as_retriever(search_kwargs={"k": 3})
+)
+
+# 3. Query with context
+response = qa_chain.run("What's a good spicy vegetarian dish?")
+print(response)  # Gets relevant docs + generates answer</code></pre>
+            </div>
+        </section>
+
+        <section id="agentic">
+            <h2>Agentic AI: Autonomous Problem Solvers</h2>
+            <p><strong>Agentic AI</strong> refers to autonomous systems capable of making decisions, planning, and performing tasks with minimal human intervention. They exhibit goal-driven behavior and adaptability.</p>
+
+            <h3>What Makes Agentic AI Distinct</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🤖 Autonomy</h4>
+                    <p>Can initiate and complete tasks independently</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🧠 Reasoning</h4>
+                    <p>Analyzes data and formulates multi-step plans</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔄 Adaptability</h4>
+                    <p>Learns from interactions and adjusts strategies</p>
+                </div>
+                <div class="feature-card">
+                    <h4>⚡ Action-Oriented</h4>
+                    <p>Interacts with external tools and APIs</p>
+                </div>
+            </div>
+
+            <h3>Chain-of-Thought Reasoning</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language">Prompt Example</span>
+                    <button class="copy-button">Copy</button>
+                </div>
+                <pre><code># Chain-of-Thought prompting example
+User: "Plan a dinner party for 8 people with dietary restrictions"
+
+AI Agent: "Let me think through this step by step:
+
+1. GATHER REQUIREMENTS:
+   - Number of guests: 8 people
+   - Need to identify dietary restrictions
+   - Should ask about cuisine preferences and budget
+
+2. PLAN MENU:
+   - Design dishes that accommodate restrictions
+   - Ensure variety and balance
+   - Calculate quantities needed
+
+3. LOGISTICS:
+   - Create shopping list with quantities
+   - Plan cooking timeline
+   - Set up table arrangements
+
+4. EXECUTION:
+   - Schedule prep work
+   - Coordinate cooking times
+   - Prepare contingency plans
+
+Let me start by asking: What dietary restrictions should I consider?"</code></pre>
+            </div>
+
+            <h3>MCP Servers and Tool Access</h3>
+            <p>The <strong>Model Context Protocol (MCP)</strong> is an emerging open standard that provides a universal adapter for AI agents to interface with external systems, databases, and APIs.</p>
+
+            <div class="mermaid-diagram">
+                <pre class="mermaid">
+graph LR
+    A[AI Agent] --> B[MCP Client]
+    B --> C[MCP Server]
+    C --> D[Database]
+    C --> E[API Service]
+    C --> F[File System]
+    C --> G[Web Service]
+    
+    style A fill:#3b82f6,color:#fff
+    style B fill:#10b981,color:#fff
+    style C fill:#f59e0b,color:#fff
+</pre>
+            </div>
+        </section>
+
+        <section class="conclusion">
+            <h2>Bringing It All Together</h2>
+            <p>In conclusion, <strong>embeddings</strong> serve as the numerical language for semantic meaning, <strong>vector databases</strong> provide the efficient infrastructure to store and query this language, and <strong>LLMs</strong>, powered by the Transformer architecture, leverage these representations to generate human-like text and perform complex language tasks.</p>
+            
+            <p>Together, they form a powerful ecosystem driving the next generation of AI applications, from simple chatbots to sophisticated autonomous agents capable of reasoning, planning, and taking action in the real world.</p>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 Modern AI Architectures. All rights reserved.</p>
+        <p>This document is designed as a foundational step towards a comprehensive book on AI. Your feedback is welcome!</p>
+        <p>Sunny Patel - patel.892@gmail.com</p>
+    </footer>
+
+    <!-- Prism.js for syntax highlighting - simplified approach -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <!-- Load JavaScript after Prism -->
+    <script>
+        // Initialize when all scripts are loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ensure Prism is ready before initializing
+            if (typeof Prism !== 'undefined') {
+                // Disable automatic highlighting to prevent conflicts
+                Prism.manual = true;
+            }
+            
+            // Initialize our app
+            setTimeout(() => {
+                new ModernAIArticle();
+            }, 50);
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

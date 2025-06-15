@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Dive: Vector Embeddings | Modern AI Architecture</title>
+    <meta name="description" content="A detailed exploration of vector embeddings, their mathematical foundations, and practical applications.">
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="layout-grid">
+    <header class="site-header">
+        <h1>Deep Dive: Vector Embeddings</h1>
+        <p>Mathematical Foundations and Practical Applications</p>
+    </header>
+
+    <nav class="site-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="index.html" style="text-decoration: none; color: inherit;">← AI Architecture Guide</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#mathematics">Mathematics</a></li>
+                <li><a href="#applications">Applications</a></li>
+                <li><a href="#implementation">Implementation</a></li>
+            </ul>
+            <button class="theme-toggle" aria-label="Toggle theme">🌙</button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="intro-section animate-fade-in">
+            <p>
+                Vector embeddings are the mathematical foundation that enables machines to understand and process human language, images, and other complex data types. This deep dive explores the mathematical principles, training processes, and real-world applications that make embeddings so powerful.
+            </p>
+
+            <div class="example-box">
+                <p><strong>Learning Objective</strong></p>
+                <p>By the end of this section, you'll understand how to create, manipulate, and utilize vector embeddings in your own AI applications.</p>
+            </div>
+        </section>
+
+        <section id="mathematics">
+            <h2>The Mathematics Behind Embeddings</h2>
+            
+            <h3>Vector Spaces and Dimensionality</h3>
+            <p>A vector space is a mathematical structure where vectors can be added together and multiplied by scalars. In the context of embeddings, each dimension represents a learned feature that captures some aspect of meaning.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language">Mathematical Notation</span>
+                    <button class="copy-button">Copy</button>
+                </div>
+                <pre><code># Vector representation in n-dimensional space
+v = [v₁, v₂, v₃, ..., vₙ]
+
+# Where each vᵢ is a real number representing
+# the strength of feature i in the embedding
+
+# Example: Word "king" in 4D space
+king = [0.2, 0.8, -0.1, 0.5]
+#       [male, royal, power, person]</code></pre>
+            </div>
+
+            <h3>Distance Metrics and Similarity</h3>
+            <p>The power of embeddings lies in their ability to capture semantic similarity through geometric relationships. Different distance metrics reveal different aspects of similarity:</p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Formula</th>
+                            <th>Use Case</th>
+                            <th>Range</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cosine Similarity</td>
+                            <td>cos(θ) = A·B / (|A||B|)</td>
+                            <td>Semantic similarity</td>
+                            <td>[-1, 1]</td>
+                        </tr>
+                        <tr>
+                            <td>Euclidean Distance</td>
+                            <td>√Σ(aᵢ - bᵢ)²</td>
+                            <td>Absolute distance</td>
+                            <td>[0, ∞)</td>
+                        </tr>
+                        <tr>
+                            <td>Dot Product</td>
+                            <td>A·B = Σ(aᵢ × bᵢ)</td>
+                            <td>Raw similarity</td>
+                            <td>(-∞, ∞)</td>
+                        </tr>
+                        <tr>
+                            <td>Manhattan Distance</td>
+                            <td>Σ|aᵢ - bᵢ|</td>
+                            <td>Sparse features</td>
+                            <td>[0, ∞)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language">Python</span>
+                    <button class="copy-button">Copy</button>
+                </div>
+                <pre><code class="language-python">import numpy as np
+from scipy.spatial.distance import cosine, euclidean
+
+# Example vectors for "cat" and "dog"
+cat = np.array([0.2, 0.8, 0.1, 0.9])    # [domestic, mammal, small, pet]
+dog = np.array([0.3, 0.9, 0.4, 0.95])   # [domestic, mammal, medium, pet]
+fish = np.array([0.1, 0.3, 0.1, 0.6])   # [domestic, animal, small, pet]
+
+# Calculate different similarity metrics
+def calculate_similarities(vec1, vec2, name1, name2):
+    # Cosine similarity (higher = more similar)
+    cos_sim = 1 - cosine(vec1, vec2)
+    
+    # Euclidean distance (lower = more similar)
+    eucl_dist = euclidean(vec1, vec2)
+    
+    # Dot product
+    dot_prod = np.dot(vec1, vec2)
+    
+    print(f"{name1} vs {name2}:")
+    print(f"  Cosine Similarity: {cos_sim:.4f}")
+    print(f"  Euclidean Distance: {eucl_dist:.4f}")
+    print(f"  Dot Product: {dot_prod:.4f}")
+    print()
+
+# Compare similarities
+calculate_similarities(cat, dog, "Cat", "Dog")
+calculate_similarities(cat, fish, "Cat", "Fish")
+calculate_similarities(dog, fish, "Dog", "Fish")</code></pre>
+            </div>
+        </section>
+
+        <section id="applications">
+            <h2>Real-World Applications</h2>
+            
+            <h3>Semantic Search</h3>
+            <p>Transform traditional keyword search into intelligent semantic understanding:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language">Python</span>
+                    <button class="copy-button">Copy</button>
+                </div>
+                <pre><code class="language-python"># Semantic search implementation
+from sentence_transformers import SentenceTransformer
+import faiss
+import numpy as np
+
+class SemanticSearch:
+    def __init__(self, model_name='all-MiniLM-L6-v2'):
+        self.model = SentenceTransformer(model_name)
+        self.documents = []
+        self.embeddings = None
+        self.index = None
+    
+    def add_documents(self, documents):
+        """Add documents to the search index"""
+        self.documents.extend(documents)
+        
+        # Generate embeddings
+        new_embeddings = self.model.encode(documents)
+        
+        if self.embeddings is None:
+            self.embeddings = new_embeddings
+        else:
+            self.embeddings = np.vstack([self.embeddings, new_embeddings])
+        
+        # Build FAISS index for fast similarity search
+        self.index = faiss.IndexFlatIP(self.embeddings.shape[1])
+        # Normalize for cosine similarity
+        faiss.normalize_L2(self.embeddings)
+        self.index.add(self.embeddings)
+    
+    def search(self, query, top_k=5):
+        """Search for similar documents"""
+        if self.index is None:
+            return []
+        
+        # Embed the query
+        query_embedding = self.model.encode([query])
+        faiss.normalize_L2(query_embedding)
+        
+        # Search
+        scores, indices = self.index.search(query_embedding, top_k)
+        
+        results = []
+        for score, idx in zip(scores[0], indices[0]):
+            if idx < len(self.documents):
+                results.append({
+                    'document': self.documents[idx],
+                    'score': float(score),
+                    'index': int(idx)
+                })
+        
+        return results
+
+# Example usage
+search_engine = SemanticSearch()
+
+# Add recipe documents
+recipes = [
+    "Spicy chicken curry with coconut milk and rice",
+    "Vegetarian pasta with tomato sauce and basil",
+    "Grilled salmon with lemon and herbs",
+    "Chocolate chip cookies with vanilla extract",
+    "Thai green curry with vegetables and tofu"
+]
+
+search_engine.add_documents(recipes)
+
+# Search with natural language
+results = search_engine.search("I want something spicy and Asian-inspired")
+
+for i, result in enumerate(results, 1):
+    print(f"{i}. {result['document']} (Score: {result['score']:.4f})")</code></pre>
+            </div>
+
+            <h3>Recommendation Systems</h3>
+            <p>Use embeddings to build sophisticated recommendation engines:</p>
+
+            <div class="mermaid-diagram">
+                <pre class="mermaid">
+graph TD
+    A[User Preferences] --> B[User Embedding]
+    C[Item Features] --> D[Item Embeddings]
+    B --> E[Similarity Calculation]
+    D --> E
+    E --> F[Ranked Recommendations]
+    
+    G[User Behavior] --> H[Implicit Feedback]
+    H --> B
+    
+    style E fill:#3b82f6,color:#fff
+    style F fill:#10b981,color:#fff
+</pre>
+            </div>
+
+            <h3>Anomaly Detection</h3>
+            <p>Identify outliers and unusual patterns using embedding-based clustering:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language">Python</span>
+                    <button class="copy-button">Copy</button>
+                </div>
+                <pre><code class="language-python"># Anomaly detection using embeddings
+from sklearn.cluster import DBSCAN
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+
+class EmbeddingAnomalyDetector:
+    def __init__(self, eps=0.5, min_samples=5):
+        self.eps = eps
+        self.min_samples = min_samples
+        self.scaler = StandardScaler()
+        self.clusterer = None
+        
+    def fit(self, embeddings):
+        """Train the anomaly detector"""
+        # Normalize embeddings
+        scaled_embeddings = self.scaler.fit_transform(embeddings)
+        
+        # Perform clustering
+        self.clusterer = DBSCAN(eps=self.eps, min_samples=self.min_samples)
+        labels = self.clusterer.fit_predict(scaled_embeddings)
+        
+        return labels
+    
+    def predict_anomalies(self, embeddings):
+        """Detect anomalies in new data"""
+        if self.clusterer is None:
+            raise ValueError("Model must be fitted first")
+        
+        scaled_embeddings = self.scaler.transform(embeddings)
+        labels = self.clusterer.fit_predict(scaled_embeddings)
+        
+        # Points labeled as -1 are anomalies
+        anomalies = labels == -1
+        return anomalies, labels
+
+# Example: Detect unusual text documents
+documents = [
+    "Normal business email about meeting",
+    "Regular project update report",
+    "Standard customer service response",
+    "!!!URGENT!!! CLICK HERE FOR MONEY $$$$",  # Anomaly
+    "Weekly team standup notes",
+    "Technical documentation for API",
+    "BUY CRYPTO NOW!!! LIMITED TIME!!!",       # Anomaly
+    "Monthly sales report summary"
+]
+
+# Generate embeddings (assuming we have a model)
+# embeddings = model.encode(documents)
+# detector = EmbeddingAnomalyDetector()
+# labels = detector.fit(embeddings)
+# anomalies, _ = detector.predict_anomalies(embeddings)
+
+print("Potential anomalies detected:")
+# for i, is_anomaly in enumerate(anomalies):
+#     if is_anomaly:
+#         print(f"Document {i}: {documents[i]}")</code></pre>
+            </div>
+        </section>
+
+        <section id="implementation">
+            <h2>Building Your Own Embeddings</h2>
+            
+            <h3>Training Custom Embeddings</h3>
+            <p>Sometimes pre-trained embeddings aren't enough. Here's how to train domain-specific embeddings:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language">Python</span>
+                    <button class="copy-button">Copy</button>
+                </div>
+                <pre><code class="language-python"># Custom embedding training with Word2Vec
+from gensim.models import Word2Vec
+from gensim.utils import simple_preprocess
+import re
+
+class CustomEmbeddingTrainer:
+    def __init__(self, vector_size=100, window=5, min_count=1, epochs=10):
+        self.vector_size = vector_size
+        self.window = window
+        self.min_count = min_count
+        self.epochs = epochs
+        self.model = None
+    
+    def preprocess_text(self, text):
+        """Clean and tokenize text"""
+        # Remove special characters and convert to lowercase
+        text = re.sub(r'[^a-zA-Z\s]', '', text.lower())
+        # Tokenize
+        return simple_preprocess(text)
+    
+    def train(self, documents):
+        """Train Word2Vec model on documents"""
+        # Preprocess all documents
+        sentences = [self.preprocess_text(doc) for doc in documents]
+        
+        # Train Word2Vec model
+        self.model = Word2Vec(
+            sentences=sentences,
+            vector_size=self.vector_size,
+            window=self.window,
+            min_count=self.min_count,
+            epochs=self.epochs,
+            sg=1  # Skip-gram algorithm
+        )
+        
+        return self.model
+    
+    def get_embedding(self, word):
+        """Get embedding for a specific word"""
+        if self.model and word in self.model.wv:
+            return self.model.wv[word]
+        return None
+    
+    def find_similar(self, word, top_n=10):
+        """Find words similar to the given word"""
+        if self.model and word in self.model.wv:
+            return self.model.wv.most_similar(word, topn=top_n)
+        return []
+    
+    def save_model(self, path):
+        """Save the trained model"""
+        if self.model:
+            self.model.save(path)
+    
+    def load_model(self, path):
+        """Load a pre-trained model"""
+        self.model = Word2Vec.load(path)
+
+# Example: Train on recipe corpus
+recipe_corpus = [
+    "Mix flour water and eggs to make pasta dough",
+    "Sauté onions garlic in olive oil until fragrant",
+    "Season chicken with salt pepper and herbs",
+    "Boil pasta in salted water until al dente",
+    "Simmer tomatoes with basil for rich sauce",
+    "Grill vegetables over medium high heat",
+    "Whisk eggs cream for custard base",
+    "Knead bread dough until smooth and elastic"
+]
+
+# Train custom embeddings
+trainer = CustomEmbeddingTrainer(vector_size=50, epochs=100)
+model = trainer.train(recipe_corpus)
+
+# Explore learned relationships
+print("Words similar to 'pasta':")
+similar_words = trainer.find_similar('pasta', top_n=5)
+for word, similarity in similar_words:
+    print(f"  {word}: {similarity:.4f}")
+
+print("\nWords similar to 'cook':")
+similar_words = trainer.find_similar('cook', top_n=5)
+for word, similarity in similar_words:
+    print(f"  {word}: {similarity:.4f}")</code></pre>
+            </div>
+
+            <h3>Fine-tuning Pre-trained Models</h3>
+            <p>Adapt existing models to your specific domain:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language">Python</span>
+                    <button class="copy-button">Copy</button>
+                </div>
+                <pre><code class="language-python"># Fine-tuning sentence transformers for domain-specific tasks
+from sentence_transformers import SentenceTransformer, InputExample, losses
+from torch.utils.data import DataLoader
+
+class DomainFineTuner:
+    def __init__(self, base_model='all-MiniLM-L6-v2'):
+        self.model = SentenceTransformer(base_model)
+    
+    def create_training_data(self, similar_pairs, dissimilar_pairs):
+        """Create training examples from pairs"""
+        examples = []
+        
+        # Add similar pairs with high score
+        for text1, text2 in similar_pairs:
+            examples.append(InputExample(texts=[text1, text2], label=1.0))
+        
+        # Add dissimilar pairs with low score
+        for text1, text2 in dissimilar_pairs:
+            examples.append(InputExample(texts=[text1, text2], label=0.0))
+        
+        return examples
+    
+    def fine_tune(self, training_examples, epochs=1, batch_size=16):
+        """Fine-tune the model"""
+        # Create DataLoader
+        train_dataloader = DataLoader(
+            training_examples, 
+            shuffle=True, 
+            batch_size=batch_size
+        )
+        
+        # Define loss function
+        train_loss = losses.CosineSimilarityLoss(self.model)
+        
+        # Fine-tune
+        self.model.fit(
+            train_objectives=[(train_dataloader, train_loss)],
+            epochs=epochs,
+            warmup_steps=100
+        )
+    
+    def save_model(self, path):
+        """Save the fine-tuned model"""
+        self.model.save(path)
+
+# Example: Fine-tune for recipe similarity
+similar_recipe_pairs = [
+    ("Chocolate chip cookies", "Oatmeal raisin cookies"),
+    ("Chicken curry", "Beef curry"),
+    ("Tomato pasta", "Marinara spaghetti"),
+    ("Caesar salad", "Greek salad")
+]
+
+dissimilar_recipe_pairs = [
+    ("Chocolate cake", "Chicken soup"),
+    ("Ice cream", "Stir fry"),
+    ("Pizza", "Smoothie"),
+    ("Bread", "Salad")
+]
+
+# Fine-tune the model
+tuner = DomainFineTuner()
+training_data = tuner.create_training_data(
+    similar_recipe_pairs, 
+    dissimilar_recipe_pairs
+)
+tuner.fine_tune(training_data, epochs=3)
+
+# Save the fine-tuned model
+tuner.save_model("./recipe-embeddings-model")</code></pre>
+            </div>
+        </section>
+
+        <section class="conclusion">
+            <h2>Key Takeaways</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🧮 Mathematics</h4>
+                    <p>Embeddings use vector mathematics to capture semantic relationships in high-dimensional space</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📏 Distance Metrics</h4>
+                    <p>Different similarity measures reveal different aspects of semantic relationships</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔍 Applications</h4>
+                    <p>From search to recommendations to anomaly detection - embeddings power modern AI</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🛠️ Implementation</h4>
+                    <p>Both pre-trained and custom embeddings can be tailored to specific domains and use cases</p>
+                </div>
+            </div>
+            
+            <p>Understanding embeddings is crucial for building effective AI systems. They provide the mathematical foundation that enables machines to work with human concepts and meaning, bridging the gap between discrete symbols and continuous semantic understanding.</p>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 Modern AI Architectures. All rights reserved.</p>
+        <p><a href="index.html" style="color: var(--accent-blue);">← Back to Main Article</a></p>
+    </footer>
+
+    <!-- Load JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
