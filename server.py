@@ -49,7 +49,7 @@ def signal_handler(signum, frame, httpd=None):
         httpd.shutdown()
         httpd.server_close()
     print("👋 Server stopped cleanly")
-    sys.exit(0)
+    os._exit(0)  # Force exit to ensure process terminates
 
 def main():
     requested_port = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
@@ -86,10 +86,13 @@ def main():
             try:
                 httpd.serve_forever()
             except KeyboardInterrupt:
-                print("\n🛑 Shutting down server...")
+                print("\n🛑 Keyboard interrupt received, shutting down...")
+            finally:
+                print("🧹 Cleaning up server resources...")
                 httpd.shutdown()
                 httpd.server_close()
                 print("👋 Server stopped cleanly")
+                os._exit(0)  # Ensure clean exit
                 
     except OSError as e:
         if "Address already in use" in str(e):

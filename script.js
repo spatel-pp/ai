@@ -509,26 +509,102 @@ class ModernAIArticle {
     });
   }
 
-  // Navigation highlight
+  // Enhanced navigation with scroll-based highlighting
   setupNavigationHighlight() {
-    const sections = document.querySelectorAll('h2[id]');
-    const navLinks = document.querySelectorAll('.nav-links a');
+    const tocLinks = document.querySelectorAll('.toc-link[data-section]');
+    const sections = document.querySelectorAll('section[id]');
+    const tocToggle = document.querySelector('.toc-toggle');
+    const toc = document.querySelector('.table-of-contents');
     
+    if (!tocLinks.length || !sections.length) return;
+
+    // TOC toggle functionality
+    let tocCollapsed = false;
+    if (tocToggle && toc) {
+      tocToggle.addEventListener('click', () => {
+        tocCollapsed = !tocCollapsed;
+        toc.classList.toggle('collapsed', tocCollapsed);
+        tocToggle.textContent = tocCollapsed ? '☰' : '≡';
+      });
+
+      // Auto-show on larger screens
+      const checkScreenSize = () => {
+        if (window.innerWidth >= 1200) {
+          toc.classList.add('visible');
+        } else {
+          toc.classList.remove('visible');
+        }
+      };
+      
+      checkScreenSize();
+      window.addEventListener('resize', checkScreenSize);
+
+      // Mobile toggle
+      if (window.innerWidth <= 1200) {
+        toc.addEventListener('click', (e) => {
+          if (e.target === toc || e.target.closest('.toc-header')) {
+            toc.classList.toggle('visible');
+          }
+        });
+      }
+    }
+
+    // Scroll tracking with improved logic
+    const observerOptions = {
+      rootMargin: '-20% 0px -60% 0px',
+      threshold: [0, 0.25, 0.5, 0.75, 1]
+    };
+
     const observer = new IntersectionObserver((entries) => {
+      let activeSection = null;
+      let maxRatio = 0;
+
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${id}`) {
-              link.classList.add('active');
-            }
-          });
+        if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+          maxRatio = entry.intersectionRatio;
+          activeSection = entry.target.id;
         }
       });
-    }, { threshold: 0.7 });
-    
-    sections.forEach(section => observer.observe(section));
+
+      if (activeSection) {
+        // Update TOC highlighting
+        tocLinks.forEach(link => {
+          const isActive = link.dataset.section === activeSection;
+          link.classList.toggle('active', isActive);
+        });
+
+        // Update main nav highlighting
+        const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+        navLinks.forEach(link => {
+          const href = link.getAttribute('href').substring(1);
+          link.classList.toggle('active', href === activeSection);
+        });
+      }
+    }, observerOptions);
+
+    // Observe all sections
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+
+    // Smooth scroll for TOC links
+    tocLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const sectionId = link.dataset.section;
+        const section = document.getElementById(sectionId);
+        
+        if (section) {
+          section.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+          });
+          
+          // Update URL without jumping
+          history.pushState(null, null, `#${sectionId}`);
+        }
+      });
+    });
   }
 
   // Mermaid diagrams setup
