@@ -740,6 +740,12 @@ class ModernAIArticle {
         <p class="demo-instructions">Click any word to see its attention patterns, or switch between attention heads to explore different types of connections.</p>
       </div>
       
+      <div class="attention-explanation">
+        <div class="explanation-text">
+          <strong>Click a word below to see its attention pattern...</strong>
+        </div>
+      </div>
+      
       <div class="attention-controls">
         <div class="attention-heads">
           <button class="head-btn active" data-head="0">Semantic Head</button>
@@ -767,13 +773,6 @@ class ModernAIArticle {
             `).join('')}
           </div>
         `).join('')}
-      </div>
-      
-      <div class="attention-explanation">
-        <div class="explanation-text">
-          <strong>How it works:</strong> Each word creates a "query" and looks at all other words' "keys" to determine relevance. 
-          The brighter the cell, the stronger the attention connection.
-        </div>
       </div>
     `;
 
@@ -804,6 +803,7 @@ class ModernAIArticle {
         this.updateAttentionMatrix(attentionCells, currentHead);
         if (selectedToken !== null) {
           this.highlightAttentions(selectedToken, currentHead, attentionCells, tokens);
+          this.showAttentionExplanation(selectedToken, currentHead, tokens, diagram);
         }
       });
     });
