@@ -85,12 +85,30 @@
             <p>At its core, an <strong>embedding</strong> is a dense numerical representation (a <strong>vector</strong>) of an object—be it a word, a sentence, or an entire recipe—in a high-dimensional space. Unlike simple text, these vectors are designed to capture semantic meaning and relationships.</p>
 
             <h3>Understanding Dimensional Space and N-Dimensional Vectors</h3>
-            <p>To grasp embeddings, it's helpful to visualize "dimensional space." A vector is simply a list of numbers that defines a point's coordinates within that space. For example, <code>(3, 7)</code> is a 2D vector.</p>
+            <p>To grasp embeddings, it's helpful to visualize "dimensional space." A vector is simply a list of numbers that defines a point's coordinates within that space. Let's explore how this works across different dimensions:</p>
             
-            <!-- Interactive Vector Space Demo -->
-            <div class="diagram-container vector-space-demo">
-                <h4>Interactive Vector Space Visualization</h4>
-                <p>Hover over points to see relationships. Each color represents a different category of data.</p>
+            <!-- Multi-Dimensional Vector Space Demos -->
+            <div class="vector-space-demonstrations">
+                <h4>Interactive Vector Space Visualizations</h4>
+                <p>Explore how semantic relationships are captured across different dimensional spaces. Hover over points to see relationships and categories.</p>
+                
+                <!-- 1D Vector Space -->
+                <div class="diagram-container vector-space-1d">
+                    <h5>1D Vector Space: Simple Ordering</h5>
+                    <p>In 1D, we can only capture simple ordering relationships (e.g., temperature: cold → warm → hot)</p>
+                </div>
+                
+                <!-- 2D Vector Space -->
+                <div class="diagram-container vector-space-2d">
+                    <h5>2D Vector Space: Two-Attribute Relationships</h5>
+                    <p>In 2D, we can capture two semantic dimensions simultaneously (e.g., formality vs. emotion)</p>
+                </div>
+                
+                <!-- 3D Vector Space -->
+                <div class="diagram-container vector-space-3d">
+                    <h5>3D Vector Space: Complex Multi-Dimensional Relationships</h5>
+                    <p>In 3D, we can represent complex relationships with three dimensions. Use mouse to rotate the space!</p>
+                </div>
             </div>
 
             <div class="code-block">
@@ -98,30 +116,43 @@
                     <span class="code-language">Python</span>
                     <button class="copy-button">Copy</button>
                 </div>
-                <pre><code class="language-python"># Example: Word embeddings in action
+                <pre><code class="language-python"># Example: Multi-dimensional word embeddings
 import numpy as np
 
-# Simple 3D word embeddings
-word_embeddings = {
-    "king": [0.2, 0.8, 0.1],
-    "queen": [0.3, 0.9, 0.2], 
-    "man": [0.1, 0.3, 0.8],
-    "woman": [0.2, 0.4, 0.9]
+# 1D embeddings: Only one feature (temperature)
+temp_1d = {
+    "cold": [0.1],
+    "warm": [0.6], 
+    "hot": [0.9]
 }
+
+# 2D embeddings: Two features (formality, emotion)
+words_2d = {
+    "hello": [0.3, 0.7],    # casual, positive
+    "greetings": [0.8, 0.5], # formal, neutral
+    "hey": [0.1, 0.9]       # very casual, very positive
+}
+
+# 3D embeddings: Three features (size, formality, emotion)
+words_3d = {
+    "tiny": [0.1, 0.3, 0.5],     # small, casual, neutral
+    "minuscule": [0.1, 0.9, 0.5], # small, formal, neutral
+    "huge": [0.9, 0.3, 0.7]      # large, casual, positive
+}
+
+# Real embeddings often have 100-1536 dimensions!
+# This captures incredibly nuanced semantic relationships
 
 # Calculate similarity using cosine distance
 def cosine_similarity(vec1, vec2):
     return np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
 
 # Find semantic relationships
-similarity = cosine_similarity(
-    word_embeddings["king"], 
-    word_embeddings["queen"]
-)
-print(f"King-Queen similarity: {similarity:.3f}")  # High similarity!</code></pre>
+similarity = cosine_similarity(words_2d["hello"], words_2d["hey"])
+print(f"Hello-Hey similarity: {similarity:.3f}")  # High - both casual!</code></pre>
             </div>
 
-            <p>An <strong>n-dimensional vector</strong> extends this concept to 'n' numbers. While we can't visualize this, the magic lies in proximity: objects with similar meanings will have vectors that are numerically "close" to each other in this high-dimensional space.</p>
+            <p>As dimensions increase from 1D to 2D to 3D and beyond, embeddings can capture increasingly complex semantic relationships. Modern language models use embeddings with hundreds or even thousands of dimensions, allowing them to understand incredibly nuanced meanings and relationships between concepts.</p>
         </section>
 
         <section id="vector-databases">

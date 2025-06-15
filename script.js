@@ -95,229 +95,412 @@ class ModernAIArticle {
 
   // Interactive diagram features
   setupDiagramInteractions() {
-    this.setupVectorSpaceDiagram();
+    this.setupVectorSpace1D();
+    this.setupVectorSpace2D();
+    this.setupVectorSpace3D();
     this.setupTransformerDiagram();
     this.setupRAGFlowDiagram();
   }
 
-  setupVectorSpaceDiagram() {
-    const container = document.querySelector('.vector-space-demo');
+  // 1D Vector Space: Simple linear relationships
+  setupVectorSpace1D() {
+    const container = document.querySelector('.vector-space-1d');
     if (!container) return;
 
-    // Create interactive vector space visualization
     const canvas = document.createElement('canvas');
-    canvas.width = 400;
-    canvas.height = 400;
-    canvas.style.border = '1px solid var(--border-color)';
-    canvas.style.borderRadius = 'var(--radius)';
-    canvas.style.cursor = 'crosshair';
-    
+    canvas.width = 800;
+    canvas.height = 120;
     const ctx = canvas.getContext('2d');
     
-    // Animation state
-    let points = [];
-    let hoveredPoint = null;
-    
-    // Category labels and colors
-    const categories = [
-      { name: 'Animals', color: '#3b82f6', examples: ['cat', 'dog', 'bird', 'fish'] },
-      { name: 'Food', color: '#10b981', examples: ['apple', 'bread', 'pizza', 'cake'] },
-      { name: 'Objects', color: '#f59e0b', examples: ['chair', 'book', 'phone', 'car'] }
+    // 1D data: temperature concepts
+    const concepts1D = [
+      { name: 'Freezing', value: 0.1, color: '#3b82f6' },
+      { name: 'Cold', value: 0.25, color: '#1d4ed8' },
+      { name: 'Cool', value: 0.4, color: '#06b6d4' },
+      { name: 'Warm', value: 0.6, color: '#10b981' },
+      { name: 'Hot', value: 0.75, color: '#f59e0b' },
+      { name: 'Scorching', value: 0.9, color: '#ef4444' }
     ];
     
-    // Generate semantic points
-    const generatePoints = () => {
-      points = [];
-      categories.forEach((category, categoryIndex) => {
-        category.examples.forEach((example, i) => {
-          // Cluster points by category with some natural spread
-          const baseX = 80 + categoryIndex * 120;
-          const baseY = 100 + categoryIndex * 80;
-          points.push({
-            x: baseX + (Math.random() - 0.5) * 80,
-            y: baseY + (Math.random() - 0.5) * 80,
-            category: categoryIndex,
-            label: example,
-            highlight: false
-          });
-        });
+    let hoveredConcept = null;
+    
+    const draw1D = () => {
+      ctx.clearRect(0, 0, 800, 120);
+      
+      // Draw temperature gradient background
+      const gradient = ctx.createLinearGradient(50, 0, 750, 0);
+      gradient.addColorStop(0, '#3b82f6');
+      gradient.addColorStop(0.5, '#10b981');
+      gradient.addColorStop(1, '#f59e0b');
+      
+      ctx.fillStyle = gradient;
+      ctx.fillRect(50, 40, 700, 40);
+      
+      // Draw scale
+      ctx.fillStyle = '#666';
+      ctx.font = '12px system-ui';
+      ctx.textAlign = 'center';
+      ctx.fillText('Cold', 50, 100);
+      ctx.fillText('Hot', 750, 100);
+      
+      // Draw concept points
+      concepts1D.forEach(concept => {
+        const x = 50 + concept.value * 700;
+        const y = 60;
+        
+        // Draw point
+        ctx.fillStyle = concept.color;
+        ctx.beginPath();
+        ctx.arc(x, y, hoveredConcept === concept ? 8 : 5, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        if (hoveredConcept === concept) {
+          // Draw label
+          ctx.fillStyle = '#000';
+          ctx.font = 'bold 14px system-ui';
+          ctx.fillText(concept.name, x, y - 15);
+          ctx.fillText(`Vector: [${concept.value.toFixed(2)}]`, x, y + 25);
+        }
       });
     };
     
-    const drawVisualization = () => {
-      ctx.clearRect(0, 0, 400, 400);
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
+      
+      hoveredConcept = null;
+      concepts1D.forEach(concept => {
+        const x = 50 + concept.value * 700;
+        const distance = Math.abs(mouseX - x);
+        if (distance < 20) {
+          hoveredConcept = concept;
+        }
+      });
+      
+      draw1D();
+    });
+    
+    canvas.addEventListener('mouseleave', () => {
+      hoveredConcept = null;
+      draw1D();
+    });
+    
+    draw1D();
+    container.appendChild(canvas);
+  }
+
+  // 2D Vector Space: Enhanced version of the original
+  setupVectorSpace2D() {
+    const container = document.querySelector('.vector-space-2d');
+    if (!container) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 600;
+    canvas.height = 400;
+    const ctx = canvas.getContext('2d');
+    
+    // 2D data: words with formality (x) and emotion (y) dimensions
+    const concepts2D = [
+      { name: 'Hello', x: 0.3, y: 0.7, category: 'greeting', color: '#3b82f6' },
+      { name: 'Greetings', x: 0.8, y: 0.5, category: 'greeting', color: '#3b82f6' },
+      { name: 'Hey', x: 0.1, y: 0.9, category: 'greeting', color: '#3b82f6' },
+      { name: 'Love', x: 0.4, y: 0.9, category: 'emotion', color: '#10b981' },
+      { name: 'Adore', x: 0.7, y: 0.8, category: 'emotion', color: '#10b981' },
+      { name: 'Hate', x: 0.4, y: 0.1, category: 'emotion', color: '#10b981' },
+      { name: 'Cat', x: 0.5, y: 0.6, category: 'animal', color: '#f59e0b' },
+      { name: 'Feline', x: 0.9, y: 0.6, category: 'animal', color: '#f59e0b' },
+      { name: 'Kitty', x: 0.2, y: 0.8, category: 'animal', color: '#f59e0b' }
+    ];
+    
+    let hoveredConcept = null;
+    
+    const draw2D = () => {
+      ctx.clearRect(0, 0, 600, 400);
       
       // Draw grid
       ctx.strokeStyle = '#e2e8f0';
-      ctx.lineWidth = 0.5;
-      for (let i = 0; i <= 400; i += 40) {
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 10; i++) {
+        const x = i * 50 + 50;
+        const y = i * 30 + 50;
         ctx.beginPath();
-        ctx.moveTo(i, 0);
-        ctx.lineTo(i, 400);
-        ctx.moveTo(0, i);
-        ctx.lineTo(400, i);
+        ctx.moveTo(x, 50);
+        ctx.lineTo(x, 350);
+        ctx.moveTo(50, y);
+        ctx.lineTo(550, y);
         ctx.stroke();
       }
       
-      // Draw category regions (subtle background)
-      categories.forEach((category, index) => {
-        ctx.fillStyle = category.color + '10'; // Very transparent
-        ctx.fillRect(20 + index * 120, 20 + index * 80, 100, 100);
-      });
+      // Draw axes labels
+      ctx.fillStyle = '#666';
+      ctx.font = '14px system-ui';
+      ctx.textAlign = 'center';
+      ctx.fillText('Formality →', 300, 380);
+      ctx.save();
+      ctx.translate(20, 200);
+      ctx.rotate(-Math.PI/2);
+      ctx.fillText('Emotion →', 0, 0);
+      ctx.restore();
       
       // Draw points
-      points.forEach(point => {
-        const category = categories[point.category];
-        ctx.fillStyle = category.color;
+      concepts2D.forEach(concept => {
+        const x = 50 + concept.x * 500;
+        const y = 350 - concept.y * 300;
         
-        // Draw point
+        ctx.fillStyle = concept.color;
         ctx.beginPath();
-        ctx.arc(point.x, point.y, point.highlight ? 8 : 5, 0, 2 * Math.PI);
+        ctx.arc(x, y, hoveredConcept === concept ? 8 : 5, 0, 2 * Math.PI);
         ctx.fill();
         
-        if (point.highlight) {
-          // Highlight outline
-          ctx.strokeStyle = '#ffffff';
-          ctx.lineWidth = 2;
-          ctx.stroke();
-          
-          // Draw label
-          ctx.fillStyle = '#000000';
-          ctx.font = 'bold 12px system-ui';
-          ctx.textAlign = 'center';
-          ctx.fillText(point.label, point.x, point.y - 15);
-          
-          // Draw similarity connections to same category
-          points.forEach(otherPoint => {
-            if (otherPoint !== point && otherPoint.category === point.category) {
-              ctx.strokeStyle = category.color + '40';
-              ctx.lineWidth = 1;
+        if (hoveredConcept === concept) {
+          // Draw connections to same category
+          concepts2D.forEach(other => {
+            if (other !== concept && other.category === concept.category) {
+              const otherX = 50 + other.x * 500;
+              const otherY = 350 - other.y * 300;
+              ctx.strokeStyle = concept.color + '40';
+              ctx.lineWidth = 2;
               ctx.beginPath();
-              ctx.moveTo(point.x, point.y);
-              ctx.lineTo(otherPoint.x, otherPoint.y);
+              ctx.moveTo(x, y);
+              ctx.lineTo(otherX, otherY);
               ctx.stroke();
             }
           });
+          
+          // Draw label
+          ctx.fillStyle = '#000';
+          ctx.font = 'bold 14px system-ui';
+          ctx.textAlign = 'center';
+          ctx.fillText(concept.name, x, y - 15);
+          ctx.fillText(`[${concept.x.toFixed(2)}, ${concept.y.toFixed(2)}]`, x, y + 25);
         }
       });
       
       // Draw legend
-      ctx.fillStyle = '#000000';
-      ctx.font = '12px system-ui';
-      ctx.textAlign = 'left';
-      categories.forEach((category, index) => {
-        const y = 20 + index * 20;
-        ctx.fillStyle = category.color;
-        ctx.fillRect(10, y - 8, 12, 12);
-        ctx.fillStyle = '#000000';
-        ctx.fillText(category.name, 30, y);
+      const categories = ['greeting', 'emotion', 'animal'];
+      const colors = ['#3b82f6', '#10b981', '#f59e0b'];
+      categories.forEach((cat, i) => {
+        ctx.fillStyle = colors[i];
+        ctx.fillRect(450, 60 + i * 25, 15, 15);
+        ctx.fillStyle = '#000';
+        ctx.font = '12px system-ui';
+        ctx.textAlign = 'left';
+        ctx.fillText(cat, 470, 72 + i * 25);
       });
     };
     
-    // Create tooltip element
-    const tooltip = document.createElement('div');
-    tooltip.className = 'vector-tooltip';
-    tooltip.style.cssText = `
-      position: absolute;
-      background: rgba(0, 0, 0, 0.8);
-      color: white;
-      padding: 8px 12px;
-      border-radius: 4px;
-      font-size: 12px;
-      pointer-events: none;
-      display: none;
-      z-index: 1000;
-      max-width: 200px;
-    `;
-    container.appendChild(tooltip);
-    
-    // Mouse interaction
     canvas.addEventListener('mousemove', (e) => {
       const rect = canvas.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
+      const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
+      const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
       
-      hoveredPoint = null;
-      points.forEach(point => {
-        const distance = Math.sqrt((point.x - mouseX) ** 2 + (point.y - mouseY) ** 2);
-        point.highlight = distance < 20;
-        if (point.highlight) {
-          hoveredPoint = point;
+      hoveredConcept = null;
+      concepts2D.forEach(concept => {
+        const x = 50 + concept.x * 500;
+        const y = 350 - concept.y * 300;
+        const distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
+        if (distance < 20) {
+          hoveredConcept = concept;
         }
       });
       
-      // Show tooltip
-      if (hoveredPoint) {
-        const category = categories[hoveredPoint.category];
-        tooltip.innerHTML = `
-          <strong>${hoveredPoint.label}</strong><br>
-          Category: ${category.name}<br>
-          <small>Similar items cluster together in vector space</small>
-        `;
-        tooltip.style.display = 'block';
-        tooltip.style.left = (e.clientX + 10) + 'px';
-        tooltip.style.top = (e.clientY - 10) + 'px';
-      } else {
-        tooltip.style.display = 'none';
-      }
-      
-      drawVisualization();
+      draw2D();
     });
     
     canvas.addEventListener('mouseleave', () => {
-      tooltip.style.display = 'none';
-      points.forEach(point => point.highlight = false);
-      drawVisualization();
+      hoveredConcept = null;
+      draw2D();
     });
     
-    generatePoints();
-    drawVisualization();
-    
+    draw2D();
     container.appendChild(canvas);
+  }
+
+  // 3D Vector Space: Interactive 3D visualization
+  setupVectorSpace3D() {
+    const container = document.querySelector('.vector-space-3d');
+    if (!container) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 600;
+    canvas.height = 500;
+    const ctx = canvas.getContext('2d');
+    
+    // 3D data: words with size, formality, and emotion dimensions
+    const concepts3D = [
+      { name: 'Tiny', x: 0.1, y: 0.3, z: 0.5, category: 'size', color: '#3b82f6' },
+      { name: 'Small', x: 0.3, y: 0.4, z: 0.5, category: 'size', color: '#3b82f6' },
+      { name: 'Large', x: 0.7, y: 0.6, z: 0.5, category: 'size', color: '#3b82f6' },
+      { name: 'Huge', x: 0.9, y: 0.7, z: 0.5, category: 'size', color: '#3b82f6' },
+      { name: 'Happy', x: 0.5, y: 0.3, z: 0.9, category: 'emotion', color: '#10b981' },
+      { name: 'Joyful', x: 0.5, y: 0.8, z: 0.9, category: 'emotion', color: '#10b981' },
+      { name: 'Sad', x: 0.5, y: 0.3, z: 0.1, category: 'emotion', color: '#10b981' },
+      { name: 'Melancholy', x: 0.5, y: 0.8, z: 0.1, category: 'emotion', color: '#10b981' },
+      { name: 'Quick', x: 0.8, y: 0.2, z: 0.7, category: 'speed', color: '#f59e0b' },
+      { name: 'Rapid', x: 0.8, y: 0.9, z: 0.7, category: 'speed', color: '#f59e0b' },
+      { name: 'Slow', x: 0.2, y: 0.2, z: 0.3, category: 'speed', color: '#f59e0b' },
+      { name: 'Leisurely', x: 0.2, y: 0.9, z: 0.3, category: 'speed', color: '#f59e0b' }
+    ];
+    
+    let rotation = { x: 0, y: 0 };
+    let isDragging = false;
+    let lastMouse = { x: 0, y: 0 };
+    let hoveredConcept = null;
+    
+    // 3D to 2D projection
+    const project3D = (x, y, z) => {
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const scale = 200;
+      
+      // Apply rotation
+      const cosX = Math.cos(rotation.x);
+      const sinX = Math.sin(rotation.x);
+      const cosY = Math.cos(rotation.y);
+      const sinY = Math.sin(rotation.y);
+      
+      // Rotate around Y axis
+      const rotatedX = x * cosY - z * sinY;
+      const rotatedZ = x * sinY + z * cosY;
+      
+      // Rotate around X axis
+      const finalY = y * cosX - rotatedZ * sinX;
+      const finalZ = y * sinX + rotatedZ * cosX;
+      
+      // Project to 2D
+      const perspective = 1 / (1 + finalZ * 0.5);
+      return {
+        x: centerX + rotatedX * scale * perspective,
+        y: centerY - finalY * scale * perspective,
+        z: finalZ
+      };
+    };
+    
+    const draw3D = () => {
+      ctx.clearRect(0, 0, 600, 500);
+      
+      // Draw 3D cube wireframe
+      const cubeVertices = [
+        [0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0],
+        [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]
+      ];
+      
+      const cubeEdges = [
+        [0,1], [1,2], [2,3], [3,0], // bottom face
+        [4,5], [5,6], [6,7], [7,4], // top face
+        [0,4], [1,5], [2,6], [3,7]  // vertical edges
+      ];
+      
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 1;
+      cubeEdges.forEach(edge => {
+        const start = project3D(...cubeVertices[edge[0]]);
+        const end = project3D(...cubeVertices[edge[1]]);
+        ctx.beginPath();
+        ctx.moveTo(start.x, start.y);
+        ctx.lineTo(end.x, end.y);
+        ctx.stroke();
+      });
+      
+      // Sort concepts by z-depth for proper rendering
+      const sortedConcepts = concepts3D.map(concept => {
+        const projected = project3D(concept.x, concept.y, concept.z);
+        return { ...concept, projected, depth: projected.z };
+      }).sort((a, b) => a.depth - b.depth);
+      
+      // Draw concepts
+      sortedConcepts.forEach(concept => {
+        const { projected } = concept;
+        const radius = hoveredConcept === concept ? 8 : 5;
+        
+        ctx.fillStyle = concept.color;
+        ctx.beginPath();
+        ctx.arc(projected.x, projected.y, radius, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        if (hoveredConcept === concept) {
+          // Draw label
+          ctx.fillStyle = '#000';
+          ctx.font = 'bold 14px system-ui';
+          ctx.textAlign = 'center';
+          ctx.fillText(concept.name, projected.x, projected.y - 15);
+          ctx.fillText(`[${concept.x.toFixed(1)}, ${concept.y.toFixed(1)}, ${concept.z.toFixed(1)}]`, projected.x, projected.y + 25);
+        }
+      });
+      
+      // Draw axes labels
+      const xAxis = project3D(1.2, 0, 0);
+      const yAxis = project3D(0, 1.2, 0);
+      const zAxis = project3D(0, 0, 1.2);
+      
+      ctx.fillStyle = '#666';
+      ctx.font = '12px system-ui';
+      ctx.textAlign = 'center';
+      ctx.fillText('Size', xAxis.x, xAxis.y);
+      ctx.fillText('Formality', yAxis.x, yAxis.y);
+      ctx.fillText('Emotion', zAxis.x, zAxis.y);
+    };
+    
+    // Mouse interaction
+    canvas.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastMouse.x = e.clientX;
+      lastMouse.y = e.clientY;
+    });
+    
+    canvas.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        const deltaX = e.clientX - lastMouse.x;
+        const deltaY = e.clientY - lastMouse.y;
+        rotation.y += deltaX * 0.01;
+        rotation.x += deltaY * 0.01;
+        lastMouse.x = e.clientX;
+        lastMouse.y = e.clientY;
+        draw3D();
+      } else {
+        // Check for hover
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
+        const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
+        
+        hoveredConcept = null;
+        concepts3D.forEach(concept => {
+          const projected = project3D(concept.x, concept.y, concept.z);
+          const distance = Math.sqrt((mouseX - projected.x) ** 2 + (mouseY - projected.y) ** 2);
+          if (distance < 20) {
+            hoveredConcept = concept;
+          }
+        });
+        draw3D();
+      }
+    });
+    
+    canvas.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+    
+    canvas.addEventListener('mouseleave', () => {
+      isDragging = false;
+      hoveredConcept = null;
+      draw3D();
+    });
     
     // Add controls
     const controls = document.createElement('div');
-    controls.className = 'diagram-controls';
-    controls.style.cssText = `
-      margin-top: 10px;
-      text-align: center;
-    `;
-    controls.innerHTML = `
-      <button class="diagram-button" style="margin: 5px; padding: 8px 16px; background: var(--primary-color); color: white; border: none; border-radius: 4px; cursor: pointer;">Shuffle Points</button>
-      <button class="diagram-button" style="margin: 5px; padding: 8px 16px; background: var(--secondary-color); color: white; border: none; border-radius: 4px; cursor: pointer;">Show Clusters</button>
-    `;
+    controls.className = 'controls-3d';
+    controls.innerHTML = 'Click and drag to rotate';
     container.appendChild(controls);
     
-    // Add event listeners to buttons
-    const buttons = controls.querySelectorAll('.diagram-button');
-    buttons[0].addEventListener('click', () => {
-      generatePoints();
-      drawVisualization();
-    });
+    draw3D();
+    container.appendChild(canvas);
     
-    buttons[1].addEventListener('click', () => {
-      // Enhanced clustering animation
-      const clusterCenters = [
-        { x: 80, y: 120 },   // Animals cluster
-        { x: 200, y: 200 },  // Food cluster  
-        { x: 320, y: 120 }   // Objects cluster
-      ];
-      
-      points.forEach(point => {
-        const target = clusterCenters[point.category];
-        
-        const animate = () => {
-          point.x += (target.x - point.x) * 0.08;
-          point.y += (target.y - point.y) * 0.08;
-          drawVisualization();
-          
-          if (Math.abs(point.x - target.x) > 2 || Math.abs(point.y - target.y) > 2) {
-            requestAnimationFrame(animate);
-          }
-        };
-        animate();
-      });
-    });
+    // Auto-rotation for demo effect
+    setInterval(() => {
+      if (!isDragging && !hoveredConcept) {
+        rotation.y += 0.005;
+        draw3D();
+      }
+    }, 50);
   }
 
   setupTransformerDiagram() {
