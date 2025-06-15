@@ -424,6 +424,15 @@ graph LR
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 
+    <!-- Modular JavaScript -->
+    <script src="js/utils.js"></script>
+    <script src="js/navigation.js"></script>
+    <!-- Simple working vector demos -->
+    <script src="js/simple-vector-demos.js"></script>
+    <script src="js/transformer-demo.js"></script>
+    <script src="js/rag-flow.js"></script>
+    <script src="js/main.js"></script>
+
     <!-- Load JavaScript after Prism -->
     <script>
         // Initialize when all scripts are loaded
@@ -433,13 +442,7 @@ graph LR
                 // Disable automatic highlighting to prevent conflicts
                 Prism.manual = true;
             }
-            
-            // Initialize our app
-            setTimeout(() => {
-                new ModernAIArticle();
-            }, 50);
         });
     </script>
-    <script src="script.js"></script>
 </body>
 </html>
