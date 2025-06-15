@@ -287,13 +287,139 @@ graph LR
         </section>
 
         <section id="rag">
-            <h2>Retrieval Augmented Generation (RAG) Flow</h2>
-            <p>The true power emerges when these components are combined. <strong>Retrieval Augmented Generation (RAG)</strong> enhances LLMs by giving them access to external, up-to-date information.</p>
+            <h2>Retrieval Augmented Generation (RAG): Bringing Knowledge to LLMs</h2>
+            <p>Imagine you're a talented chef, but you're working in a kitchen without a cookbook collection. You can cook well, but your knowledge is limited to what you memorized during training. <strong>Retrieval Augmented Generation (RAG)</strong> is like giving that chef access to a vast, searchable library of recipes and cooking techniques.</p>
 
-            <!-- Interactive RAG Flow Demo -->
-            <div class="diagram-container rag-flow-demo">
-                <h4>Interactive RAG Process</h4>
-                <p>Click "Animate Flow" to see how RAG works step by step.</p>
+            <p>RAG enhances LLMs by connecting them to external knowledge sources - like recipe databases, cooking blogs, or restaurant menus. When you ask a question, the system first <strong>retrieves</strong> relevant information from these sources, then uses that information to <strong>augment</strong> the LLM's response, resulting in more accurate, up-to-date, and contextually relevant answers.</p>
+
+            <h3>Why RAG Matters: The Knowledge Problem</h3>
+            <p>LLMs have a fundamental limitation: they only know what was in their training data, which has a specific cutoff date. They can't access real-time information, your private documents, or specialized knowledge bases. RAG solves this by:</p>
+
+            <ul>
+                <li><strong>🔄 Real-time Information:</strong> Access current menu prices, seasonal ingredients, or new recipes</li>
+                <li><strong>📚 Private Knowledge:</strong> Use your personal recipe collection or restaurant's secret techniques</li>
+                <li><strong>🎯 Specialized Domains:</strong> Tap into expert culinary databases or dietary restriction guides</li>
+                <li><strong>📈 Scalable Knowledge:</strong> Add new information without retraining the entire model</li>
+            </ul>
+
+            <h3>How RAG Works: A Culinary Example</h3>
+            <p>Let's see RAG in action with our recipe assistant. Watch how a simple question travels through the system:</p>
+
+            <!-- Animated RAG Flow Demonstration -->
+            <div class="rag-animation-container">
+                <h4>🎬 Interactive RAG Flow Animation</h4>
+                <p>Follow along as we trace a question through the complete RAG pipeline:</p>
+                
+                <!-- Query Input Section -->
+                <div class="rag-step user-query" id="step-1">
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <h5>👤 User Query</h5>
+                    </div>
+                    <div class="chat-bubble user">
+                        "I need a gluten-free dessert recipe that uses seasonal fall ingredients and takes less than 2 hours to make"
+                    </div>
+                </div>
+
+                <!-- Query Processing -->
+                <div class="rag-step query-processing" id="step-2">
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <h5>🔍 Query Processing</h5>
+                    </div>
+                    <div class="process-detail">
+                        <p>System converts the question into a vector embedding to search the knowledge base</p>
+                        <div class="embedding-visualization">
+                            <span class="keyword">gluten-free</span>
+                            <span class="keyword">dessert</span>
+                            <span class="keyword">fall ingredients</span>
+                            <span class="keyword">&lt; 2 hours</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Knowledge Retrieval -->
+                <div class="rag-step knowledge-retrieval" id="step-3">
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <h5>📚 Knowledge Retrieval</h5>
+                    </div>
+                    <div class="knowledge-sources">
+                        <div class="source-doc">
+                            <h6>🍂 Seasonal Recipe Database</h6>
+                            <p>"Pumpkin Spice Almond Flour Cookies - Gluten-free, 90 min prep..."</p>
+                        </div>
+                        <div class="source-doc">
+                            <h6>🥧 Dessert Cookbook Collection</h6>
+                            <p>"Apple Crisp with Oat Topping - No gluten, uses seasonal apples..."</p>
+                        </div>
+                        <div class="source-doc">
+                            <h6>⏰ Quick Recipe Blog</h6>
+                            <p>"45-Minute Pear and Walnut Crumble - Gluten-free flour blend..."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Context Augmentation -->
+                <div class="rag-step context-augmentation" id="step-4">
+                    <div class="step-header">
+                        <span class="step-number">4</span>
+                        <h5>🔗 Context Augmentation</h5>
+                    </div>
+                    <div class="augmented-prompt">
+                        <h6>Enhanced Prompt to LLM:</h6>
+                        <div class="prompt-content">
+                            <p><strong>Context:</strong> [Retrieved recipes for pumpkin cookies, apple crisp, pear crumble...]</p>
+                            <p><strong>User Question:</strong> "I need a gluten-free dessert recipe..."</p>
+                            <p><strong>Instructions:</strong> Use the provided recipes to create a comprehensive answer.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LLM Generation -->
+                <div class="rag-step llm-generation" id="step-5">
+                    <div class="step-header">
+                        <span class="step-number">5</span>
+                        <h5>🧠 LLM Generation</h5>
+                    </div>
+                    <div class="generation-process">
+                        <p>LLM processes the augmented context and generates a response...</p>
+                        <div class="thinking-indicator">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Final Response -->
+                <div class="rag-step final-response" id="step-6">
+                    <div class="step-header">
+                        <span class="step-number">6</span>
+                        <h5>💬 Generated Response</h5>
+                    </div>
+                    <div class="chat-bubble assistant">
+                        <p><strong>Perfect! Here are 3 gluten-free fall desserts under 2 hours:</strong></p>
+                        <p><strong>1. Pumpkin Spice Almond Flour Cookies (90 min)</strong><br>
+                        Uses seasonal pumpkin puree and warm spices...</p>
+                        <p><strong>2. Apple Crisp with Oat Topping (75 min)</strong><br>
+                        Features fresh fall apples with a crunchy gluten-free topping...</p>
+                        <p><strong>3. Pear and Walnut Crumble (45 min)</strong><br>
+                        Quick option using ripe pears and a simple crumble...</p>
+                        <p><em>All recipes verified from our seasonal database and tested for gluten-free preparation!</em></p>
+                    </div>
+                </div>
+
+                <!-- Animation Controls -->
+                <div class="animation-controls">
+                    <button class="control-btn" id="play-rag-animation">▶️ Play Animation</button>
+                    <button class="control-btn" id="reset-rag-animation">🔄 Reset</button>
+                    <button class="control-btn" id="step-through-rag">👆 Step Through</button>
+                </div>
+
+                <div class="animation-explanation">
+                    <p><strong>🎯 Key Insight:</strong> Notice how RAG combines the best of both worlds - the LLM's language understanding with real, specific knowledge from external sources. Without RAG, the LLM might give generic advice. With RAG, it provides specific, relevant, and up-to-date recipes!</p>
+                </div>
             </div>
 
             <div class="code-block">
