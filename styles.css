@@ -1255,10 +1255,17 @@ td:nth-child(4) {
 
 .attention-cell.highlighted {
   background: #3b82f6 !important;
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.7), 0 0 5px rgba(59, 130, 246, 0.9);
-  transform: scale(1.15);
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.8), 0 0 3px rgba(59, 130, 246, 1);
+  transform: scale(1.05);
   z-index: 2;
-  border: 2px solid #ffffff;
+  border: 3px solid #fbbf24;
+  border-radius: 3px;
+}
+
+.attention-cell.explained {
+  border: 3px solid #10b981 !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.6), 0 0 4px rgba(16, 185, 129, 0.8);
+  z-index: 3;
 }
 
 .attention-explanation {
@@ -1266,7 +1273,7 @@ td:nth-child(4) {
   border-radius: var(--radius);
   padding: var(--space-3);
   border-left: 4px solid var(--primary-color);
-  margin-top: var(--space-2);
+  margin: var(--space-2) 0;
 }
 
 .explanation-text {

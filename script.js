@@ -816,7 +816,10 @@ class ModernAIArticle {
         
         // Remove previous highlights
         [...tokenLabels, ...rowLabels].forEach(l => l.classList.remove('selected'));
-        attentionCells.forEach(cell => cell.classList.remove('highlighted'));
+        attentionCells.forEach(cell => {
+          cell.classList.remove('highlighted');
+          cell.classList.remove('explained');
+        });
         
         // Add new highlights
         label.classList.add('selected');
@@ -934,6 +937,11 @@ class ModernAIArticle {
     const token = tokens[tokenPos];
     const headNames = ['Semantic', 'Syntactic', 'Contextual'];
     
+    // Remove previous explained highlights
+    container.querySelectorAll('.attention-cell.explained').forEach(cell => {
+      cell.classList.remove('explained');
+    });
+    
     let explanation = `<strong>"${token}"</strong> in the ${headNames[head]} head attends to: `;
     
     const attentions = this.attentionPatterns[head][tokenPos];
@@ -947,8 +955,22 @@ class ModernAIArticle {
       explanation += strongAttentions
         .map(item => `<span class="attention-word">"${item.token}" (${(item.weight * 100).toFixed(0)}%)</span>`)
         .join(', ');
+      
+      // Highlight the cells mentioned in the explanation
+      strongAttentions.forEach(item => {
+        const cell = container.querySelector(`.attention-cell[data-from="${tokenPos}"][data-to="${item.index}"]`);
+        if (cell) {
+          cell.classList.add('explained');
+        }
+      });
     } else {
       explanation += 'mainly itself (self-attention)';
+      
+      // Highlight the self-attention cell
+      const selfCell = container.querySelector(`.attention-cell[data-from="${tokenPos}"][data-to="${tokenPos}"]`);
+      if (selfCell) {
+        selfCell.classList.add('explained');
+      }
     }
     
     explanationDiv.innerHTML = `<div class="explanation-text">${explanation}</div>`;
