@@ -1066,7 +1066,7 @@ td:nth-child(4) {
   margin-bottom: var(--space-3);
 }
 
-.transformer-header h5 {
+.transformer-header h4 {
   margin: 0 0 var(--space-1) 0;
   color: var(--primary-color);
   font-size: 1.1rem;
@@ -1392,7 +1392,7 @@ td:nth-child(4) {
     padding: 4px 8px;
   }
   
-  .transformer-header h5 {
+  .transformer-header h4 {
     font-size: 1rem;
   }
   

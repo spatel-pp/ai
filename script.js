@@ -735,8 +735,9 @@ class ModernAIArticle {
     // Create attention matrix visualization
     diagram.innerHTML = `
       <div class="transformer-header">
-        <h5>Self-Attention Mechanism</h5>
-        <p>Click any word to see how it "attends" to other words in the sentence</p>
+        <h4>Interactive Self-Attention Demo</h4>
+        <p>Explore how attention heads connect words in: <em>"${sentence}"</em></p>
+        <p class="demo-instructions">Click any word to see its attention patterns, or switch between attention heads to explore different types of connections.</p>
       </div>
       
       <div class="attention-controls">
