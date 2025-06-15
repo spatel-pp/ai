@@ -102,7 +102,7 @@ class ModernAIArticle {
     this.setupRAGFlowDiagram();
   }
 
-  // 1D Vector Space: Simple linear relationships
+  // 1D Vector Space: Recipe temperature scale
   setupVectorSpace1D() {
     const container = document.querySelector('.vector-space-1d');
     if (!container) return;
@@ -112,54 +112,75 @@ class ModernAIArticle {
     canvas.height = 120;
     const ctx = canvas.getContext('2d');
     
-    // 1D data: temperature concepts
-    const concepts1D = [
-      { name: 'Freezing', value: 0.1, color: '#3b82f6' },
-      { name: 'Cold', value: 0.25, color: '#1d4ed8' },
-      { name: 'Cool', value: 0.4, color: '#06b6d4' },
-      { name: 'Warm', value: 0.6, color: '#10b981' },
-      { name: 'Hot', value: 0.75, color: '#f59e0b' },
-      { name: 'Scorching', value: 0.9, color: '#ef4444' }
+    // 1D data: cooking temperature concepts
+    const cookingTemps = [
+      { name: 'Refrigerate', temp: '32°F', value: 0.05, color: '#1e40af' },
+      { name: 'Room Temp', temp: '70°F', value: 0.15, color: '#3b82f6' },
+      { name: 'Warm', temp: '100°F', value: 0.25, color: '#06b6d4' },
+      { name: 'Simmer', temp: '180°F', value: 0.4, color: '#10b981' },
+      { name: 'Boil', temp: '212°F', value: 0.55, color: '#f59e0b' },
+      { name: 'Sauté', temp: '300°F', value: 0.7, color: '#f97316' },
+      { name: 'Bake', temp: '350°F', value: 0.8, color: '#ef4444' },
+      { name: 'Broil', temp: '500°F', value: 0.95, color: '#dc2626' }
     ];
     
-    let hoveredConcept = null;
+    let hoveredTemp = null;
     
     const draw1D = () => {
       ctx.clearRect(0, 0, 800, 120);
       
-      // Draw temperature gradient background
-      const gradient = ctx.createLinearGradient(50, 0, 750, 0);
-      gradient.addColorStop(0, '#3b82f6');
-      gradient.addColorStop(0.5, '#10b981');
-      gradient.addColorStop(1, '#f59e0b');
+      // Draw white background for entire canvas
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, 800, 120);
+      
+      // Draw temperature gradient scale
+      const gradient = ctx.createLinearGradient(40, 60, 760, 60);
+      gradient.addColorStop(0, '#1e40af');    // Cold blue
+      gradient.addColorStop(0.3, '#06b6d4');  // Cool cyan
+      gradient.addColorStop(0.5, '#10b981');  // Medium green
+      gradient.addColorStop(0.7, '#f59e0b');  // Warm orange
+      gradient.addColorStop(1, '#dc2626');    // Hot red
       
       ctx.fillStyle = gradient;
-      ctx.fillRect(50, 40, 700, 40);
+      ctx.fillRect(40, 45, 720, 30);
       
-      // Draw scale
-      ctx.fillStyle = '#666';
-      ctx.font = '12px system-ui';
+      // Draw border around gradient
+      ctx.strokeStyle = '#d1d5db';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(40, 45, 720, 30);
+      
+      // Draw scale labels
+      ctx.fillStyle = '#374151';
+      ctx.font = '14px system-ui';
       ctx.textAlign = 'center';
-      ctx.fillText('Cold', 50, 100);
-      ctx.fillText('Hot', 750, 100);
+      ctx.fillText('Cold', 60, 105);
+      ctx.fillText('Hot', 740, 105);
       
-      // Draw concept points
-      concepts1D.forEach(concept => {
-        const x = 50 + concept.value * 700;
+      // Draw cooking method points
+      cookingTemps.forEach(method => {
+        const x = 40 + method.value * 720;
         const y = 60;
         
-        // Draw point
-        ctx.fillStyle = concept.color;
+        // Draw point with white outline for visibility
+        ctx.fillStyle = '#ffffff';
         ctx.beginPath();
-        ctx.arc(x, y, hoveredConcept === concept ? 8 : 5, 0, 2 * Math.PI);
+        ctx.arc(x, y, hoveredTemp === method ? 10 : 7, 0, 2 * Math.PI);
         ctx.fill();
         
-        if (hoveredConcept === concept) {
-          // Draw label
+        ctx.fillStyle = method.color;
+        ctx.beginPath();
+        ctx.arc(x, y, hoveredTemp === method ? 8 : 5, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        if (hoveredTemp === method) {
+          // Draw method label above
           ctx.fillStyle = '#000';
           ctx.font = 'bold 14px system-ui';
-          ctx.fillText(concept.name, x, y - 15);
-          ctx.fillText(`Vector: [${concept.value.toFixed(2)}]`, x, y + 25);
+          ctx.fillText(method.name, x, y - 20);
+          
+          // Draw temperature below
+          ctx.font = '12px system-ui';
+          ctx.fillText(method.temp, x, y + 25);
         }
       });
     };
@@ -168,12 +189,12 @@ class ModernAIArticle {
       const rect = canvas.getBoundingClientRect();
       const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
       
-      hoveredConcept = null;
-      concepts1D.forEach(concept => {
-        const x = 50 + concept.value * 700;
+      hoveredTemp = null;
+      cookingTemps.forEach(method => {
+        const x = 40 + method.value * 720;
         const distance = Math.abs(mouseX - x);
-        if (distance < 20) {
-          hoveredConcept = concept;
+        if (distance < 25) {
+          hoveredTemp = method;
         }
       });
       
@@ -181,7 +202,7 @@ class ModernAIArticle {
     });
     
     canvas.addEventListener('mouseleave', () => {
-      hoveredConcept = null;
+      hoveredTemp = null;
       draw1D();
     });
     
@@ -189,76 +210,145 @@ class ModernAIArticle {
     container.appendChild(canvas);
   }
 
-  // 2D Vector Space: Enhanced version of the original
+  // 2D Vector Space: Recipe complexity vs cooking time
   setupVectorSpace2D() {
     const container = document.querySelector('.vector-space-2d');
     if (!container) return;
 
     const canvas = document.createElement('canvas');
-    canvas.width = 600;
-    canvas.height = 400;
+    canvas.width = 800;
+    canvas.height = 600;
     const ctx = canvas.getContext('2d');
     
-    // 2D data: words with formality (x) and emotion (y) dimensions
-    const concepts2D = [
-      { name: 'Hello', x: 0.3, y: 0.7, category: 'greeting', color: '#3b82f6' },
-      { name: 'Greetings', x: 0.8, y: 0.5, category: 'greeting', color: '#3b82f6' },
-      { name: 'Hey', x: 0.1, y: 0.9, category: 'greeting', color: '#3b82f6' },
-      { name: 'Love', x: 0.4, y: 0.9, category: 'emotion', color: '#10b981' },
-      { name: 'Adore', x: 0.7, y: 0.8, category: 'emotion', color: '#10b981' },
-      { name: 'Hate', x: 0.4, y: 0.1, category: 'emotion', color: '#10b981' },
-      { name: 'Cat', x: 0.5, y: 0.6, category: 'animal', color: '#f59e0b' },
-      { name: 'Feline', x: 0.9, y: 0.6, category: 'animal', color: '#f59e0b' },
-      { name: 'Kitty', x: 0.2, y: 0.8, category: 'animal', color: '#f59e0b' }
+    // 2D data: recipes with complexity (x) and cooking time (y)
+    const recipes = [
+      // Quick & Easy (low complexity, short time)
+      { name: 'Scrambled Eggs', x: 0.1, y: 0.1, category: 'breakfast', color: '#f59e0b' },
+      { name: 'Toast', x: 0.05, y: 0.05, category: 'breakfast', color: '#f59e0b' },
+      { name: 'Cereal', x: 0.02, y: 0.02, category: 'breakfast', color: '#f59e0b' },
+      
+      // Medium Complexity (medium complexity, medium time)
+      { name: 'Pasta Carbonara', x: 0.4, y: 0.3, category: 'dinner', color: '#3b82f6' },
+      { name: 'Stir Fry', x: 0.3, y: 0.2, category: 'dinner', color: '#3b82f6' },
+      { name: 'Chicken Curry', x: 0.5, y: 0.6, category: 'dinner', color: '#3b82f6' },
+      
+      // Complex Dishes (high complexity, long time)
+      { name: 'Beef Wellington', x: 0.9, y: 0.8, category: 'gourmet', color: '#dc2626' },
+      { name: 'Sourdough Bread', x: 0.7, y: 0.95, category: 'gourmet', color: '#dc2626' },
+      { name: 'Coq au Vin', x: 0.8, y: 0.7, category: 'gourmet', color: '#dc2626' },
+      
+      // Desserts
+      { name: 'Cookies', x: 0.2, y: 0.4, category: 'dessert', color: '#10b981' },
+      { name: 'Tiramisu', x: 0.6, y: 0.5, category: 'dessert', color: '#10b981' },
+      { name: 'Crème Brûlée', x: 0.8, y: 0.4, category: 'dessert', color: '#10b981' }
     ];
     
-    let hoveredConcept = null;
+    let hoveredRecipe = null;
     
     const draw2D = () => {
-      ctx.clearRect(0, 0, 600, 400);
+      ctx.clearRect(0, 0, 800, 600);
       
-      // Draw grid
-      ctx.strokeStyle = '#e2e8f0';
+      // Draw white background
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, 800, 600);
+      
+      // Draw subtle background grid
+      ctx.strokeStyle = '#f3f4f6';
       ctx.lineWidth = 1;
       for (let i = 0; i <= 10; i++) {
-        const x = i * 50 + 50;
-        const y = i * 30 + 50;
+        const x = i * 70 + 80;
+        const y = i * 50 + 50;
         ctx.beginPath();
         ctx.moveTo(x, 50);
-        ctx.lineTo(x, 350);
-        ctx.moveTo(50, y);
-        ctx.lineTo(550, y);
+        ctx.lineTo(x, 550);
+        ctx.moveTo(80, y);
+        ctx.lineTo(780, y);
         ctx.stroke();
       }
       
-      // Draw axes labels
-      ctx.fillStyle = '#666';
-      ctx.font = '14px system-ui';
+      // Draw main axes with thicker lines
+      ctx.strokeStyle = '#d1d5db';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(80, 550);
+      ctx.lineTo(780, 550);
+      ctx.moveTo(80, 50);
+      ctx.lineTo(80, 550);
+      ctx.stroke();
+      
+      // Draw axes labels with better positioning
+      ctx.fillStyle = '#374151';
+      ctx.font = 'bold 16px system-ui';
       ctx.textAlign = 'center';
-      ctx.fillText('Formality →', 300, 380);
+      
+      // X-axis label
+      ctx.fillText('Recipe Complexity →', 430, 585);
+      
+      // Y-axis label
       ctx.save();
-      ctx.translate(20, 200);
+      ctx.translate(25, 300);
       ctx.rotate(-Math.PI/2);
-      ctx.fillText('Emotion →', 0, 0);
+      ctx.fillText('← Cooking Time', 0, 0);
       ctx.restore();
       
-      // Draw points
-      concepts2D.forEach(concept => {
-        const x = 50 + concept.x * 500;
-        const y = 350 - concept.y * 300;
+      // Add scale markers
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '12px system-ui';
+      
+      // X-axis markers
+      for (let i = 0; i <= 10; i += 2) {
+        const x = 80 + (i/10) * 700;
+        ctx.textAlign = 'center';
+        ctx.fillText(`${i*10}%`, x, 570);
+      }
+      
+      // Y-axis markers
+      ctx.textAlign = 'right';
+      for (let i = 0; i <= 10; i += 2) {
+        const y = 550 - (i/10) * 500;
+        ctx.fillText(`${i*10}%`, 70, y + 5);
+      }
+      
+      // Draw category regions (subtle backgrounds)
+      const regions = [
+        { name: 'Quick & Easy', x: 80, y: 450, w: 140, h: 100, color: '#f59e0b20' },
+        { name: 'Everyday Meals', x: 220, y: 250, w: 280, h: 200, color: '#3b82f620' },
+        { name: 'Gourmet', x: 500, y: 50, w: 280, h: 300, color: '#dc262620' }
+      ];
+      
+      regions.forEach(region => {
+        ctx.fillStyle = region.color;
+        ctx.fillRect(region.x, region.y, region.w, region.h);
         
-        ctx.fillStyle = concept.color;
+        ctx.fillStyle = '#6b7280';
+        ctx.font = '12px system-ui';
+        ctx.textAlign = 'left';
+        ctx.fillText(region.name, region.x + 5, region.y + 15);
+      });
+      
+      // Draw recipe points
+      recipes.forEach(recipe => {
+        const x = 80 + recipe.x * 700;
+        const y = 550 - recipe.y * 500;
+        
+        // Draw white outline for visibility
+        ctx.fillStyle = '#ffffff';
         ctx.beginPath();
-        ctx.arc(x, y, hoveredConcept === concept ? 8 : 5, 0, 2 * Math.PI);
+        ctx.arc(x, y, hoveredRecipe === recipe ? 10 : 7, 0, 2 * Math.PI);
         ctx.fill();
         
-        if (hoveredConcept === concept) {
+        ctx.fillStyle = recipe.color;
+        ctx.beginPath();
+        ctx.arc(x, y, hoveredRecipe === recipe ? 8 : 5, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        if (hoveredRecipe === recipe) {
           // Draw connections to same category
-          concepts2D.forEach(other => {
-            if (other !== concept && other.category === concept.category) {
-              const otherX = 50 + other.x * 500;
-              const otherY = 350 - other.y * 300;
-              ctx.strokeStyle = concept.color + '40';
+          recipes.forEach(other => {
+            if (other !== recipe && other.category === recipe.category) {
+              const otherX = 80 + other.x * 700;
+              const otherY = 550 - other.y * 500;
+              ctx.strokeStyle = recipe.color + '60';
               ctx.lineWidth = 2;
               ctx.beginPath();
               ctx.moveTo(x, y);
@@ -267,25 +357,37 @@ class ModernAIArticle {
             }
           });
           
-          // Draw label
+          // Draw recipe label
           ctx.fillStyle = '#000';
           ctx.font = 'bold 14px system-ui';
           ctx.textAlign = 'center';
-          ctx.fillText(concept.name, x, y - 15);
-          ctx.fillText(`[${concept.x.toFixed(2)}, ${concept.y.toFixed(2)}]`, x, y + 25);
+          ctx.fillText(recipe.name, x, y - 20);
+          ctx.font = '12px system-ui';
+          ctx.fillText(`[${recipe.x.toFixed(2)}, ${recipe.y.toFixed(2)}]`, x, y + 30);
         }
       });
       
-      // Draw legend
-      const categories = ['greeting', 'emotion', 'animal'];
-      const colors = ['#3b82f6', '#10b981', '#f59e0b'];
+      // Draw horizontal legend across the top
+      const categories = ['breakfast', 'dinner', 'gourmet', 'dessert'];
+      const colors = ['#f59e0b', '#3b82f6', '#dc2626', '#10b981'];
+      const labels = ['Breakfast', 'Dinner', 'Gourmet', 'Dessert'];
+      
+      const legendStartX = 120;
+      const legendY = 25;
+      const legendSpacing = 140;
+      
       categories.forEach((cat, i) => {
+        const x = legendStartX + i * legendSpacing;
+        
+        // Draw colored square
         ctx.fillStyle = colors[i];
-        ctx.fillRect(450, 60 + i * 25, 15, 15);
-        ctx.fillStyle = '#000';
-        ctx.font = '12px system-ui';
+        ctx.fillRect(x, legendY, 16, 16);
+        
+        // Draw label
+        ctx.fillStyle = '#374151';
+        ctx.font = '14px system-ui';
         ctx.textAlign = 'left';
-        ctx.fillText(cat, 470, 72 + i * 25);
+        ctx.fillText(labels[i], x + 22, legendY + 12);
       });
     };
     
@@ -294,13 +396,13 @@ class ModernAIArticle {
       const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
       const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
       
-      hoveredConcept = null;
-      concepts2D.forEach(concept => {
-        const x = 50 + concept.x * 500;
-        const y = 350 - concept.y * 300;
+      hoveredRecipe = null;
+      recipes.forEach(recipe => {
+        const x = 80 + recipe.x * 700;
+        const y = 550 - recipe.y * 500;
         const distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
-        if (distance < 20) {
-          hoveredConcept = concept;
+        if (distance < 25) {
+          hoveredRecipe = recipe;
         }
       });
       
@@ -308,7 +410,7 @@ class ModernAIArticle {
     });
     
     canvas.addEventListener('mouseleave', () => {
-      hoveredConcept = null;
+      hoveredRecipe = null;
       draw2D();
     });
     
@@ -316,42 +418,59 @@ class ModernAIArticle {
     container.appendChild(canvas);
   }
 
-  // 3D Vector Space: Interactive 3D visualization
+  // 3D Vector Space: Multi-dimensional recipe attributes
   setupVectorSpace3D() {
     const container = document.querySelector('.vector-space-3d');
     if (!container) return;
 
     const canvas = document.createElement('canvas');
-    canvas.width = 600;
-    canvas.height = 500;
+    canvas.width = 800;
+    canvas.height = 600;
     const ctx = canvas.getContext('2d');
     
-    // 3D data: words with size, formality, and emotion dimensions
-    const concepts3D = [
-      { name: 'Tiny', x: 0.1, y: 0.3, z: 0.5, category: 'size', color: '#3b82f6' },
-      { name: 'Small', x: 0.3, y: 0.4, z: 0.5, category: 'size', color: '#3b82f6' },
-      { name: 'Large', x: 0.7, y: 0.6, z: 0.5, category: 'size', color: '#3b82f6' },
-      { name: 'Huge', x: 0.9, y: 0.7, z: 0.5, category: 'size', color: '#3b82f6' },
-      { name: 'Happy', x: 0.5, y: 0.3, z: 0.9, category: 'emotion', color: '#10b981' },
-      { name: 'Joyful', x: 0.5, y: 0.8, z: 0.9, category: 'emotion', color: '#10b981' },
-      { name: 'Sad', x: 0.5, y: 0.3, z: 0.1, category: 'emotion', color: '#10b981' },
-      { name: 'Melancholy', x: 0.5, y: 0.8, z: 0.1, category: 'emotion', color: '#10b981' },
-      { name: 'Quick', x: 0.8, y: 0.2, z: 0.7, category: 'speed', color: '#f59e0b' },
-      { name: 'Rapid', x: 0.8, y: 0.9, z: 0.7, category: 'speed', color: '#f59e0b' },
-      { name: 'Slow', x: 0.2, y: 0.2, z: 0.3, category: 'speed', color: '#f59e0b' },
-      { name: 'Leisurely', x: 0.2, y: 0.9, z: 0.3, category: 'speed', color: '#f59e0b' }
+    // 3D data: recipes with complexity, time, and difficulty dimensions
+    const recipes3D = [
+      // Simple recipes
+      { name: 'Instant Noodles', x: 0.05, y: 0.05, z: 0.1, category: 'instant', color: '#22c55e' },
+      { name: 'PB&J Sandwich', x: 0.1, y: 0.08, z: 0.05, category: 'instant', color: '#22c55e' },
+      { name: 'Microwave Popcorn', x: 0.02, y: 0.03, z: 0.02, category: 'instant', color: '#22c55e' },
+      
+      // Quick meals
+      { name: 'Fried Rice', x: 0.3, y: 0.2, z: 0.25, category: 'quick', color: '#3b82f6' },
+      { name: 'Quesadilla', x: 0.2, y: 0.15, z: 0.2, category: 'quick', color: '#3b82f6' },
+      { name: 'Grilled Cheese', x: 0.15, y: 0.1, z: 0.15, category: 'quick', color: '#3b82f6' },
+      
+      // Intermediate dishes
+      { name: 'Chicken Stir-fry', x: 0.5, y: 0.4, z: 0.45, category: 'intermediate', color: '#f59e0b' },
+      { name: 'Pasta Bolognese', x: 0.6, y: 0.5, z: 0.4, category: 'intermediate', color: '#f59e0b' },
+      { name: 'Fish Tacos', x: 0.55, y: 0.35, z: 0.5, category: 'intermediate', color: '#f59e0b' },
+      
+      // Advanced recipes
+      { name: 'Beef Bourguignon', x: 0.85, y: 0.9, z: 0.8, category: 'advanced', color: '#dc2626' },
+      { name: 'Homemade Pasta', x: 0.7, y: 0.6, z: 0.75, category: 'advanced', color: '#dc2626' },
+      { name: 'Duck Confit', x: 0.9, y: 0.85, z: 0.9, category: 'advanced', color: '#dc2626' },
+      
+      // Baking/Desserts
+      { name: 'Chocolate Cake', x: 0.6, y: 0.7, z: 0.65, category: 'baking', color: '#8b5cf6' },
+      { name: 'Croissants', x: 0.95, y: 0.8, z: 0.95, category: 'baking', color: '#8b5cf6' },
+      { name: 'Sugar Cookies', x: 0.3, y: 0.4, z: 0.3, category: 'baking', color: '#8b5cf6' }
     ];
     
-    let rotation = { x: 0, y: 0 };
+    let rotation = { x: 0.2, y: 0.3 };
     let isDragging = false;
     let lastMouse = { x: 0, y: 0 };
-    let hoveredConcept = null;
+    let hoveredRecipe = null;
     
-    // 3D to 2D projection
+    // 3D to 2D projection - centered rotation
     const project3D = (x, y, z) => {
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
-      const scale = 200;
+      const scale = 250;
+      
+      // Center the coordinates around 0.5 for proper rotation
+      const centeredX = x - 0.5;
+      const centeredY = y - 0.5;
+      const centeredZ = z - 0.5;
       
       // Apply rotation
       const cosX = Math.cos(rotation.x);
@@ -360,29 +479,43 @@ class ModernAIArticle {
       const sinY = Math.sin(rotation.y);
       
       // Rotate around Y axis
-      const rotatedX = x * cosY - z * sinY;
-      const rotatedZ = x * sinY + z * cosY;
+      const rotatedX = centeredX * cosY - centeredZ * sinY;
+      const rotatedZ = centeredX * sinY + centeredZ * cosY;
       
       // Rotate around X axis
-      const finalY = y * cosX - rotatedZ * sinX;
-      const finalZ = y * sinX + rotatedZ * cosX;
+      const finalY = centeredY * cosX - rotatedZ * sinX;
+      const finalZ = centeredY * sinX + rotatedZ * cosX;
       
-      // Project to 2D
-      const perspective = 1 / (1 + finalZ * 0.5);
+      // Project to 2D with perspective
+      const perspective = 1 / (1 + finalZ * 0.3);
       return {
         x: centerX + rotatedX * scale * perspective,
         y: centerY - finalY * scale * perspective,
-        z: finalZ
+        z: finalZ,
+        scale: perspective
       };
     };
     
     const draw3D = () => {
-      ctx.clearRect(0, 0, 600, 500);
+      ctx.clearRect(0, 0, 800, 600);
       
-      // Draw 3D cube wireframe
+      // Draw white background
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, 800, 600);
+      
+      // Draw subtle radial gradient background
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 400);
+      gradient.addColorStop(0, 'rgba(248, 250, 252, 0.8)');
+      gradient.addColorStop(1, 'rgba(241, 245, 249, 0.4)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, 800, 600);
+      
+      // Draw 3D cube wireframe with better styling - centered around origin
       const cubeVertices = [
-        [0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0],
-        [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]
+        [-0.5, -0.5, -0.5], [0.5, -0.5, -0.5], [0.5, 0.5, -0.5], [-0.5, 0.5, -0.5],
+        [-0.5, -0.5, 0.5], [0.5, -0.5, 0.5], [0.5, 0.5, 0.5], [-0.5, 0.5, 0.5]
       ];
       
       const cubeEdges = [
@@ -391,8 +524,8 @@ class ModernAIArticle {
         [0,4], [1,5], [2,6], [3,7]  // vertical edges
       ];
       
-      ctx.strokeStyle = '#e2e8f0';
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 1.5;
       cubeEdges.forEach(edge => {
         const start = project3D(...cubeVertices[edge[0]]);
         const end = project3D(...cubeVertices[edge[1]]);
@@ -402,43 +535,146 @@ class ModernAIArticle {
         ctx.stroke();
       });
       
-      // Sort concepts by z-depth for proper rendering
-      const sortedConcepts = concepts3D.map(concept => {
-        const projected = project3D(concept.x, concept.y, concept.z);
-        return { ...concept, projected, depth: projected.z };
+      // Sort recipes by z-depth for proper rendering
+      const sortedRecipes = recipes3D.map(recipe => {
+        const projected = project3D(recipe.x, recipe.y, recipe.z);
+        return { ...recipe, projected, depth: projected.z };
       }).sort((a, b) => a.depth - b.depth);
       
-      // Draw concepts
-      sortedConcepts.forEach(concept => {
-        const { projected } = concept;
-        const radius = hoveredConcept === concept ? 8 : 5;
+      // Draw recipes with hover effects
+      sortedRecipes.forEach(recipe => {
+        const { projected } = recipe;
+        const baseRadius = 6;
+        const radius = hoveredRecipe === recipe ? 
+          baseRadius * projected.scale * 1.5 : 
+          baseRadius * projected.scale;
         
-        ctx.fillStyle = concept.color;
+        // Draw white outline for visibility
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(projected.x, projected.y, radius + 2, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        // Draw recipe point with hover highlight
+        ctx.fillStyle = hoveredRecipe === recipe ? 
+          recipe.color : 
+          recipe.color;
         ctx.beginPath();
         ctx.arc(projected.x, projected.y, radius, 0, 2 * Math.PI);
         ctx.fill();
         
-        if (hoveredConcept === concept) {
-          // Draw label
+        // Add glow effect for hovered recipe
+        if (hoveredRecipe === recipe) {
+          ctx.shadowColor = recipe.color;
+          ctx.shadowBlur = 15;
+          ctx.fillStyle = recipe.color;
+          ctx.beginPath();
+          ctx.arc(projected.x, projected.y, radius, 0, 2 * Math.PI);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+          
+          // Draw connecting lines to same category
+          recipes3D.forEach(other => {
+            if (other !== recipe && other.category === recipe.category) {
+              const otherProjected = project3D(other.x, other.y, other.z);
+              ctx.strokeStyle = recipe.color + '40';
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.moveTo(projected.x, projected.y);
+              ctx.lineTo(otherProjected.x, otherProjected.y);
+              ctx.stroke();
+            }
+          });
+          
+          // Draw detailed info box
+          const infoX = projected.x < canvas.width / 2 ? projected.x + 30 : projected.x - 180;
+          const infoY = projected.y - 60;
+          
+          // Draw info background
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+          ctx.strokeStyle = recipe.color;
+          ctx.lineWidth = 2;
+          ctx.fillRect(infoX, infoY, 150, 80);
+          ctx.strokeRect(infoX, infoY, 150, 80);
+          
+          // Draw recipe info
           ctx.fillStyle = '#000';
           ctx.font = 'bold 14px system-ui';
-          ctx.textAlign = 'center';
-          ctx.fillText(concept.name, projected.x, projected.y - 15);
-          ctx.fillText(`[${concept.x.toFixed(1)}, ${concept.y.toFixed(1)}, ${concept.z.toFixed(1)}]`, projected.x, projected.y + 25);
+          ctx.textAlign = 'left';
+          ctx.fillText(recipe.name, infoX + 8, infoY + 18);
+          
+          ctx.font = '12px system-ui';
+          ctx.fillText(`Complexity: ${(recipe.x * 100).toFixed(0)}%`, infoX + 8, infoY + 35);
+          ctx.fillText(`Time: ${(recipe.y * 100).toFixed(0)}%`, infoX + 8, infoY + 50);
+          ctx.fillText(`Difficulty: ${(recipe.z * 100).toFixed(0)}%`, infoX + 8, infoY + 65);
         }
       });
       
-      // Draw axes labels
-      const xAxis = project3D(1.2, 0, 0);
-      const yAxis = project3D(0, 1.2, 0);
-      const zAxis = project3D(0, 0, 1.2);
+      // Draw axes labels with proper positioning for centered cube
+      const axisLength = 0.8;
+      const xAxis = project3D(axisLength, 0, 0);
+      const yAxis = project3D(0, axisLength, 0);
+      const zAxis = project3D(0, 0, axisLength);
       
-      ctx.fillStyle = '#666';
-      ctx.font = '12px system-ui';
+      ctx.fillStyle = '#374151';
+      ctx.font = 'bold 14px system-ui';
       ctx.textAlign = 'center';
-      ctx.fillText('Size', xAxis.x, xAxis.y);
-      ctx.fillText('Formality', yAxis.x, yAxis.y);
-      ctx.fillText('Emotion', zAxis.x, zAxis.y);
+      
+      // Draw axis lines and labels
+      const origin = project3D(0, 0, 0);
+      
+      // X-axis (Complexity)
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(origin.x, origin.y);
+      ctx.lineTo(xAxis.x, xAxis.y);
+      ctx.stroke();
+      ctx.fillStyle = '#f59e0b';
+      ctx.fillText('Complexity', xAxis.x, xAxis.y - 10);
+      
+      // Y-axis (Time)
+      ctx.strokeStyle = '#3b82f6';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(origin.x, origin.y);
+      ctx.lineTo(yAxis.x, yAxis.y);
+      ctx.stroke();
+      ctx.fillStyle = '#3b82f6';
+      ctx.fillText('Time', yAxis.x, yAxis.y - 10);
+      
+      // Z-axis (Difficulty)
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(origin.x, origin.y);
+      ctx.lineTo(zAxis.x, zAxis.y);
+      ctx.stroke();
+      ctx.fillStyle = '#dc2626';
+      ctx.fillText('Difficulty', zAxis.x, zAxis.y - 10);
+      
+      // Draw horizontal legend at the bottom
+      const categories = ['instant', 'quick', 'intermediate', 'advanced', 'baking'];
+      const colors = ['#22c55e', '#3b82f6', '#f59e0b', '#dc2626', '#8b5cf6'];
+      const labels = ['Instant', 'Quick', 'Intermediate', 'Advanced', 'Baking'];
+      
+      const legendStartX = 80;
+      const legendY = 580;
+      const legendSpacing = 130;
+      
+      categories.forEach((cat, i) => {
+        const x = legendStartX + i * legendSpacing;
+        
+        // Draw colored square
+        ctx.fillStyle = colors[i];
+        ctx.fillRect(x, legendY, 14, 14);
+        
+        // Draw label
+        ctx.fillStyle = '#374151';
+        ctx.font = '12px system-ui';
+        ctx.textAlign = 'left';
+        ctx.fillText(labels[i], x + 20, legendY + 11);
+      });
     };
     
     // Mouse interaction
@@ -449,6 +685,10 @@ class ModernAIArticle {
     });
     
     canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
+      const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
+      
       if (isDragging) {
         const deltaX = e.clientX - lastMouse.x;
         const deltaY = e.clientY - lastMouse.y;
@@ -456,51 +696,60 @@ class ModernAIArticle {
         rotation.x += deltaY * 0.01;
         lastMouse.x = e.clientX;
         lastMouse.y = e.clientY;
+        canvas.style.cursor = 'grabbing';
         draw3D();
       } else {
-        // Check for hover
-        const rect = canvas.getBoundingClientRect();
-        const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
-        const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
+        // Check for hover - improved detection
+        hoveredRecipe = null;
+        let minDistance = Infinity;
+        let foundHover = false;
         
-        hoveredConcept = null;
-        concepts3D.forEach(concept => {
-          const projected = project3D(concept.x, concept.y, concept.z);
+        recipes3D.forEach(recipe => {
+          const projected = project3D(recipe.x, recipe.y, recipe.z);
           const distance = Math.sqrt((mouseX - projected.x) ** 2 + (mouseY - projected.y) ** 2);
-          if (distance < 20) {
-            hoveredConcept = concept;
+          const hitRadius = 15 * projected.scale; // Scale hit radius with perspective
+          
+          if (distance < hitRadius && distance < minDistance) {
+            hoveredRecipe = recipe;
+            minDistance = distance;
+            foundHover = true;
           }
         });
+        
+        // Update cursor based on hover state
+        canvas.style.cursor = foundHover ? 'pointer' : 'grab';
         draw3D();
       }
     });
     
     canvas.addEventListener('mouseup', () => {
       isDragging = false;
+      canvas.style.cursor = 'grab';
     });
     
     canvas.addEventListener('mouseleave', () => {
       isDragging = false;
-      hoveredConcept = null;
+      hoveredRecipe = null;
+      canvas.style.cursor = 'default';
       draw3D();
     });
     
     // Add controls
     const controls = document.createElement('div');
     controls.className = 'controls-3d';
-    controls.innerHTML = 'Click and drag to rotate';
+    controls.innerHTML = 'Click and drag to rotate • Hover recipes for details';
     container.appendChild(controls);
     
     draw3D();
     container.appendChild(canvas);
     
-    // Auto-rotation for demo effect
+    // Auto-rotation for demo effect (slower for recipe theme)
     setInterval(() => {
-      if (!isDragging && !hoveredConcept) {
-        rotation.y += 0.005;
+      if (!isDragging && !hoveredRecipe) {
+        rotation.y += 0.003;
         draw3D();
       }
-    }, 50);
+    }, 100);
   }
 
   setupTransformerDiagram() {

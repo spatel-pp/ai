@@ -697,31 +697,34 @@ pre {
   color: var(--text-secondary);
 }
 
-/* 1D Vector Space Specific */
+/* 1D Vector Space Specific - Recipe Temperature Theme */
 .vector-space-1d canvas {
-  width: 100%;
+  width: 800px;
   height: 120px;
+  max-width: 100%;
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  background: linear-gradient(90deg, #3b82f6 0%, #10b981 50%, #f59e0b 100%);
+  background: var(--card-background);
 }
 
-/* 2D Vector Space Specific */
+/* 2D Vector Space Specific - Fixed Tablet Dimensions */
 .vector-space-2d canvas {
-  width: 100%;
-  height: 400px;
+  width: 800px;
+  height: 600px;
+  max-width: 100%;
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
 }
 
-/* 3D Vector Space Specific */
+/* 3D Vector Space Specific - Fixed Tablet Dimensions */
 .vector-space-3d {
   position: relative;
 }
 
 .vector-space-3d canvas {
-  width: 100%;
-  height: 500px;
+  width: 800px;
+  height: 600px;
+  max-width: 100%;
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
   cursor: grab;
@@ -733,27 +736,85 @@ pre {
 
 .vector-space-3d .controls-3d {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(0, 0, 0, 0.7);
+  top: 15px;
+  right: 15px;
+  background: rgba(59, 130, 246, 0.9);
   color: white;
-  padding: var(--space-2);
+  padding: var(--space-3) var(--space-4);
   border-radius: var(--radius);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 10;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
-  .vector-space-1d canvas {
-    height: 80px;
-  }
-  
-  .vector-space-2d canvas {
-    height: 300px;
-  }
-  
+  .vector-space-1d canvas,
+  .vector-space-2d canvas,
   .vector-space-3d canvas {
-    height: 350px;
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .vector-space-1d canvas {
+    width: 100%;
+    max-width: 600px;
+    height: 90px;
+  }
+  
+  .vector-space-2d canvas,
+  .vector-space-3d canvas {
+    width: 100%;
+    max-width: 600px;
+    height: 450px;
+  }
+  
+  .visualization-header {
+    padding: var(--space-3);
+  }
+  
+  .visualization-header h5 {
+    font-size: 1.1rem;
+  }
+  
+  .visualization-description {
+    font-size: 0.9rem;
+  }
+  
+  .vector-space-3d .controls-3d {
+    position: static;
+    margin-top: var(--space-3);
+    text-align: center;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+  }
+}
+
+/* Tablet-specific optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .vector-space-demonstrations {
+    padding: 0 var(--space-4);
+  }
+  
+  .diagram-container.vector-space-1d,
+  .diagram-container.vector-space-2d,
+  .diagram-container.vector-space-3d {
+    padding: var(--space-5);
+  }
+  
+  .vector-space-1d canvas {
+    width: 750px;
+    height: 110px;
+  }
+  
+  .vector-space-2d canvas,
+  .vector-space-3d canvas {
+    width: 750px;
+    height: 560px;
   }
 }
 
@@ -811,4 +872,72 @@ pre {
   .table-of-contents.docked .toc-title {
     font-size: 0.9rem;
   }
+}
+
+/* Visualization Headers and Descriptions */
+.visualization-header {
+  margin-bottom: var(--space-4);
+  padding: var(--space-4);
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  border-left: 4px solid var(--primary-color);
+}
+
+.visualization-header h5 {
+  margin: 0 0 var(--space-2) 0;
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.visualization-description {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Enhanced Vector Space Demonstrations */
+.vector-space-demonstrations {
+  margin: var(--space-8) 0;
+}
+
+.vector-space-demonstrations > h4 {
+  text-align: center;
+  margin-bottom: var(--space-6);
+  color: var(--text-primary);
+  font-size: 1.5rem;
+}
+
+.vector-space-demonstrations > p {
+  text-align: center;
+  margin-bottom: var(--space-8);
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Individual vector space containers */
+.diagram-container.vector-space-1d,
+.diagram-container.vector-space-2d,
+.diagram-container.vector-space-3d {
+  margin: var(--space-8) 0;
+  padding: var(--space-6);
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+/* Improve canvas positioning */
+.vector-space-1d canvas,
+.vector-space-2d canvas,
+.vector-space-3d canvas {
+  display: block;
+  margin: var(--space-4) auto 0;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
 }
