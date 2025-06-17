@@ -452,25 +452,49 @@ print(response)  # Gets relevant docs + generates answer</code></pre>
 
         <section id="agentic">
             <h2>Agentic AI: Autonomous Problem Solvers</h2>
-            <p><strong>Agentic AI</strong> refers to autonomous systems capable of making decisions, planning, and performing tasks with minimal human intervention. They exhibit goal-driven behavior and adaptability.</p>
+            <p>Think of traditional AI like a brilliant calculator - it can solve complex problems when given the right inputs, but it waits for you to tell it what to do. <strong>Agentic AI</strong>, on the other hand, is like having a skilled personal assistant who can understand your goals, break down complex tasks, research independently, make decisions, and adapt when things don't go as planned.</p>
+
+            <h3>Why Agentic AI Matters</h3>
+            <div class="comparison-container">
+                <div class="comparison-item">
+                    <h4>🔄 Traditional AI</h4>
+                    <p>"Here's an answer to your question"</p>
+                    <ul>
+                        <li>Reactive - waits for specific instructions</li>
+                        <li>Single-turn interactions</li>
+                        <li>Limited to training data</li>
+                        <li>No external tool access</li>
+                    </ul>
+                </div>
+                <div class="comparison-item">
+                    <h4>🚀 Agentic AI</h4>
+                    <p>"Let me understand your goal and figure out how to achieve it"</p>
+                    <ul>
+                        <li>Proactive - takes initiative to solve problems</li>
+                        <li>Multi-step reasoning and planning</li>
+                        <li>Accesses real-time information</li>
+                        <li>Uses external tools and APIs</li>
+                    </ul>
+                </div>
+            </div>
 
             <h3>What Makes Agentic AI Distinct</h3>
             <div class="feature-grid">
                 <div class="feature-card">
                     <h4>🤖 Autonomy</h4>
-                    <p>Can initiate and complete tasks independently</p>
+                    <p>Can initiate and complete tasks independently, like a research assistant who knows how to gather information without constant guidance</p>
                 </div>
                 <div class="feature-card">
                     <h4>🧠 Reasoning</h4>
-                    <p>Analyzes data and formulates multi-step plans</p>
+                    <p>Analyzes data and formulates multi-step plans, breaking complex goals into actionable steps</p>
                 </div>
                 <div class="feature-card">
                     <h4>🔄 Adaptability</h4>
-                    <p>Learns from interactions and adjusts strategies</p>
+                    <p>Learns from interactions and adjusts strategies when initial approaches don't work</p>
                 </div>
                 <div class="feature-card">
                     <h4>⚡ Action-Oriented</h4>
-                    <p>Interacts with external tools and APIs</p>
+                    <p>Interacts with external tools and APIs to gather information and execute tasks</p>
                 </div>
             </div>
 
@@ -481,35 +505,303 @@ print(response)  # Gets relevant docs + generates answer</code></pre>
                     <button class="copy-button">Copy</button>
                 </div>
                 <pre><code># Chain-of-Thought prompting example
-User: "Plan a dinner party for 8 people with dietary restrictions"
+User: "Plan a weekly dinner menu for my family with dietary restrictions"
 
 AI Agent: "Let me think through this step by step:
 
 1. GATHER REQUIREMENTS:
-   - Number of guests: 8 people
-   - Need to identify dietary restrictions
+   - Number of family members and ages
+   - Need to identify specific dietary restrictions
    - Should ask about cuisine preferences and budget
+   - Consider cooking time constraints
 
 2. PLAN MENU:
    - Design dishes that accommodate restrictions
-   - Ensure variety and balance
-   - Calculate quantities needed
+   - Ensure nutritional variety and balance
+   - Calculate quantities and portions needed
+   - Include kid-friendly options
 
 3. LOGISTICS:
-   - Create shopping list with quantities
-   - Plan cooking timeline
-   - Set up table arrangements
+   - Create organized shopping list with quantities
+   - Plan cooking timeline for the week
+   - Suggest meal prep strategies
+   - Consider leftover management
 
 4. EXECUTION:
-   - Schedule prep work
-   - Coordinate cooking times
-   - Prepare contingency plans
+   - Schedule prep work for busy days
+   - Coordinate cooking times with family schedule
+   - Prepare backup quick meal options
+   - Include family members in age-appropriate tasks
 
-Let me start by asking: What dietary restrictions should I consider?"</code></pre>
+Let me start by asking: What dietary restrictions should I consider, and how many people will I be cooking for?"</code></pre>
+            </div>
+            <div class="cot-demo-container">
+                <h4>🎬 Interactive Chain-of-Thought Demo</h4>
+                <p style="margin-bottom: var(--space-3); font-size: 0.9rem;">See how an AI recipe assistant thinks through creating a custom meal plan step by step. <strong>Click on any step header to expand/collapse it, or use the controls below to explore the full reasoning process.</strong></p>
+                
+                <div class="scenario-info">
+                    <h5>🍽️ Scenario: Custom Family Meal Planning</h5>
+                    <p><strong>Goal:</strong> Create a week-long dinner menu for a family with specific dietary needs and cooking constraints</p>
+                </div>
+
+                <!-- Reasoning Steps -->
+                <div class="cot-step expanded" id="cot-step-1">
+                    <div class="step-header" onclick="toggleStep('cot-step-1')">
+                        <span class="step-number">1</span>
+                        <h5>🎯 Goal Understanding</h5>
+                        <span class="step-toggle">▲</span>
+                    </div>
+                    <div class="thinking-process">
+                        <div class="thinking-bubble">
+                            <h6>💭 AI Thinking:</h6>
+                            <p>"The user wants a week-long dinner menu for their family. I need to understand the key requirements: family size, dietary restrictions, cooking skill level, time constraints, and budget. This is a complex culinary planning task that requires balancing nutrition, preferences, and practical constraints."</p>
+                        </div>
+                        <div class="action-taken">
+                            <h6>⚡ Action:</h6>
+                            <p>Clarify family requirements and identify key cooking constraints</p>
+                        </div>
+                        <div class="step-output">
+                            <h6>📝 Output:</h6>
+                            <p>Identified core requirements: Weekly meal plan, family-focused, need to understand dietary restrictions and cooking constraints</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cot-step collapsed" id="cot-step-2">
+                    <div class="step-header" onclick="toggleStep('cot-step-2')">
+                        <span class="step-number">2</span>
+                        <h5>🔍 Information Gathering</h5>
+                        <span class="step-toggle">▼</span>
+                    </div>
+                    <div class="thinking-process">
+                        <div class="thinking-bubble">
+                            <h6>💭 AI Thinking:</h6>
+                            <p>"I need more specific information to create a practical meal plan. How many people? Any allergies or dietary preferences? What's their cooking experience? How much time do they have for meal prep? What kitchen equipment is available?"</p>
+                        </div>
+                        <div class="action-taken">
+                            <h6>⚡ Action:</h6>
+                            <p>Generate targeted questions about family cooking needs</p>
+                        </div>
+                        <div class="step-output">
+                            <h6>📝 Questions Generated:</h6>
+                            <ul>
+                                <li>How many family members and their ages?</li>
+                                <li>Any food allergies or dietary restrictions?</li>
+                                <li>Preferred cuisine types or foods to avoid?</li>
+                                <li>Available cooking time on weekdays vs weekends?</li>
+                                <li>Kitchen equipment and cooking skill level?</li>
+                                <li>Weekly grocery budget for dinners?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cot-step collapsed" id="cot-step-3">
+                    <div class="step-header" onclick="toggleStep('cot-step-3')">
+                        <span class="step-number">3</span>
+                        <h5>📊 Constraint Analysis</h5>
+                        <span class="step-toggle">▼</span>
+                    </div>
+                    <div class="thinking-process">
+                        <div class="thinking-bubble">
+                            <h6>💭 AI Thinking:</h6>
+                            <p>"Based on the responses: Family of 4 (2 adults, 2 kids), one child has dairy sensitivity, prefers Mediterranean/Asian flavors, 30 minutes max on weekdays, 1 hour on weekends, intermediate cooking skills, $80/week budget. These constraints will shape every recipe choice."</p>
+                        </div>
+                        <div class="action-taken">
+                            <h6>⚡ Action:</h6>
+                            <p>Analyze constraints and calculate planning parameters</p>
+                        </div>
+                        <div class="step-output">
+                            <h6>📝 Constraint Summary:</h6>
+                            <div class="constraint-list">
+                                <span class="constraint-tag">👨‍👩‍👧‍� Family of 4</span>
+                                <span class="constraint-tag">🥛 Dairy-free options needed</span>
+                                <span class="constraint-tag">⏰ 30min weekdays/1hr weekends</span>
+                                <span class="constraint-tag">� $80/week budget</span>
+                                <span class="constraint-tag">🌍 Mediterranean/Asian preferred</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cot-step collapsed" id="cot-step-4">
+                    <div class="step-header" onclick="toggleStep('cot-step-4')">
+                        <span class="step-number">4</span>
+                        <h5>💡 Solution Generation</h5>
+                        <span class="step-toggle">▼</span>
+                    </div>
+                    <div class="thinking-process">
+                        <div class="thinking-bubble">
+                            <h6>💭 AI Thinking:</h6>
+                            <p>"I need to balance quick weekday meals with more elaborate weekend cooking. Monday-Friday should be 30-minute dairy-free dishes that kids will enjoy. Weekends allow for more complex flavors and meal prep. I'll create themed days to add structure and excitement."</p>
+                        </div>
+                        <div class="action-taken">
+                            <h6>⚡ Action:</h6>
+                            <p>Design weekly meal themes and generate recipe options</p>
+                        </div>
+                        <div class="step-output">
+                            <h6>📝 Weekly Theme Options:</h6>
+                            <div class="venue-options">
+                                <div class="venue-option">
+                                    <strong>Monday:</strong> Meatless Monday - Mediterranean lentil bowls with dairy-free tzatziki
+                                </div>
+                                <div class="venue-option">
+                                    <strong>Tuesday:</strong> Taco Tuesday - Asian-fusion lettuce wraps with sesame dressing
+                                </div>
+                                <div class="venue-option">
+                                    <strong>Wednesday:</strong> One-Pan Wednesday - Sheet pan Mediterranean chicken with vegetables
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cot-step collapsed" id="cot-step-5">
+                    <div class="step-header" onclick="toggleStep('cot-step-5')">
+                        <span class="step-number">5</span>
+                        <h5>🎯 Plan Refinement</h5>
+                        <span class="step-toggle">▼</span>
+                    </div>
+                    <div class="thinking-process">
+                        <div class="thinking-bubble">
+                            <h6>💭 AI Thinking:</h6>
+                            <p>"Let me finalize the complete week with prep strategies. I'll include ingredient overlap to reduce waste and costs, batch cooking opportunities for busy days, and kid-friendly variations. Sunday meal prep will set up the week for success."</p>
+                        </div>
+                        <div class="action-taken">
+                            <h6>⚡ Action:</h6>
+                            <p>Create complete 7-day meal plan with prep strategies</p>
+                        </div>
+                        <div class="step-output">
+                            <h6>📝 Complete Weekly Menu:</h6>
+                            <div class="itinerary">
+                                <div class="day-plan">
+                                    <strong>Sunday:</strong> Meal prep day - Batch cook grains, chop vegetables, marinate proteins
+                                </div>
+                                <div class="day-plan">
+                                    <strong>Monday:</strong> Mediterranean Lentil Power Bowls (using prepped ingredients)
+                                </div>
+                                <div class="day-plan">
+                                    <strong>Tuesday:</strong> Asian Lettuce Wraps with Sesame Ginger Chicken
+                                </div>
+                                <div class="day-plan">
+                                    <strong>Wednesday:</strong> One-Pan Mediterranean Chicken & Vegetables
+                                </div>
+                                <div class="day-plan">
+                                    <strong>Thursday:</strong> Quick Thai-inspired Coconut Curry (dairy-free)
+                                </div>
+                                <div class="day-plan">
+                                    <strong>Friday:</strong> Build-Your-Own Mediterranean Flatbread Night
+                                </div>
+                                <div class="day-plan">
+                                    <strong>Saturday:</strong> Weekend special - Homemade Asian Dumplings (family cooking activity)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cot-step collapsed" id="cot-step-6">
+                    <div class="step-header" onclick="toggleStep('cot-step-6')">
+                        <span class="step-number">6</span>
+                        <h5>✅ Action Steps</h5>
+                        <span class="step-toggle">▼</span>
+                    </div>
+                    <div class="thinking-process">
+                        <div class="thinking-bubble">
+                            <h6>💭 AI Thinking:</h6>
+                            <p>"Now I need to provide actionable next steps: a complete shopping list organized by store sections, prep timeline, and cooking instructions. I'll also include backup options for busy days and tips for involving kids in age-appropriate cooking tasks."</p>
+                        </div>
+                        <div class="action-taken">
+                            <h6>⚡ Action:</h6>
+                            <p>Create comprehensive implementation plan with shopping and prep guides</p>
+                        </div>
+                        <div class="step-output">
+                            <h6>📝 Your Action Plan:</h6>
+                            <ol class="action-list">
+                                <li><strong>Shopping List:</strong> Organized grocery list by store section with exact quantities needed</li>
+                                <li><strong>Sunday Prep:</strong> 90-minute meal prep session with step-by-step timeline</li>
+                                <li><strong>Daily Recipes:</strong> Detailed cooking instructions with dairy-free substitutions clearly marked</li>
+                                <li><strong>Backup Plans:</strong> 15-minute emergency meals for unexpectedly busy days</li>
+                                <li><strong>Kid Activities:</strong> Age-appropriate cooking tasks for each meal to involve the family</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="demo-insight">
+                    <p><strong>🎯 Key Insight:</strong> Notice how the AI doesn't just suggest random recipes - it shows its reasoning process, considers all constraints, weighs trade-offs between nutrition and convenience, and provides a complete implementation strategy. This transparency makes the meal planning trustworthy and allows you to understand and modify the approach for your specific needs.</p>
+                </div>
+
+                <!-- Demo Controls -->
+                <div class="cot-controls">
+                    <button class="control-btn" onclick="expandAllSteps()">📖 Show All Steps</button>
+                    <button class="control-btn" onclick="collapseAllSteps()">� Collapse All</button>
+                    <button class="control-btn" onclick="toggleWalkthrough()">🎯 Step-by-Step</button>
+                </div>
             </div>
 
             <h3>MCP Servers and Tool Access</h3>
             <p>The <strong>Model Context Protocol (MCP)</strong> is an emerging open standard that provides a universal adapter for AI agents to interface with external systems, databases, and APIs.</p>
+
+            <script>
+                // Chain-of-Thought Demo Functionality
+                let currentStepIndex = 0;
+                const stepIds = ['cot-step-1', 'cot-step-2', 'cot-step-3', 'cot-step-4', 'cot-step-5', 'cot-step-6'];
+                
+                function toggleStep(stepId) {
+                    const step = document.getElementById(stepId);
+                    const toggle = step.querySelector('.step-toggle');
+                    
+                    if (step.classList.contains('collapsed')) {
+                        step.classList.remove('collapsed');
+                        step.classList.add('expanded');
+                        toggle.textContent = '▲';
+                    } else {
+                        step.classList.add('collapsed');
+                        step.classList.remove('expanded');
+                        toggle.textContent = '▼';
+                    }
+                }
+                
+                function expandAllSteps() {
+                    stepIds.forEach(stepId => {
+                        const step = document.getElementById(stepId);
+                        const toggle = step.querySelector('.step-toggle');
+                        step.classList.remove('collapsed');
+                        step.classList.add('expanded');
+                        toggle.textContent = '▲';
+                    });
+                }
+                
+                function collapseAllSteps() {
+                    stepIds.forEach(stepId => {
+                        const step = document.getElementById(stepId);
+                        const toggle = step.querySelector('.step-toggle');
+                        step.classList.add('collapsed');
+                        step.classList.remove('expanded');
+                        toggle.textContent = '▼';
+                    });
+                    currentStepIndex = 0;
+                }
+                
+                function toggleWalkthrough() {
+                    collapseAllSteps();
+                    
+                    // Show steps one by one with delay
+                    stepIds.forEach((stepId, index) => {
+                        setTimeout(() => {
+                            const step = document.getElementById(stepId);
+                            const toggle = step.querySelector('.step-toggle');
+                            step.classList.remove('collapsed');
+                            step.classList.add('expanded');
+                            toggle.textContent = '▲';
+                            
+                            // Scroll into view
+                            step.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, index * 1500); // 1.5 second delay between steps
+                    });
+                }
+            </script>
 
             <div class="mermaid-diagram">
                 <pre class="mermaid">
