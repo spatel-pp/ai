@@ -1,0 +1,760 @@
+<section class="intro-section animate-fade-in">
+            <h1>AI Architecture Guide: Core Concepts</h1>
+            <p>
+                The landscape of Artificial Intelligence has been profoundly reshaped by advancements in Machine Learning, particularly through the advent of 
+                <strong>embeddings</strong>, <strong>vector databases</strong>, and <strong>Large Language Models (LLMs)</strong>.
+                These components, while distinct, are deeply interconnected, forming the backbone of many cutting-edge AI applications.
+            </p>
+
+            <div class="example-box">
+                <p><strong>Example Scenario: A Smart Recipe Assistant</strong></p>
+                <p>Imagine we're building a "Smart Recipe Assistant" that can understand complex food-related queries, suggest recipes based on ingredients, dietary preferences, and even cooking styles, and provide a detailed cooking response.</p>
+            </div>
+        </section>
+
+        <section id="embeddings">
+            <h2>Embeddings: The Language of Machines</h2>
+            <p>At its core, an <strong>embedding</strong> is a dense numerical representation (a <strong>vector</strong>) of an object—be it a word, a sentence, or an entire recipe—in a high-dimensional space. Unlike simple text, these vectors are designed to capture semantic meaning and relationships.</p>
+
+            <h3>Understanding Dimensional Space and N-Dimensional Vectors</h3>
+            <p>To grasp embeddings, it's helpful to visualize "dimensional space." A vector is simply a list of numbers that defines a point's coordinates within that space. Let's explore how this works across different dimensions:</p>
+            
+            <!-- Multi-Dimensional Vector Space Demos -->
+            <div class="vector-space-demonstrations">
+                <h4>Interactive Vector Space Visualizations</h4>
+                <p>Explore how semantic relationships are captured across different dimensional spaces using recipe examples. Hover over points to see relationships and categories.</p>
+                
+                <!-- 1D Vector Space -->
+                <div class="diagram-container vector-space-1d">
+                    <div class="visualization-header">
+                        <h5>1D Vector Space: Recipe Temperature Scale</h5>
+                        <p class="visualization-description">A simple linear scale showing cooking temperatures from cold storage to high-heat cooking methods. Each point represents a different cooking temperature concept.</p>
+                    </div>
+                </div>
+                
+                <!-- 2D Vector Space -->
+                <div class="diagram-container vector-space-2d">
+                    <div class="visualization-header">
+                        <h5>2D Vector Space: Recipe Complexity vs. Cooking Time</h5>
+                        <p class="visualization-description">Two-dimensional mapping of recipes by complexity (x-axis) and cooking time (y-axis). Recipes close to each other can be grouped by "categories" that we can label as Dinner, Breakfast, Lunch, etc...</p>
+                    </div>
+                </div>
+                
+                <!-- 3D Vector Space -->
+                <div class="diagram-container vector-space-3d">
+                    <div class="visualization-header">
+                        <h5>3D Vector Space: Recipe Attributes (Time × Ingredients × Temperature)</h5>
+                        <p class="visualization-description">Three truly orthogonal dimensions: cooking time (x-axis), number of ingredients (y-axis), and serving temperature (z-axis). Click and drag to rotate the space and explore how recipes cluster in this multi-dimensional space.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language">Python</span>
+                    <button class="copy-button">Copy</button>
+                </div>
+                <pre><code class="language-python"># Example: Multi-dimensional word embeddings
+import numpy as np
+
+# 1D embeddings: Only one feature (temperature)
+temp_1d = {
+    "cold": [0.1],
+    "warm": [0.6], 
+    "hot": [0.9]
+}
+
+# 2D embeddings: Two features (formality, emotion)
+words_2d = {
+    "hello": [0.3, 0.7],    # casual, positive
+    "greetings": [0.8, 0.5], # formal, neutral
+    "hey": [0.1, 0.9]       # very casual, very positive
+}
+
+# 3D embeddings: Three features (size, formality, emotion)
+words_3d = {
+    "tiny": [0.1, 0.3, 0.5],     # small, casual, neutral
+    "minuscule": [0.1, 0.9, 0.5], # small, formal, neutral
+    "huge": [0.9, 0.3, 0.7]      # large, casual, positive
+}
+
+# Real embeddings often have 100-1536 dimensions!
+# This captures incredibly nuanced semantic relationships
+
+# Calculate similarity using cosine distance
+def cosine_similarity(vec1, vec2):
+    return np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
+
+# Find semantic relationships
+similarity = cosine_similarity(words_2d["hello"], words_2d["hey"])
+print(f"Hello-Hey similarity: {similarity:.3f}")  # High - both casual!</code></pre>
+            </div>
+
+            <p>As dimensions increase from 1D to 2D to 3D and beyond, embeddings can capture increasingly complex semantic relationships. Modern language models use embeddings with hundreds or even thousands of dimensions, allowing them to understand incredibly nuanced meanings and relationships between concepts.</p>
+        </section>
+
+        <section id="vector-databases">
+            <h2>Vector Databases: Storing and Searching Semantic Space</h2>
+            <p><strong>Vector databases</strong> are specialized databases engineered to efficiently store and search these high-dimensional embeddings. Their primary function is to enable <strong>approximate nearest neighbor (ANN) search</strong>, which means finding the "closest" or most semantically similar items to a given query embedding.</p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Vector Database</th>
+                            <th>Type</th>
+                            <th>Best For</th>
+                            <th>Key Features</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Pinecone</td>
+                            <td>Cloud</td>
+                            <td>Production apps</td>
+                            <td>Managed, scalable, real-time</td>
+                        </tr>
+                        <tr>
+                            <td>Weaviate</td>
+                            <td>Open Source</td>
+                            <td>Complex schemas</td>
+                            <td>GraphQL, modules, hybrid search</td>
+                        </tr>
+                        <tr>
+                            <td>Chroma</td>
+                            <td>Embedded</td>
+                            <td>Development</td>
+                            <td>Python-native, simple API</td>
+                        </tr>
+                        <tr>
+                            <td>Qdrant</td>
+                            <td>Self-hosted</td>
+                            <td>High performance</td>
+                            <td>Rust-based, filtering, clustering</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language">Python</span>
+                    <button class="copy-button">Copy</button>
+                </div>
+                <pre><code class="language-python"># Example: Using Chroma for vector search
+import chromadb
+
+# Initialize client
+client = chromadb.Client()
+collection = client.create_collection(name="recipes")
+
+# Add documents with embeddings
+collection.add(
+    documents=["Spicy chicken curry with rice", "Vegetarian pasta salad"],
+    metadatas=[{"cuisine": "indian"}, {"cuisine": "italian"}],
+    ids=["recipe1", "recipe2"]
+)
+
+# Query for similar recipes
+results = collection.query(
+    query_texts=["hot chicken dish"],
+    n_results=2
+)
+
+print(results)  # Returns most similar recipes</code></pre>
+            </div>
+        </section>
+
+        <section id="llms">
+            <h2>Large Language Models (LLMs): Generative Powerhouses</h2>
+            <p><strong>Large Language Models (LLMs)</strong> are a type of neural network distinguished by their massive scale and the groundbreaking <strong>Transformer architecture</strong>.</p>
+
+            <h3>The Transformer Architecture: The Engine of Modern LLMs</h3>
+            <p>The Transformer, introduced in the groundbreaking 2017 paper "Attention Is All You Need," revolutionized how machines process language. Unlike older recurrent models that read text sequentially word-by-word, the Transformer processes the <strong>entire input simultaneously</strong>, making it both faster and more capable of understanding long-range relationships in text.</p>
+
+            <p>Think of it this way: when you read a sentence like <em>"The chef who trained in Paris prepared an exquisite dish,"</em> you instantly understand that "chef" and "prepared" are connected, and that "exquisite" describes "dish" - even though these words are separated by other words. The Transformer learns these connections automatically.</p>
+
+            <p>The core innovation is the <strong>self-attention mechanism</strong>, which allows every word to "look at" and "pay attention to" all other words in the sequence. It uses multiple "attention heads" simultaneously - each one specialized to capture different types of relationships between words:</p>
+
+            <div class="mermaid-diagram compact-transformer">
+                <h5>Simplified Transformer Block Flow</h5>
+                <pre class="mermaid">
+graph LR
+    A[Input<br/>Tokens] --> B[Multi-Head<br/>Attention]
+    B --> C[Feed Forward<br/>Layer]
+    C --> D[Output<br/>Embeddings]
+    
+    style A fill:#e2e8f0,color:#1e293b
+    style B fill:#3b82f6,color:#fff
+    style C fill:#10b981,color:#fff
+    style D fill:#f59e0b,color:#fff
+</pre>
+                <p class="diagram-caption">Each transformer block processes all words simultaneously through attention and feed-forward layers</p>
+            </div>
+            <h3>Multi-Head Attention</h3>
+            <p><strong>Why is this so powerful?</strong> Traditional models had to "remember" earlier words when processing later ones, which was both slow and led to forgetting important context. Transformers can instantly see all relationships, making them much better at understanding complex sentences and generating coherent text.</p>
+
+            <!-- Attention Heads Explanation - moved closer to demo -->
+            <div class="attention-heads-explanation">
+                <div class="head-explanation">
+                    <h5><span class="head-icon semantic">🔗</span> Semantic Head</h5>
+                    <p>Focuses on <strong>meaning relationships</strong> - connecting words that are conceptually related, like "chef" with "recipe" or "delicious" with "chocolate".</p>
+                </div>
+                
+                <div class="head-explanation">
+                    <h5><span class="head-icon syntactic">🏗️</span> Syntactic Head</h5>
+                    <p>Focuses on <strong>grammatical relationships</strong> - connecting articles to nouns ("the" → "chef"), adjectives to the words they modify, and other structural patterns.</p>
+                </div>
+                
+                <div class="head-explanation">
+                    <h5><span class="head-icon contextual">🌐</span> Contextual Head</h5>
+                    <p>Focuses on <strong>broader context</strong> - understanding how words relate within the overall meaning of the sentence, considering long-range dependencies.</p>
+                </div>
+            </div>
+
+            <!-- Interactive Transformer Demo -->
+            <div class="diagram-container transformer-demo">
+                <!-- JavaScript will populate this with the interactive demo -->
+            </div>
+        </section>
+
+        <section id="rag">
+            <h2>Retrieval Augmented Generation (RAG): Bringing Knowledge to LLMs</h2>
+            <p>Imagine you're a talented chef, but you're working in a kitchen without a cookbook collection. You can cook well, but your knowledge is limited to what you memorized during training. <strong>Retrieval Augmented Generation (RAG)</strong> is like giving that chef access to a vast, searchable library of recipes and cooking techniques.</p>
+
+            <p>RAG enhances LLMs by connecting them to external knowledge sources - like recipe databases, cooking blogs, or restaurant menus. When you ask a question, the system first <strong>retrieves</strong> relevant information from these sources, then uses that information to <strong>augment</strong> the LLM's response, resulting in more accurate, up-to-date, and contextually relevant answers.</p>
+
+            <h3>Why RAG Matters: The Knowledge Problem</h3>
+            <p>LLMs have a fundamental limitation: they only know what was in their training data, which has a specific cutoff date. They can't access real-time information, your private documents, or specialized knowledge bases. RAG solves this by:</p>
+
+            <ul>
+                <li><strong>🔄 Real-time Information:</strong> Access current menu prices, seasonal ingredients, or new recipes</li>
+                <li><strong>📚 Private Knowledge:</strong> Use your personal recipe collection or restaurant's secret techniques</li>
+                <li><strong>🎯 Specialized Domains:</strong> Tap into expert culinary databases or dietary restriction guides</li>
+                <li><strong>📈 Scalable Knowledge:</strong> Add new information without retraining the entire model</li>
+            </ul>
+
+            <h3>How RAG Works: A Culinary Example</h3>
+            <p>Let's see RAG in action with our recipe assistant. Watch how a simple question travels through the system:</p>
+
+            <!-- Animated RAG Flow Demonstration -->
+            <div class="rag-animation-container">
+                <h4>🎬 Interactive RAG Flow Animation</h4>
+                <p style="margin-bottom: var(--space-3); font-size: 0.9rem;">Follow along as we trace a question through the complete RAG pipeline:</p>
+                
+                <!-- Query Input Section -->
+                <div class="rag-step user-query" id="step-1">
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <h5>👤 User Query</h5>
+                    </div>
+                    <div class="chat-bubble user">
+                        "I need a gluten-free dessert recipe that uses seasonal fall ingredients and takes less than 2 hours to make"
+                    </div>
+                </div>
+
+                <!-- Query Processing -->
+                <div class="rag-step query-processing" id="step-2">
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <h5>🔍 Query Processing</h5>
+                    </div>
+                    <div class="process-detail">
+                        <p>System converts the question into a vector embedding to search the knowledge base</p>
+                        <div class="embedding-visualization">
+                            <span class="keyword">gluten-free</span>
+                            <span class="keyword">dessert</span>
+                            <span class="keyword">fall ingredients</span>
+                            <span class="keyword">&lt; 2 hours</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Knowledge Retrieval -->
+                <div class="rag-step knowledge-retrieval" id="step-3">
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <h5>📚 Knowledge Retrieval</h5>
+                    </div>
+                    <div class="knowledge-sources">
+                        <div class="source-doc">
+                            <h6>🍂 Seasonal Database</h6>
+                            <p>"Pumpkin Spice Almond Cookies - Gluten-free, 90 min..."</p>
+                        </div>
+                        <div class="source-doc">
+                            <h6>🥧 Dessert Collection</h6>
+                            <p>"Apple Crisp with Oat Topping - No gluten, seasonal..."</p>
+                        </div>
+                        <div class="source-doc">
+                            <h6>⏰ Quick Recipes</h6>
+                            <p>"45-Min Pear Walnut Crumble - Gluten-free flour..."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Context Augmentation -->
+                <div class="rag-step context-augmentation" id="step-4">
+                    <div class="step-header">
+                        <span class="step-number">4</span>
+                        <h5>🔗 Context Augmentation</h5>
+                    </div>
+                    <div class="augmented-prompt">
+                        <h6>Enhanced Prompt to LLM:</h6>
+                        <div class="prompt-content">
+                            <p><strong>Context:</strong> [Retrieved recipes for pumpkin cookies, apple crisp, pear crumble...]</p>
+                            <p><strong>User Question:</strong> "I need a gluten-free dessert recipe..."</p>
+                            <p><strong>Instructions:</strong> Use the provided recipes to create a comprehensive answer.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LLM Generation -->
+                <div class="rag-step llm-generation" id="step-5">
+                    <div class="step-header">
+                        <span class="step-number">5</span>
+                        <h5>🧠 LLM Generation</h5>
+                    </div>
+                    <div class="generation-process">
+                        <p>LLM processes the augmented context and generates a response...</p>
+                        <div class="thinking-indicator">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Final Response -->
+                <div class="rag-step final-response" id="step-6">
+                    <div class="step-header">
+                        <span class="step-number">6</span>
+                        <h5>💬 Generated Response</h5>
+                    </div>
+                    <div class="chat-bubble assistant">
+                        <p><strong>Perfect! Here are 3 gluten-free fall desserts under 2 hours:</strong></p>
+                        <p><strong>1. Pumpkin Spice Cookies (90 min)</strong> - Seasonal pumpkin puree and warm spices</p>
+                        <p><strong>2. Apple Crisp with Oat Topping (75 min)</strong> - Fresh fall apples with gluten-free topping</p>
+                        <p><strong>3. Pear Walnut Crumble (45 min)</strong> - Quick option using ripe pears and simple crumble</p>
+                        <p><em>All recipes verified from our seasonal database!</em></p>
+                    </div>
+                </div>
+
+                <div class="animation-explanation">
+                    <p><strong>🎯 Key Insight:</strong> RAG combines the LLM's language understanding with real, specific knowledge from external sources. Without RAG, you get generic advice. With RAG, you get specific, relevant, and up-to-date information!</p>
+                </div>
+
+                <!-- Animation Controls -->
+                <div class="animation-controls">
+                    <button class="control-btn" id="play-rag-animation">▶️ Play</button>
+                    <button class="control-btn" id="reset-rag-animation">🔄 Reset</button>
+                    <button class="control-btn" id="step-through-rag">👆 Step</button>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language">Python</span>
+                    <button class="copy-button">Copy</button>
+                </div>
+                <pre><code class="language-python"># Example: Simple RAG implementation
+from langchain.vectorstores import Chroma
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.llms import OpenAI
+from langchain.chains import RetrievalQA
+
+# 1. Setup vector store with documents
+vectorstore = Chroma.from_texts(
+    texts=recipe_documents,
+    embedding=OpenAIEmbeddings(),
+    persist_directory="./recipe_db"
+)
+
+# 2. Create retrieval chain
+qa_chain = RetrievalQA.from_chain_type(
+    llm=OpenAI(),
+    chain_type="stuff",
+    retriever=vectorstore.as_retriever(search_kwargs={"k": 3})
+)
+
+# 3. Query with context
+response = qa_chain.run("What's a good spicy vegetarian dish?")
+print(response)  # Gets relevant docs + generates answer</code></pre>
+            </div>
+        </section>
+
+        <section id="agentic">
+            <h2>Agentic AI: Autonomous Problem Solvers</h2>
+            <p>Think of traditional AI like a brilliant calculator - it can solve complex problems when given the right inputs, but it waits for you to tell it what to do. <strong>Agentic AI</strong>, on the other hand, is like having a skilled personal assistant who can understand your goals, break down complex tasks, research independently, make decisions, and adapt when things don't go as planned.</p>
+
+            <h3>Why Agentic AI Matters</h3>
+            <div class="comparison-container">
+                <div class="comparison-item">
+                    <h4>🔄 Traditional AI</h4>
+                    <p>"Here's an answer to your question"</p>
+                    <ul>
+                        <li>Reactive - waits for specific instructions</li>
+                        <li>Single-turn interactions</li>
+                        <li>Limited to training data</li>
+                        <li>No external tool access</li>
+                    </ul>
+                </div>
+                <div class="comparison-item">
+                    <h4>🚀 Agentic AI</h4>
+                    <p>"Let me understand your goal and figure out how to achieve it"</p>
+                    <ul>
+                        <li>Proactive - takes initiative to solve problems</li>
+                        <li>Multi-step reasoning and planning</li>
+                        <li>Accesses real-time information</li>
+                        <li>Uses external tools and APIs</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>What Makes Agentic AI Distinct</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🤖 Autonomy</h4>
+                    <p>Can initiate and complete tasks independently, like a research assistant who knows how to gather information without constant guidance</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🧠 Reasoning</h4>
+                    <p>Analyzes data and formulates multi-step plans, breaking complex goals into actionable steps</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔄 Adaptability</h4>
+                    <p>Learns from interactions and adjusts strategies when initial approaches don't work</p>
+                </div>
+                <div class="feature-card">
+                    <h4>⚡ Action-Oriented</h4>
+                    <p>Interacts with external tools and APIs to gather information and execute tasks</p>
+                </div>
+            </div>
+
+            <h3>Chain-of-Thought Reasoning</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language">Prompt Example</span>
+                    <button class="copy-button">Copy</button>
+                </div>
+                <pre><code># Chain-of-Thought prompting example
+User: "Plan a weekly dinner menu for my family with dietary restrictions"
+
+AI Agent: "Let me think through this step by step:
+
+1. GATHER REQUIREMENTS:
+   - Number of family members and ages
+   - Need to identify specific dietary restrictions
+   - Should ask about cuisine preferences and budget
+   - Consider cooking time constraints
+
+2. PLAN MENU:
+   - Design dishes that accommodate restrictions
+   - Ensure nutritional variety and balance
+   - Calculate quantities and portions needed
+   - Include kid-friendly options
+
+3. LOGISTICS:
+   - Create organized shopping list with quantities
+   - Plan cooking timeline for the week
+   - Suggest meal prep strategies
+   - Consider leftover management
+
+4. EXECUTION:
+   - Schedule prep work for busy days
+   - Coordinate cooking times with family schedule
+   - Prepare backup quick meal options
+   - Include family members in age-appropriate tasks
+
+Let me start by asking: What dietary restrictions should I consider, and how many people will I be cooking for?"</code></pre>
+            </div>
+            <div class="cot-demo-container">
+                <h4>🎬 Interactive Chain-of-Thought Demo</h4>
+                <p style="margin-bottom: var(--space-3); font-size: 0.9rem;">See how an AI recipe assistant thinks through creating a custom meal plan step by step. <strong>Click on any step header to expand/collapse it, or use the controls below to explore the full reasoning process.</strong></p>
+                
+                <div class="scenario-info">
+                    <h5>🍽️ Scenario: Custom Family Meal Planning</h5>
+                    <p><strong>Goal:</strong> Create a week-long dinner menu for a family with specific dietary needs and cooking constraints</p>
+                </div>
+
+                <!-- Reasoning Steps -->
+                <div class="cot-step expanded" id="cot-step-1">
+                    <div class="step-header" onclick="toggleStep('cot-step-1')">
+                        <span class="step-number">1</span>
+                        <h5>🎯 Goal Understanding</h5>
+                        <span class="step-toggle">▲</span>
+                    </div>
+                    <div class="thinking-process">
+                        <div class="thinking-bubble">
+                            <h6>💭 AI Thinking:</h6>
+                            <p>"The user wants a week-long dinner menu for their family. I need to understand the key requirements: family size, dietary restrictions, cooking skill level, time constraints, and budget. This is a complex culinary planning task that requires balancing nutrition, preferences, and practical constraints."</p>
+                        </div>
+                        <div class="action-taken">
+                            <h6>⚡ Action:</h6>
+                            <p>Clarify family requirements and identify key cooking constraints</p>
+                        </div>
+                        <div class="step-output">
+                            <h6>📝 Output:</h6>
+                            <p>Identified core requirements: Weekly meal plan, family-focused, need to understand dietary restrictions and cooking constraints</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cot-step collapsed" id="cot-step-2">
+                    <div class="step-header" onclick="toggleStep('cot-step-2')">
+                        <span class="step-number">2</span>
+                        <h5>🔍 Information Gathering</h5>
+                        <span class="step-toggle">▼</span>
+                    </div>
+                    <div class="thinking-process">
+                        <div class="thinking-bubble">
+                            <h6>💭 AI Thinking:</h6>
+                            <p>"I need more specific information to create a practical meal plan. How many people? Any allergies or dietary preferences? What's their cooking experience? How much time do they have for meal prep? What kitchen equipment is available?"</p>
+                        </div>
+                        <div class="action-taken">
+                            <h6>⚡ Action:</h6>
+                            <p>Generate targeted questions about family cooking needs</p>
+                        </div>
+                        <div class="step-output">
+                            <h6>📝 Questions Generated:</h6>
+                            <ul>
+                                <li>How many family members and their ages?</li>
+                                <li>Any food allergies or dietary restrictions?</li>
+                                <li>Preferred cuisine types or foods to avoid?</li>
+                                <li>Available cooking time on weekdays vs weekends?</li>
+                                <li>Kitchen equipment and cooking skill level?</li>
+                                <li>Weekly grocery budget for dinners?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cot-step collapsed" id="cot-step-3">
+                    <div class="step-header" onclick="toggleStep('cot-step-3')">
+                        <span class="step-number">3</span>
+                        <h5>📊 Constraint Analysis</h5>
+                        <span class="step-toggle">▼</span>
+                    </div>
+                    <div class="thinking-process">
+                        <div class="thinking-bubble">
+                            <h6>💭 AI Thinking:</h6>
+                            <p>"Based on the responses: Family of 4 (2 adults, 2 kids), one child has dairy sensitivity, prefers Mediterranean/Asian flavors, 30 minutes max on weekdays, 1 hour on weekends, intermediate cooking skills, $80/week budget. These constraints will shape every recipe choice."</p>
+                        </div>
+                        <div class="action-taken">
+                            <h6>⚡ Action:</h6>
+                            <p>Analyze constraints and calculate planning parameters</p>
+                        </div>
+                        <div class="step-output">
+                            <h6>📝 Constraint Summary:</h6>
+                            <div class="constraint-list">
+                                <span class="constraint-tag">👨‍👩‍👧‍👦 Family of 4</span>
+                                <span class="constraint-tag">🥛 Dairy-free options needed</span>
+                                <span class="constraint-tag">⏰ 30min weekdays/1hr weekends</span>
+                                <span class="constraint-tag">💰 $80/week budget</span>
+                                <span class="constraint-tag">🌍 Mediterranean/Asian preferred</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cot-step collapsed" id="cot-step-4">
+                    <div class="step-header" onclick="toggleStep('cot-step-4')">
+                        <span class="step-number">4</span>
+                        <h5>💡 Solution Generation</h5>
+                        <span class="step-toggle">▼</span>
+                    </div>
+                    <div class="thinking-process">
+                        <div class="thinking-bubble">
+                            <h6>💭 AI Thinking:</h6>
+                            <p>"I need to balance quick weekday meals with more elaborate weekend cooking. Monday-Friday should be 30-minute dairy-free dishes that kids will enjoy. Weekends allow for more complex flavors and meal prep. I'll create themed days to add structure and excitement."</p>
+                        </div>
+                        <div class="action-taken">
+                            <h6>⚡ Action:</h6>
+                            <p>Design weekly meal themes and generate recipe options</p>
+                        </div>
+                        <div class="step-output">
+                            <h6>📝 Weekly Theme Options:</h6>
+                            <div class="venue-options">
+                                <div class="venue-option">
+                                    <strong>Monday:</strong> Meatless Monday - Mediterranean lentil bowls with dairy-free tzatziki
+                                </div>
+                                <div class="venue-option">
+                                    <strong>Tuesday:</strong> Taco Tuesday - Asian-fusion lettuce wraps with sesame dressing
+                                </div>
+                                <div class="venue-option">
+                                    <strong>Wednesday:</strong> One-Pan Wednesday - Sheet pan Mediterranean chicken with vegetables
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cot-step collapsed" id="cot-step-5">
+                    <div class="step-header" onclick="toggleStep('cot-step-5')">
+                        <span class="step-number">5</span>
+                        <h5>🎯 Plan Refinement</h5>
+                        <span class="step-toggle">▼</span>
+                    </div>
+                    <div class="thinking-process">
+                        <div class="thinking-bubble">
+                            <h6>💭 AI Thinking:</h6>
+                            <p>"Let me finalize the complete week with prep strategies. I'll include ingredient overlap to reduce waste and costs, batch cooking opportunities for busy days, and kid-friendly variations. Sunday meal prep will set up the week for success."</p>
+                        </div>
+                        <div class="action-taken">
+                            <h6>⚡ Action:</h6>
+                            <p>Create complete 7-day meal plan with prep strategies</p>
+                        </div>
+                        <div class="step-output">
+                            <h6>📝 Complete Weekly Menu:</h6>
+                            <div class="itinerary">
+                                <div class="day-plan">
+                                    <strong>Sunday:</strong> Meal prep day - Batch cook grains, chop vegetables, marinate proteins
+                                </div>
+                                <div class="day-plan">
+                                    <strong>Monday:</strong> Mediterranean Lentil Power Bowls (using prepped ingredients)
+                                </div>
+                                <div class="day-plan">
+                                    <strong>Tuesday:</strong> Asian Lettuce Wraps with Sesame Ginger Chicken
+                                </div>
+                                <div class="day-plan">
+                                    <strong>Wednesday:</strong> One-Pan Mediterranean Chicken & Vegetables
+                                </div>
+                                <div class="day-plan">
+                                    <strong>Thursday:</strong> Quick Thai-inspired Coconut Curry (dairy-free)
+                                </div>
+                                <div class="day-plan">
+                                    <strong>Friday:</strong> Build-Your-Own Mediterranean Flatbread Night
+                                </div>
+                                <div class="day-plan">
+                                    <strong>Saturday:</strong> Weekend special - Homemade Asian Dumplings (family cooking activity)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cot-step collapsed" id="cot-step-6">
+                    <div class="step-header" onclick="toggleStep('cot-step-6')">
+                        <span class="step-number">6</span>
+                        <h5>✅ Action Steps</h5>
+                        <span class="step-toggle">▼</span>
+                    </div>
+                    <div class="thinking-process">
+                        <div class="thinking-bubble">
+                            <h6>💭 AI Thinking:</h6>
+                            <p>"Now I need to provide actionable next steps: a complete shopping list organized by store sections, prep timeline, and cooking instructions. I'll also include backup options for busy days and tips for involving kids in age-appropriate cooking tasks."</p>
+                        </div>
+                        <div class="action-taken">
+                            <h6>⚡ Action:</h6>
+                            <p>Create comprehensive implementation plan with shopping and prep guides</p>
+                        </div>
+                        <div class="step-output">
+                            <h6>📝 Your Action Plan:</h6>
+                            <ol class="action-list">
+                                <li><strong>Shopping List:</strong> Organized grocery list by store section with exact quantities needed</li>
+                                <li><strong>Sunday Prep:</strong> 90-minute meal prep session with step-by-step timeline</li>
+                                <li><strong>Daily Recipes:</strong> Detailed cooking instructions with dairy-free substitutions clearly marked</li>
+                                <li><strong>Backup Plans:</strong> 15-minute emergency meals for unexpectedly busy days</li>
+                                <li><strong>Kid Activities:</strong> Age-appropriate cooking tasks for each meal to involve the family</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="demo-insight">
+                    <p><strong>🎯 Key Insight:</strong> Notice how the AI doesn't just suggest random recipes - it shows its reasoning process, considers all constraints, weighs trade-offs between nutrition and convenience, and provides a complete implementation strategy. This transparency makes the meal planning trustworthy and allows you to understand and modify the approach for your specific needs.</p>
+                </div>
+
+                <!-- Demo Controls -->
+                <div class="cot-controls">
+                    <button class="control-btn" onclick="expandAllSteps()">📖 Show All Steps</button>
+                    <button class="control-btn" onclick="collapseAllSteps()">📋 Collapse All</button>
+                    <button class="control-btn" onclick="toggleWalkthrough()">🎯 Step-by-Step</button>
+                </div>
+            </div>
+
+            <h3>MCP Servers and Tool Access</h3>
+            <p>The <strong>Model Context Protocol (MCP)</strong> is an emerging open standard that provides a universal adapter for AI agents to interface with external systems, databases, and APIs.</p>
+
+            <script>
+                // Chain-of-Thought Demo Functionality
+                let currentStepIndex = 0;
+                const stepIds = ['cot-step-1', 'cot-step-2', 'cot-step-3', 'cot-step-4', 'cot-step-5', 'cot-step-6'];
+                
+                function toggleStep(stepId) {
+                    const step = document.getElementById(stepId);
+                    const toggle = step.querySelector('.step-toggle');
+                    
+                    if (step.classList.contains('collapsed')) {
+                        step.classList.remove('collapsed');
+                        step.classList.add('expanded');
+                        toggle.textContent = '▲';
+                    } else {
+                        step.classList.add('collapsed');
+                        step.classList.remove('expanded');
+                        toggle.textContent = '▼';
+                    }
+                }
+                
+                function expandAllSteps() {
+                    stepIds.forEach(stepId => {
+                        const step = document.getElementById(stepId);
+                        const toggle = step.querySelector('.step-toggle');
+                        step.classList.remove('collapsed');
+                        step.classList.add('expanded');
+                        toggle.textContent = '▲';
+                    });
+                }
+                
+                function collapseAllSteps() {
+                    stepIds.forEach(stepId => {
+                        const step = document.getElementById(stepId);
+                        const toggle = step.querySelector('.step-toggle');
+                        step.classList.add('collapsed');
+                        step.classList.remove('expanded');
+                        toggle.textContent = '▼';
+                    });
+                    currentStepIndex = 0;
+                }
+                
+                function toggleWalkthrough() {
+                    collapseAllSteps();
+                    
+                    // Show steps one by one with delay
+                    stepIds.forEach((stepId, index) => {
+                        setTimeout(() => {
+                            const step = document.getElementById(stepId);
+                            const toggle = step.querySelector('.step-toggle');
+                            step.classList.remove('collapsed');
+                            step.classList.add('expanded');
+                            toggle.textContent = '▲';
+                            
+                            // Scroll into view
+                            step.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, index * 1500); // 1.5 second delay between steps
+                    });
+                }
+            </script>
+
+            <div class="mermaid-diagram">
+                <pre class="mermaid">
+graph LR
+    A[AI Agent] --> B[MCP Client]
+    B --> C[MCP Server]
+    C --> D[Database]
+    C --> E[API Service]
+    C --> F[File System]
+    C --> G[Web Service]
+    
+    style A fill:#3b82f6,color:#fff
+    style B fill:#10b981,color:#fff
+    style C fill:#f59e0b,color:#fff
+</pre>
+            </div>
+        </section>
+
+        <section class="conclusion">
+            <h2>Bringing It All Together</h2>
+            <p>In conclusion, <strong>embeddings</strong> serve as the numerical language for semantic meaning, <strong>vector databases</strong> provide the efficient infrastructure to store and query this language, and <strong>LLMs</strong>, powered by the Transformer architecture, leverage these representations to generate human-like text and perform complex language tasks.</p>
+            
+            <p>Together, they form a powerful ecosystem driving the next generation of AI applications, from simple chatbots to sophisticated autonomous agents capable of reasoning, planning, and taking action in the real world.</p>
+        </section>

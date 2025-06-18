@@ -12,38 +12,60 @@ After cloning this repository:
 
 That's it! No additional dependencies to install - the site uses CDN resources for external libraries.
 
-## What to Expect
+## Site Structure
 
-Once you start the server, you'll have access to:
+The site is organized into three main sections:
 
-### Interactive Demos
-- **Vector Similarity**: Click points to see real-time similarity calculations
-- **Chain-of-Thought**: Step through AI reasoning for meal planning (collapsible steps)
-- **Transformer Attention**: Visualize how transformers process text
-- **RAG Pipeline**: Animated flow showing retrieval-augmented generation
+### 1. Introduction (Default Landing Page)
+- **Welcome & Overview**: Introduction to modern AI architecture
+- **Learning Objectives**: What you'll master in this guide
+- **Recipe Assistant Analogy**: Our learning companion throughout the journey
+- **Learning Path Options**: Choose your starting point based on experience level
 
-### Educational Content
-- **Embeddings**: Understanding vector representations
-- **Vector Databases**: Similarity search and storage
-- **Large Language Models**: Architecture and capabilities
-- **Agentic AI**: Autonomous problem-solving systems
+### 2. AI Architecture Guide (Core Technical Content)
+- **Embeddings**: Vector representations and dimensional spaces
+- **Vector Databases**: Semantic storage and similarity search
+- **Large Language Models**: Transformer architecture and attention mechanisms
+- **RAG Systems**: Retrieval Augmented Generation with animated demos
+- **Agentic AI**: Autonomous problem-solving with chain-of-thought reasoning
 
-### Navigation
-- **Main Navigation**: Top navigation bar for switching between main sections (AI Architecture Guide, Advanced Topics)
-- **Table of Contents**: Fixed right-side panel for quick navigation within each section
-- **Responsive Design**: TOC moves to bottom on mobile, content adjusts automatically
+### 3. Advanced Topics (Deep Dive)
+- **Mathematical Foundations**: Advanced vector mathematics
+- **Real-World Applications**: Production implementation patterns
+- **Implementation Guide**: Practical deployment strategies
 
-## Features
+## Interactive Features
 
-- **Interactive Demos**: 
-  - Vector space visualization with real-time similarity calculations
-  - Chain-of-Thought reasoning walkthrough with collapsible steps
-  - Transformer attention mechanism visualization
-  - RAG (Retrieval Augmented Generation) flow animation
-- **Syntax Highlighting**: Python code examples with Prism.js
-- **Responsive Design**: Modern CSS with dark/light theme toggle  
-- **Multi-page Architecture**: Main article + deep dive sections
-- **Rich Visualizations**: Mermaid.js diagrams for AI concepts
+## Interactive Features
+
+- **Vector Space Demonstrations**: 
+  - 1D, 2D, and 3D vector space visualizations with recipe examples
+  - Interactive points showing semantic relationships and clustering
+  - Real-time similarity calculations with cosine distance
+- **Chain-of-Thought Reasoning**: 
+  - Step-by-step AI reasoning walkthrough for meal planning
+  - Collapsible sections to explore thinking process
+  - Interactive controls for stepping through reasoning
+- **Transformer Attention Visualization**: 
+  - Multi-head attention mechanism demo
+  - Real-time text processing with attention weights
+  - Different attention heads (semantic, syntactic, contextual)
+- **RAG Pipeline Animation**: 
+  - Complete retrieval-augmented generation flow
+  - Step-by-step process from query to response
+  - Visual representation of knowledge retrieval and augmentation
+
+## Technical Features
+
+- **Single Page Application (SPA)**: Lightweight router with dynamic content loading
+- **Syntax Highlighting**: Python/JavaScript code examples with Prism.js
+- **Responsive Design**: Modern CSS Grid with adaptive layout
+- **Smart Navigation**: 
+  - Top navigation for main sections (Introduction, AI Architecture Guide, Advanced Topics)
+  - Dynamic Table of Contents (hidden on introduction page)
+  - Active state management and smooth transitions
+- **Rich Visualizations**: Mermaid.js diagrams for complex AI concepts
+- **Progressive Enhancement**: Works without JavaScript, enhanced with interactivity
 
 ## Running the Site
 
@@ -143,8 +165,10 @@ vercel --prod
 Your site is **production-ready as-is** - no build step required:
 
 ```
-✅ index.html              # Main page
-✅ advanced-topics.html    # Deep dive page
+✅ index.html              # SPA application shell
+✅ content/fundamentals.html # AI fundamentals content
+✅ content/advanced-topics.html # Advanced topics content
+✅ js/router.js            # SPA routing system
 ✅ styles.css              # All styling (already optimized)
 ✅ js/                     # JavaScript modules
 ✅ README.md               # Documentation
@@ -204,13 +228,15 @@ All external libraries are loaded via CDN - no local installation required:
 
 ```
 /
-├── index.html              # Main article page with all demos
-├── advanced-topics.html    # Deep dive: Advanced embeddings
+├── index.html              # Application shell (SPA entry point)
+├── content/                # Content files (loaded dynamically)
+│   ├── fundamentals.html   # AI fundamentals content
+│   └── advanced-topics.html # Advanced topics content  
 ├── styles.css              # Complete styling (1800+ lines)
 ├── server.py               # Python development server
 ├── js/                     # JavaScript modules
 │   ├── main.js            # Core functionality & theme toggle
-│   ├── navigation.js      # Page navigation
+│   ├── router.js          # SPA router and content loading
 │   ├── rag-flow.js        # RAG demo animation
 │   ├── transformer-demo.js # Transformer visualization
 │   ├── vector-demos.js    # Vector space demos
@@ -223,9 +249,10 @@ All external libraries are loaded via CDN - no local installation required:
 
 ### Key Pages
 
-- **`index.html`**: Complete AI architecture guide with interactive demos
-- **`advanced-topics.html`**: Advanced topics and deep-dive content  
-- **`server.py`**: Development server with auto-port detection
+- **`index.html`**: SPA application shell with navigation and dynamic content loading
+- **`content/fundamentals.html`**: AI architecture fundamentals content (formerly index.html content)
+- **`content/advanced-topics.html`**: Advanced topics and deep-dive content  
+- **`js/router.js`**: Lightweight SPA router for navigation and content loading
 - **`styles.css`**: All styling including responsive design and animations
 
 ## Author
@@ -258,3 +285,29 @@ python3 server.py 8080
 **Styling issues:**
 - Clear browser cache (Ctrl+F5 / Cmd+Shift+R)
 - Ensure `styles.css` loaded properly in browser dev tools
+
+## Architecture Changes (Latest Update)
+
+The site has been restructured from multiple static HTML files into a modern Single Page Application (SPA):
+
+### Before: Multi-Page Static Site
+- ❌ Duplicate navigation/header code across pages
+- ❌ Full page reloads on navigation  
+- ❌ Repeated CSS/JS loading
+- ❌ Difficult to maintain consistency
+
+### After: Lightweight SPA
+- ✅ Single application shell (`index.html`)
+- ✅ Dynamic content loading from `/content/` directory
+- ✅ Vanilla JavaScript router with no dependencies
+- ✅ Content caching for improved performance
+- ✅ Unified navigation and TOC management
+- ✅ Better maintainability and consistency
+
+### Implementation Details
+- **Router**: Custom `AIArchitectureRouter` class handles navigation
+- **Content**: Extracted into separate HTML files in `/content/` 
+- **Caching**: Previously loaded content is cached in memory
+- **History**: Full browser back/forward button support
+- **TOC**: Dynamically updated based on current page
+- **Error Handling**: Graceful fallbacks for network issues

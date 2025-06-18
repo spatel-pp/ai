@@ -114,7 +114,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Layout Grid */
+/* Layout Grid - Updated for SPA */
 .layout-grid {
   display: grid;
   grid-template-areas: 
@@ -1785,7 +1785,6 @@ td:nth-child(4) {
 .control-btn:hover {
   background: var(--accent-blue-dark);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .scenario-info {
@@ -1801,45 +1800,356 @@ td:nth-child(4) {
   color: var(--accent-amber);
 }
 
-/* Responsive Styles for Chain-of-Thought Demo */
-@media (max-width: 768px) {
-  .cot-demo-container {
-    padding: var(--space-2);
-    margin: var(--space-2) 0;
-  }
-  
-  .cot-step {
-    margin-bottom: var(--space-2);
-  }
-  
-  .thinking-process {
-    padding: 0 var(--space-2) var(--space-2) var(--space-2);
-  }
-  
-  .thinking-bubble, .action-taken, .step-output {
-    padding: var(--space-2);
-  }
-  
-  .constraint-list {
-    flex-direction: column;
-    gap: var(--space-1);
-  }
-  
-  .constraint-tag {
+/* Layout Grid */
+.layout-grid {
+  display: grid;
+  grid-template-areas: 
+    "header"
+    "nav"
+    "toc"
+    "main"
+    "footer";
+  grid-template-rows: auto auto auto 1fr auto;
+  min-height: 100vh;
+}
+
+/* Loading States */
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-20);
+  text-align: center;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--primary-300);
+  border-top: 3px solid var(--accent-blue);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: var(--space-4);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  text-align: center;
+  padding: var(--space-16);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--error);
+  color: var(--error);
+}
+
+.error-message h2 {
+  color: var(--error);
+  margin-bottom: var(--space-4);
+}
+
+.retry-button {
+  background: var(--accent-blue);
+  color: white;
+  border: none;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: var(--space-4);
+  transition: background 0.2s ease;
+}
+
+.retry-button:hover {
+  background: var(--primary-700);
+}
+
+/* Navigation active states for SPA */
+.nav-section.active {
+  background: var(--accent-blue);
+  color: white;
+  border-radius: var(--radius);
+  padding: var(--space-2) var(--space-4);
+}
+
+.nav-section {
+  transition: all 0.2s ease;
+  text-decoration: none;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius);
+}
+
+.nav-section:hover {
+  background: var(--bg-secondary);
+}
+
+/* TOC active states */
+.toc-link.active {
+  background: var(--accent-blue);
+  color: white;
+  font-weight: 500;
+}
+
+/* Smooth transitions for content changes */
+.main-content {
+  transition: opacity 0.3s ease;
+}
+
+.main-content.loading {
+  opacity: 0.7;
+}
+
+/* Introduction Page Styles */
+.journey-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-4) 0;
+}
+
+.journey-step {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.journey-step:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+}
+
+.step-number {
+    background: var(--primary);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.step-content h3 {
+    margin: 0 0 var(--space-2) 0;
+    color: var(--text-primary);
+}
+
+.step-content p {
+    margin: 0 0 var(--space-3) 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.step-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
+.step-link:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+.getting-started {
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    margin: var(--space-6) 0;
+    border: 1px solid var(--border);
+}
+
+.getting-started h2 {
     text-align: center;
-  }
-  
-  .cot-controls {
-    flex-direction: column;
+    margin-bottom: var(--space-4);
+    color: var(--text-primary);
+}
+
+.getting-started > p {
+    text-align: center;
+    margin-bottom: var(--space-5);
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.path-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-4);
+}
+
+.path-option {
+    background: var(--bg-primary);
+    padding: var(--space-5);
+    border-radius: var(--radius);
+    border: 2px solid var(--border);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.path-option:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+}
+
+.path-option.beginner {
+    border-color: var(--success);
+}
+
+.path-option.experienced {
+    border-color: var(--warning);
+}
+
+.path-option h3 {
+    margin: 0 0 var(--space-3) 0;
+    color: var(--text-primary);
+}
+
+.path-option p {
+    margin: 0 0 var(--space-4) 0;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.path-button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.path-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+.path-button.secondary {
+    background: var(--warning);
+}
+
+.path-button.secondary:hover {
+    background: #e17d08;
+}
+
+.path-button.success {
+    background: var(--success);
+}
+
+.path-button.success:hover {
+    background: #059669;
+}
+
+/* Learning objectives grid */
+.learning-objectives {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-4) 0;
+}
+
+.objective {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.objective:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+}
+
+.objective-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.objective-content h3 {
+    margin: 0 0 var(--space-2) 0;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.objective-content p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Analogy features list styling */
+.analogy-features {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-4) 0;
+}
+
+.analogy-features li {
+    display: flex;
+    align-items: flex-start;
     gap: var(--space-2);
-  }
-  
-  .control-btn {
-    width: 100%;
+    margin-bottom: var(--space-3);
     padding: var(--space-3);
-  }
-  
-  .scenario-info {
-    padding: var(--space-2);
-  }
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    border-left: 4px solid var(--primary);
+}
+
+.analogy-insight {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%);
+    border: 1px solid var(--primary);
+    border-radius: var(--radius);
+    padding: var(--space-4);
+    margin: var(--space-4) 0;
+}
+
+.analogy-insight p {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Responsive design for introduction */
+@media (max-width: 768px) {
+    .journey-steps,
+    .path-options,
+    .learning-objectives {
+        grid-template-columns: 1fr;
+    }
+    
+    .journey-step {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .getting-started {
+        padding: var(--space-4);
+    }
 }

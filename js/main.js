@@ -14,8 +14,8 @@ class ModernAI {
     this.setupScrollHighlighting();
     this.setupScrollAnimations();
     this.setupNavigationHighlight();
-    // Initialize demos immediately like original script.js
-    this.initializeDemos();
+    // Don't initialize demos immediately in SPA - let router handle it
+    // this.initializeDemos();
   }
 
   setupEventListeners() {
@@ -126,11 +126,13 @@ class ModernAI {
   }
 }
 
-// Initialize when DOM is loaded
+// Initialize when DOM is loaded - but skip demo init for SPA
 document.addEventListener('DOMContentLoaded', () => {
   // Wait a bit for external scripts to load (matching script.js pattern)
   setTimeout(() => {
     window.modernAI = new ModernAI();
+    // Don't run demo initialization here - let the router handle it
+    // when content is actually loaded
   }, 100);
 });
 
