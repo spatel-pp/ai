@@ -285,8 +285,11 @@ class AIArchitectureRouter {
         // Initialize vector space demos
         if (window.VectorDemos) {
             try {
-                const vectorDemos = new VectorDemos();
-                vectorDemos.init();
+                // Only create instance if we don't already have one or if demos need reinit
+                if (!window.currentVectorDemos) {
+                    window.currentVectorDemos = new VectorDemos();
+                }
+                window.currentVectorDemos.init();
                 console.log('Vector demos initialized');
             } catch (error) {
                 console.log('Vector demos not available or failed to initialize:', error);
@@ -301,17 +304,6 @@ class AIArchitectureRouter {
                 console.log('Transformer demo initialized');
             } catch (error) {
                 console.log('Transformer demo not available or failed to initialize:', error);
-            }
-        }
-
-        // Initialize simple vector demos
-        if (window.SimpleVectorDemos) {
-            try {
-                const simpleVectorDemos = new SimpleVectorDemos();
-                simpleVectorDemos.init();
-                console.log('Simple vector demos initialized');
-            } catch (error) {
-                console.log('Simple vector demos not available or failed to initialize:', error);
             }
         }
 

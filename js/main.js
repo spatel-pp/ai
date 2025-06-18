@@ -110,19 +110,9 @@ class ModernAI {
 
   // Initialize all demo components
   initializeDemos() {
-    // Vector space demos
-    if (window.VectorDemos) {
-      const vectorDemos = new VectorDemos();
-      vectorDemos.init();
-    }
-
-    // Transformer demo
-    if (window.TransformerDemo) {
-      const transformerDemo = new TransformerDemo();
-      transformerDemo.setup();
-    }
-
-    // RAG flow animation is initialized directly in rag-flow.js
+    // Note: All demos are now initialized by the router when content loads
+    // This prevents duplicate initialization and ensures demos work with dynamic content
+    console.log('Demo initialization is handled by the router for SPA compatibility');
   }
 }
 
