@@ -29,9 +29,9 @@ Once you start the server, you'll have access to:
 - **Agentic AI**: Autonomous problem-solving systems
 
 ### Navigation
-- **Table of Contents**: Docked sidebar for easy navigation
-- **Dark/Light Mode**: Theme toggle in the header
-- **Responsive Design**: Works on desktop, tablet, and mobile
+- **Main Navigation**: Top navigation bar for switching between main sections (AI Architecture Guide, Advanced Topics)
+- **Table of Contents**: Fixed right-side panel for quick navigation within each section
+- **Responsive Design**: TOC moves to bottom on mobile, content adjusts automatically
 
 ## Features
 
@@ -80,6 +80,99 @@ The site works in all modern browsers. For the best experience:
 - **Recommended**: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
 - **Interactive demos** require JavaScript enabled
 - **External libraries** (Mermaid.js, Prism.js) loaded from CDN
+
+## Deployment
+
+This is a **static site** with no backend requirements - perfect for free hosting services! No build process or compilation needed.
+
+### 🌟 GitHub Pages (Recommended)
+
+Since you're already using Git, this is the simplest option:
+
+1. **Push your code to GitHub** (if not already there)
+2. **Go to repository Settings → Pages**
+3. **Select source**: Deploy from branch → `main`
+4. **Wait 2-3 minutes for deployment**
+5. **Your site will be live at**: `https://yourusername.github.io/repository-name`
+
+**Benefits:**
+- ✅ Free forever with custom domain support
+- ✅ HTTPS by default
+- ✅ Automatic deploys from Git
+- ✅ Global CDN for fast loading
+- ✅ Perfect for educational content
+
+### 🚀 Netlify
+
+Drag & drop deployment or Git integration:
+
+1. **Go to [netlify.com](https://netlify.com)**
+2. **Option A**: Drag & drop your project folder to the deploy area
+3. **Option B**: Connect your GitHub repo for automatic deployments
+4. **Optional**: Add custom domain in site settings
+
+**Benefits:**
+- ✅ Instant preview deployments
+- ✅ Form handling (if you add contact forms later)
+- ✅ Edge functions support
+- ✅ Excellent performance analytics
+
+### ⚡ Vercel
+
+Fast global deployment:
+
+1. **Go to [vercel.com](https://vercel.com)**
+2. **Import your GitHub repository**
+3. **Deploy with default settings**
+4. **Optional**: Install Vercel CLI for command-line deployments
+
+```bash
+# Optional: CLI deployment
+npm i -g vercel
+vercel --prod
+```
+
+**Benefits:**
+- ✅ Lightning fast global CDN
+- ✅ Automatic HTTPS
+- ✅ Built-in analytics
+- ✅ Perfect for performance-critical sites
+
+### 📁 What Gets Deployed
+
+Your site is **production-ready as-is** - no build step required:
+
+```
+✅ index.html              # Main page
+✅ embeddings.html         # Deep dive page
+✅ styles.css              # All styling (already optimized)
+✅ js/                     # JavaScript modules
+✅ README.md               # Documentation
+❌ server.py               # Only for local development
+❌ temp/                   # Development files (gitignored)
+❌ *.backup                # Backup files (optional to exclude)
+```
+
+### 🎯 Why No Build Process?
+
+Unlike React/Vue/Angular projects, this site uses:
+- **Vanilla JavaScript** - Runs directly in browsers
+- **Modern CSS** - No compilation needed
+- **CDN Libraries** - External dependencies loaded at runtime
+- **Static Assets** - Everything is already optimized
+
+Just push your files and they're ready to serve! 🚀
+
+### 📋 Deployment Checklist
+
+Before deploying, ensure:
+- ✅ All changes committed to your `main` branch
+- ✅ Site works locally with `python3 server.py`
+- ✅ Interactive demos function properly
+- ✅ No broken links between pages
+- ✅ External CDN resources loading (check browser dev tools)
+
+**Ready to deploy?** Choose GitHub Pages for the simplest setup!
 
 ## Browser Support
 

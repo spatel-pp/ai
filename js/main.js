@@ -1,14 +1,12 @@
 /**
- * Main application initialization and theme management
+ * Main application initialization and management
  */
 class ModernAI {
   constructor() {
-    this.currentTheme = localStorage.getItem('theme') || 'light';
     this.init();
   }
 
   init() {
-    this.applyTheme();
     this.setupEventListeners();
     this.setupCodeCopyButtons();
     this.initializePrism();
@@ -21,12 +19,6 @@ class ModernAI {
   }
 
   setupEventListeners() {
-    // Theme toggle
-    const themeToggle = document.querySelector('.theme-toggle');
-    if (themeToggle) {
-      themeToggle.addEventListener('click', () => this.toggleTheme());
-    }
-
     // Mobile menu toggle
     const menuToggle = document.querySelector('.menu-toggle');
     const nav = document.querySelector('.main-nav');
@@ -34,20 +26,6 @@ class ModernAI {
       menuToggle.addEventListener('click', () => {
         nav.classList.toggle('active');
       });
-    }
-  }
-
-  toggleTheme() {
-    this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
-    this.applyTheme();
-    localStorage.setItem('theme', this.currentTheme);
-  }
-
-  applyTheme() {
-    document.documentElement.setAttribute('data-theme', this.currentTheme);
-    const themeToggle = document.querySelector('.theme-toggle');
-    if (themeToggle) {
-      themeToggle.textContent = this.currentTheme === 'light' ? '🌙' : '☀️';
     }
   }
 

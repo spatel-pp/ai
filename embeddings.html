@@ -15,7 +15,7 @@
     <!-- Custom Styles -->
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="layout-grid">
+<body class="layout-grid has-sidebar">
     <header class="site-header">
         <h1>Deep Dive: Vector Embeddings</h1>
         <p>Mathematical Foundations and Practical Applications</p>
@@ -24,17 +24,34 @@
     <nav class="site-nav">
         <div class="nav-container">
             <div class="nav-brand">
-                <a href="index.html" style="text-decoration: none; color: inherit;">← AI Architecture Guide</a>
+                <strong>AI Architecture Guide</strong>
             </div>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#mathematics">Mathematics</a></li>
-                <li><a href="#applications">Applications</a></li>
-                <li><a href="#implementation">Implementation</a></li>
+                <li><a href="index.html" class="nav-section">AI Architecture Guide</a></li>
+                <li><a href="embeddings.html" class="nav-section active">Advanced Topics</a></li>
             </ul>
-            <button class="theme-toggle" aria-label="Toggle theme">🌙</button>
         </div>
     </nav>
+
+    <!-- Table of Contents -->
+    <aside class="table-of-contents docked" id="toc">
+        <nav class="toc-nav">
+            <ul class="toc-list">
+                <li><a href="#mathematics" class="toc-link" data-section="mathematics">
+                    <span class="toc-number">1</span>
+                    <span class="toc-title">Mathematical Foundations</span>
+                </a></li>
+                <li><a href="#applications" class="toc-link" data-section="applications">
+                    <span class="toc-number">2</span>
+                    <span class="toc-title">Real-World Applications</span>
+                </a></li>
+                <li><a href="#implementation" class="toc-link" data-section="implementation">
+                    <span class="toc-number">3</span>
+                    <span class="toc-title">Implementation Guide</span>
+                </a></li>
+            </ul>
+        </nav>
+    </aside>
 
     <main class="main-content">
         <section class="intro-section animate-fade-in">

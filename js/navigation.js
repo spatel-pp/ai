@@ -66,7 +66,7 @@ class NavigationManager {
     if (tocToggle && toc) {
       tocToggle.addEventListener('click', () => {
         toc.classList.toggle('collapsed');
-        tocToggle.textContent = toc.classList.contains('collapsed') ? '⌄' : '⌃';
+        tocToggle.textContent = toc.classList.contains('collapsed') ? '▼' : '▲';
       });
     }
   }
