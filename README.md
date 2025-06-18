@@ -144,7 +144,7 @@ Your site is **production-ready as-is** - no build step required:
 
 ```
 ✅ index.html              # Main page
-✅ embeddings.html         # Deep dive page
+✅ advanced-topics.html    # Deep dive page
 ✅ styles.css              # All styling (already optimized)
 ✅ js/                     # JavaScript modules
 ✅ README.md               # Documentation
@@ -205,7 +205,7 @@ All external libraries are loaded via CDN - no local installation required:
 ```
 /
 ├── index.html              # Main article page with all demos
-├── embeddings.html         # Deep dive: Advanced embeddings
+├── advanced-topics.html    # Deep dive: Advanced embeddings
 ├── styles.css              # Complete styling (1800+ lines)
 ├── server.py               # Python development server
 ├── js/                     # JavaScript modules
@@ -224,7 +224,7 @@ All external libraries are loaded via CDN - no local installation required:
 ### Key Pages
 
 - **`index.html`**: Complete AI architecture guide with interactive demos
-- **`embeddings.html`**: Advanced topics and deep-dive content  
+- **`advanced-topics.html`**: Advanced topics and deep-dive content  
 - **`server.py`**: Development server with auto-port detection
 - **`styles.css`**: All styling including responsive design and animations
 
