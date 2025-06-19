@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vector Demo Test</title>
+    <style>
+        .vector-space-2d, .vector-space-3d {
+            border: 2px solid #333;
+            margin: 20px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vector Demo Test</h1>
+    
+    <div class="vector-space-2d">
+        <h3>2D Demo Should Appear Here</h3>
+    </div>
+    
+    <div class="vector-space-3d">
+        <h3>3D Demo Should Appear Here</h3>
+    </div>
+
+    <script src="js/vector-demos.js"></script>
+    <script>
+        // Simple test
+        setTimeout(() => {
+            console.log('Testing VectorDemos...');
+            const demos = new VectorDemos();
+            demos.init();
+        }, 100);
+    </script>
+</body>
+</html>

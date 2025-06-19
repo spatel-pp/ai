@@ -1,11 +1,10 @@
 // Vector Space Demonstrations - Working Implementation
 class VectorDemos {
   constructor() {
-    console.log('VectorDemos constructor');
   }
 
   init() {
-    console.log('VectorDemos init - setting up demos...');
+    console.log('VectorDemos init starting...');
     this.setupVectorSpace1D();
     this.setupVectorSpace2D();
     this.setupVectorSpace3D();
@@ -15,9 +14,6 @@ class VectorDemos {
   setupVectorSpace1D() {
     const container = document.querySelector('.vector-space-1d');
     if (!container) return;
-
-    // Clear any existing content to prevent duplicates
-    container.innerHTML = '';
 
     const canvas = document.createElement('canvas');
     canvas.width = 800;
@@ -120,20 +116,16 @@ class VectorDemos {
     
     draw1D();
     container.appendChild(canvas);
-    console.log('1D demo completed');
   }
 
   setupVectorSpace2D() {
+    console.log('Setting up 2D demo...');
     const container = document.querySelector('.vector-space-2d');
     if (!container) {
-        console.log('No 2D container found');
+        console.log('No 2D container found!');
         return;
     }
     
-    // Clear any existing content to prevent duplicates
-    container.innerHTML = '';
-    
-    console.log('Setting up 2D demo...');
     const canvas = document.createElement('canvas');
     canvas.width = 800;
     canvas.height = 600;
@@ -250,20 +242,16 @@ class VectorDemos {
     
     draw2D();
     container.appendChild(canvas);
-    console.log('2D demo completed');
   }
 
   setupVectorSpace3D() {
+    console.log('Setting up 3D demo...');
     const container = document.querySelector('.vector-space-3d');
     if (!container) {
-        console.log('No 3D container found');
+        console.log('No 3D container found!');
         return;
     }
     
-    // Clear any existing content to prevent duplicates
-    container.innerHTML = '';
-    
-    console.log('Setting up 3D demo...');
     const canvas = document.createElement('canvas');
     canvas.width = 800;
     canvas.height = 600;
@@ -508,11 +496,8 @@ class VectorDemos {
             draw3D();
         }
     }, 100);
-    
-    console.log('3D demo completed');
   }
 }
 
 // Export for use in main.js
 window.VectorDemos = VectorDemos;
-console.log('VectorDemos class exported to window');
