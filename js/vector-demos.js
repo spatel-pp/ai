@@ -257,35 +257,31 @@ class VectorDemos {
     canvas.height = 600;
     const ctx = canvas.getContext('2d');
     
-    // 3D demo with recipe data
+    // 3D demo with recipe data - 4 main categories
     const recipes3D = [
-        // Quick & Cold
-        { name: 'Caesar Salad', x: 0.15, y: 0.6, z: 0.1, category: 'salads', color: '#22c55e' },
-        { name: 'Fruit Smoothie', x: 0.1, y: 0.3, z: 0.15, category: 'beverages', color: '#06b6d4' },
-        { name: 'Gazpacho', x: 0.2, y: 0.7, z: 0.05, category: 'soups', color: '#8b5cf6' },
+        // Quick & Cold - Light Meals
+        { name: 'Caesar Salad', x: 0.15, y: 0.6, z: 0.1, category: 'light', color: '#22c55e' },
+        { name: 'Fruit Smoothie', x: 0.1, y: 0.3, z: 0.15, category: 'light', color: '#22c55e' },
+        { name: 'Gazpacho', x: 0.2, y: 0.7, z: 0.05, category: 'light', color: '#22c55e' },
+        { name: 'Ice Cream', x: 0.05, y: 0.3, z: 0.05, category: 'light', color: '#22c55e' },
         
-        // Quick & Hot
-        { name: 'Scrambled Eggs', x: 0.1, y: 0.2, z: 0.8, category: 'breakfast', color: '#f59e0b' },
-        { name: 'Grilled Cheese', x: 0.15, y: 0.25, z: 0.85, category: 'sandwiches', color: '#3b82f6' },
-        { name: 'Instant Ramen', x: 0.05, y: 0.15, z: 0.9, category: 'noodles', color: '#ef4444' },
+        // Quick & Hot - Fast Meals
+        { name: 'Scrambled Eggs', x: 0.1, y: 0.2, z: 0.8, category: 'fast', color: '#3b82f6' },
+        { name: 'Grilled Cheese', x: 0.15, y: 0.25, z: 0.85, category: 'fast', color: '#3b82f6' },
+        { name: 'Instant Ramen', x: 0.05, y: 0.15, z: 0.9, category: 'fast', color: '#3b82f6' },
+        { name: 'Pasta Carbonara', x: 0.3, y: 0.4, z: 0.85, category: 'fast', color: '#3b82f6' },
         
-        // Medium Time & Ingredients
-        { name: 'Chicken Curry', x: 0.6, y: 0.8, z: 0.9, category: 'mains', color: '#dc2626' },
-        { name: 'Pasta Carbonara', x: 0.3, y: 0.4, z: 0.85, category: 'pasta', color: '#f97316' },
-        { name: 'Beef Stir-fry', x: 0.25, y: 0.5, z: 0.8, category: 'mains', color: '#dc2626' },
+        // Medium Time & Ingredients - Main Courses
+        { name: 'Chicken Curry', x: 0.6, y: 0.8, z: 0.9, category: 'mains', color: '#f59e0b' },
+        { name: 'Beef Stir-fry', x: 0.25, y: 0.5, z: 0.8, category: 'mains', color: '#f59e0b' },
+        { name: 'Paella', x: 0.7, y: 0.95, z: 0.9, category: 'mains', color: '#f59e0b' },
+        { name: 'Tiramisu', x: 0.4, y: 0.6, z: 0.1, category: 'mains', color: '#f59e0b' },
         
-        // Long Time, Many Ingredients
-        { name: 'Beef Bourguignon', x: 0.9, y: 0.9, z: 0.95, category: 'stews', color: '#7c2d12' },
-        { name: 'Paella', x: 0.7, y: 0.95, z: 0.9, category: 'rice', color: '#f59e0b' },
-        { name: 'Coq au Vin', x: 0.8, y: 0.85, z: 0.9, category: 'mains', color: '#dc2626' },
-        
-        // Cold Desserts
-        { name: 'Ice Cream', x: 0.05, y: 0.3, z: 0.05, category: 'desserts', color: '#ec4899' },
-        { name: 'Tiramisu', x: 0.4, y: 0.6, z: 0.1, category: 'desserts', color: '#ec4899' },
-        
-        // Hot Desserts
-        { name: 'Apple Pie', x: 0.8, y: 0.7, z: 0.75, category: 'baking', color: '#a855f7' },
-        { name: 'Chocolate Soufflé', x: 0.5, y: 0.5, z: 0.8, category: 'desserts', color: '#ec4899' }
+        // Long Time, Many Ingredients - Gourmet
+        { name: 'Beef Bourguignon', x: 0.9, y: 0.9, z: 0.95, category: 'gourmet', color: '#dc2626' },
+        { name: 'Coq au Vin', x: 0.8, y: 0.85, z: 0.9, category: 'gourmet', color: '#dc2626' },
+        { name: 'Apple Pie', x: 0.8, y: 0.7, z: 0.75, category: 'gourmet', color: '#dc2626' },
+        { name: 'Chocolate Soufflé', x: 0.5, y: 0.5, z: 0.8, category: 'gourmet', color: '#dc2626' }
     ];
     
     let rotation = { x: 0.2, y: 0.3 };
@@ -435,6 +431,50 @@ class VectorDemos {
         ctx.stroke();
         ctx.fillStyle = '#ea580c';
         ctx.fillText('Temperature', zAxis.x, zAxis.y - 15);
+        
+        // Draw legend
+        const legendX = canvas.width - 180;
+        const legendY = 30;
+        const legendItems = [
+            { category: 'light', color: '#22c55e', label: 'Light Meals' },
+            { category: 'fast', color: '#3b82f6', label: 'Fast Meals' },
+            { category: 'mains', color: '#f59e0b', label: 'Main Courses' },
+            { category: 'gourmet', color: '#dc2626', label: 'Gourmet Dishes' }
+        ];
+        
+        // Legend background
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+        ctx.fillRect(legendX - 10, legendY - 10, 170, legendItems.length * 18 + 35);
+        ctx.strokeStyle = '#cbd5e1';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(legendX - 10, legendY - 10, 170, legendItems.length * 18 + 35);
+        
+        // Legend title
+        ctx.fillStyle = '#000000';
+        ctx.font = 'bold 14px system-ui';
+        ctx.textAlign = 'left';
+        ctx.fillText('Recipe Categories', legendX, legendY + 10);
+        
+        // Legend items
+        ctx.font = '12px system-ui';
+        legendItems.forEach((item, index) => {
+            const y = legendY + 30 + (index * 18);
+            
+            // Color circle
+            ctx.fillStyle = item.color;
+            ctx.beginPath();
+            ctx.arc(legendX + 8, y - 4, 6, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // White outline for visibility
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Category label
+            ctx.fillStyle = '#000000';
+            ctx.fillText(item.label, legendX + 20, y);
+        });
     }
     
     // Mouse interaction for rotation

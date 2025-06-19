@@ -310,6 +310,21 @@ class AIArchitectureRouter {
             }
         }
 
+        // Initialize neural network demo
+        console.log('Checking for NeuralNetworkDemo...', !!window.NeuralNetworkDemo);
+        if (window.NeuralNetworkDemo) {
+            try {
+                console.log('Creating NeuralNetworkDemo instance...');
+                const neuralDemo = new NeuralNetworkDemo();
+                neuralDemo.setup();
+                console.log('Neural network demo initialized successfully');
+            } catch (error) {
+                console.log('Neural network demo not available or failed to initialize:', error);
+            }
+        } else {
+            console.log('NeuralNetworkDemo class not found on window object');
+        }
+
         // Initialize RAG flow animation
         if (window.RAGFlowAnimation) {
             try {

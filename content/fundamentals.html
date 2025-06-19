@@ -216,6 +216,44 @@ graph LR
             <div class="diagram-container transformer-demo">
                 <!-- JavaScript will populate this with the interactive demo -->
             </div>
+
+            <h3>Feed Forward Networks</h3>
+            <p>After attention helps words understand their relationships, each word passes through a <strong>Feed Forward Network</strong> - think of it as the "thinking" layer where each word individually processes what it learned from attention.</p>
+            
+            <p>In our cooking analogy, if attention is like tasting and understanding how ingredients work together, the feed forward layer is like each ingredient being individually seasoned and refined based on that understanding. Each word gets two dense layers of processing:</p>
+            
+            <ul>
+                <li><strong>🔺 Expansion Layer:</strong> Projects the word representation into a much larger space (typically 4x bigger) to allow for complex computations</li>
+                <li><strong>🔻 Compression Layer:</strong> Compresses back down to the original size, keeping only the most important refined features</li>
+                <li><strong>⚡ Activation Function:</strong> Usually ReLU or GELU, which adds non-linearity and helps the network learn complex patterns</li>
+            </ul>
+
+            <h3>Output Embeddings & Predictions</h3>
+            <p>The final step transforms the processed word representations back into something we can understand - actual words and probabilities. This is like a chef presenting the finished dish after all the preparation.</p>
+            
+            <div class="process-flow">
+                <div class="process-step">
+                    <h5>🧮 Linear Projection</h5>
+                    <p>The final hidden states are projected to vocabulary size - creating a score for every possible word in the model's vocabulary (typically 50,000+ words).</p>
+                </div>
+                
+                <div class="process-step">
+                    <h5>🎯 Softmax Normalization</h5>
+                    <p>These scores are converted to probabilities using softmax - ensuring all probabilities sum to 1.0 and showing how confident the model is about each possible next word.</p>
+                </div>
+                
+                <div class="process-step">
+                    <h5>🎲 Token Selection</h5>
+                    <p>The model selects the next word using techniques like temperature sampling or top-k sampling, allowing for both precision and creativity in responses.</p>
+                </div>
+            </div>
+
+            <!-- Neural Network Visualization Demo -->
+            <div class="diagram-container neural-network-demo" id="neural-network-demo">
+                <h4>🧠 5-Layer Neural Network Visualization</h4>
+                <p>See how information flows through a neural network, with weights visualized as connection strengths:</p>
+                <!-- JavaScript will populate this with the interactive neural network demo -->
+            </div>
         </section>
 
         <section id="rag">

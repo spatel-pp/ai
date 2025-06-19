@@ -2153,3 +2153,116 @@ td:nth-child(4) {
         padding: var(--space-4);
     }
 }
+
+/* Neural Network Demo Styles */
+.neural-network-demo {
+    background: #f8fafc;
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    margin: var(--space-6) 0;
+    border: 1px solid var(--primary-200);
+}
+
+.neural-controls {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: var(--space-4);
+}
+
+.neural-controls button {
+    padding: var(--space-3) var(--space-5);
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.neural-controls button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.neural-controls button:active {
+    transform: translateY(0);
+}
+
+/* Process Flow Styles */
+.process-flow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-5);
+    margin: var(--space-6) 0;
+}
+
+.process-step {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border: 1px solid var(--primary-200);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.process-step:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.process-step h5 {
+    color: var(--accent-blue);
+    margin: 0 0 var(--space-3) 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.process-step p {
+    margin: 0;
+    color: var(--primary-700);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Feed Forward Section Enhancements */
+.process-flow .process-step:nth-child(1) h5 { color: var(--accent-emerald); }
+.process-flow .process-step:nth-child(2) h5 { color: var(--accent-purple); }
+.process-flow .process-step:nth-child(3) h5 { color: var(--accent-amber); }
+
+/* Responsive Design for New Sections */
+@media (max-width: 768px) {
+    .neural-network-demo {
+        padding: var(--space-4);
+    }
+    
+    .neural-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .neural-controls button {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .process-flow {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+    }
+    
+    .process-step {
+        padding: var(--space-4);
+    }
+}
+
+/* Canvas styling */
+.neural-network-demo canvas {
+    border: 1px solid var(--primary-200);
+    border-radius: var(--radius);
+    max-width: 100%;
+    height: auto;
+}

@@ -10,10 +10,6 @@
     
     <!-- Local Libraries (formerly CDN) -->
     <link rel="stylesheet" href="js/libs/prism-tomorrow.min.css">
-    <script src="js/libs/prism-core.min.js"></script>
-    <script src="js/libs/prism-python.min.js"></script>
-    <script src="js/libs/prism-javascript.min.js"></script>
-    <script src="js/libs/prism-bash.min.js"></script>
     <script src="js/libs/mermaid.min.js"></script>
     
     <!-- Custom Styles -->
@@ -57,12 +53,52 @@
     </main>
 
     <!-- Scripts -->
+    <!-- Main application scripts -->
     <script src="js/utils.js"></script>
     <script src="js/vector-demos.js"></script>
     <script src="js/transformer-demo.js"></script>
+    <script src="js/neural-network-demo.js"></script>
     <script src="js/rag-flow.js"></script>
     <script src="js/router.js"></script>
     <script src="js/navigation.js"></script>
     <script src="js/main.js"></script>
+    
+    <!-- Prism.js for syntax highlighting - loaded after main app -->
+    <script>
+        // Load Prism.js after the main app is ready
+        setTimeout(() => {
+            try {
+                const scripts = [
+                    'js/libs/prism-core.min.js',
+                    'js/libs/prism-python.min.js', 
+                    'js/libs/prism-javascript.min.js',
+                    'js/libs/prism-bash.min.js'
+                ];
+                
+                let loaded = 0;
+                scripts.forEach((src, index) => {
+                    const script = document.createElement('script');
+                    script.src = src;
+                    script.onload = () => {
+                        loaded++;
+                        if (loaded === scripts.length) {
+                            // All scripts loaded, highlight code
+                            if (window.Prism && window.Prism.highlightAll) {
+                                try {
+                                    window.Prism.highlightAll();
+                                } catch (e) {
+                                    console.warn('Prism highlighting failed:', e);
+                                }
+                            }
+                        }
+                    };
+                    script.onerror = () => console.warn('Failed to load Prism script:', src);
+                    document.head.appendChild(script);
+                });
+            } catch (e) {
+                console.warn('Prism.js loading failed:', e);
+            }
+        }, 1000);
+    </script>
 </body>
 </html>
