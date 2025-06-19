@@ -136,7 +136,7 @@ class NeuralNetworkDemo {
         infoDiv.innerHTML = `
             <span style="font-size: 14px; color: #6b7280;">
                 <strong>Network:</strong> 4 inputs → 6 → 8 → 6 → 3 outputs
-                <br><strong>Connections:</strong> ${this.getTotalConnections()} weights
+                <br><strong>Connections:</strong> ${this.getTotalConnections()} weights (parameters)
             </span>
         `;
 
@@ -176,8 +176,9 @@ class NeuralNetworkDemo {
             
             const currentLayerHeight = this.layers[l] * 60;
             const nextLayerHeight = this.layers[l + 1] * 60;
-            const currentStartY = (this.canvas.height - currentLayerHeight) / 2;
-            const nextStartY = (this.canvas.height - nextLayerHeight) / 2;
+            // Use same positioning as in drawNeurons - move network higher
+            const currentStartY = (this.canvas.height - currentLayerHeight) / 2 + 10;
+            const nextStartY = (this.canvas.height - nextLayerHeight) / 2 + 10;
 
             for (let i = 0; i < this.layers[l]; i++) {
                 for (let j = 0; j < this.layers[l + 1]; j++) {
@@ -210,7 +211,8 @@ class NeuralNetworkDemo {
         for (let l = 0; l < this.layers.length; l++) {
             const x = 50 + l * layerSpacing;
             const layerHeight = this.layers[l] * 60;
-            const startY = (this.canvas.height - layerHeight) / 2;
+            // Move network higher - leave space for top labels and bottom labels
+            const startY = (this.canvas.height - layerHeight) / 2 + 10;
 
             for (let i = 0; i < this.layers[l]; i++) {
                 const y = startY + i * 60 + 30;
@@ -251,44 +253,45 @@ class NeuralNetworkDemo {
         this.ctx.textAlign = 'center';
 
         const layerSpacing = (this.canvas.width - 100) / (this.layers.length - 1);
-        const labels = ['Input\nLayer', 'Hidden\nLayer 1', 'Hidden\nLayer 2', 'Hidden\nLayer 3', 'Output\nLayer'];
+        const labels = ['🥕 Ingredients', 'Hidden\nLayer 1', 'Hidden\nLayer 2', 'Hidden\nLayer 3', '🍽️ Dish Types'];
         
         for (let l = 0; l < this.layers.length; l++) {
             const x = 50 + l * layerSpacing;
             const labelLines = labels[l].split('\n');
             
+            // Move labels higher to avoid overlap with network
             labelLines.forEach((line, index) => {
-                this.ctx.fillText(line, x, 30 + (index * 16));
+                this.ctx.fillText(line, x, 20 + (index * 16));
             });
             
-            // Layer size info
+            // Layer size info - move further down to avoid overlap with neurons
             this.ctx.font = '12px system-ui';
             this.ctx.fillStyle = '#6b7280';
-            this.ctx.fillText(`(${this.layers[l]} neurons)`, x, this.canvas.height - 20);
+            this.ctx.fillText(`(${this.layers[l]} neurons)`, x, this.canvas.height - 5);
         }
 
-        // Weight legend
+        // Weight legend - move higher to make room for neuron count labels
         this.ctx.font = '12px system-ui';
         this.ctx.textAlign = 'left';
-        this.ctx.fillText('Connection strength:', 20, this.canvas.height - 60);
+        this.ctx.fillText('Connection strength:', 20, this.canvas.height - 70);
         
         // Positive weight example
         this.ctx.strokeStyle = 'rgba(34, 197, 94, 0.8)';
         this.ctx.lineWidth = 3;
         this.ctx.beginPath();
-        this.ctx.moveTo(20, this.canvas.height - 45);
-        this.ctx.lineTo(50, this.canvas.height - 45);
+        this.ctx.moveTo(20, this.canvas.height - 55);
+        this.ctx.lineTo(50, this.canvas.height - 55);
         this.ctx.stroke();
-        this.ctx.fillText('Positive', 55, this.canvas.height - 41);
+        this.ctx.fillText('Positive', 55, this.canvas.height - 51);
         
         // Negative weight example
         this.ctx.strokeStyle = 'rgba(239, 68, 68, 0.8)';
         this.ctx.lineWidth = 3;
         this.ctx.beginPath();
-        this.ctx.moveTo(120, this.canvas.height - 45);
-        this.ctx.lineTo(150, this.canvas.height - 45);
+        this.ctx.moveTo(120, this.canvas.height - 55);
+        this.ctx.lineTo(150, this.canvas.height - 55);
         this.ctx.stroke();
-        this.ctx.fillText('Negative', 155, this.canvas.height - 41);
+        this.ctx.fillText('Negative', 155, this.canvas.height - 51);
     }
 
     animateForwardPass() {

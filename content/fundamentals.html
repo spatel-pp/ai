@@ -167,12 +167,14 @@ print(results)  # Returns most similar recipes</code></pre>
 
         <section id="llms">
             <h2>Large Language Models (LLMs): Generative Powerhouses</h2>
-            <p><strong>Large Language Models (LLMs)</strong> are a type of neural network distinguished by their massive scale and the groundbreaking <strong>Transformer architecture</strong>.</p>
+            <p><strong>Large Language Models (LLMs)</strong> are a type of neural network distinguished by their massive scale and the groundbreaking <strong>Transformer architecture</strong>. To understand how these AI systems can write stories, answer questions, and hold conversations, we need to explore the key innovations that make them work.</p>
+
+            <p>Think of an LLM as a sophisticated prediction engine that has learned the patterns of human language from billions of text examples. When you type "The chef prepared a delicious...", the model predicts "meal" or "dish" based on everything it learned about cooking and language. But how does this prediction actually work? Let's break it down step by step.</p>
 
             <h3>The Transformer Architecture: The Engine of Modern LLMs</h3>
             <p>The Transformer, introduced in the groundbreaking 2017 paper "Attention Is All You Need," revolutionized how machines process language. Unlike older recurrent models that read text sequentially word-by-word, the Transformer processes the <strong>entire input simultaneously</strong>, making it both faster and more capable of understanding long-range relationships in text.</p>
 
-            <p>Think of it this way: when you read a sentence like <em>"The chef who trained in Paris prepared an exquisite dish,"</em> you instantly understand that "chef" and "prepared" are connected, and that "exquisite" describes "dish" - even though these words are separated by other words. The Transformer learns these connections automatically.</p>
+            <p>Think of it this way: when you read a sentence like <em>"The chef who trained in Paris prepared an exquisite dish,"</em> you instantly understand that "chef" and "prepared" are connected, and that "exquisite" describes "dish" - even though these words are separated by other words. The Transformer learns these connections automatically through three key stages that we'll explore:</p>
 
             <p>The core innovation is the <strong>self-attention mechanism</strong>, which allows every word to "look at" and "pay attention to" all other words in the sequence. It uses multiple "attention heads" simultaneously - each one specialized to capture different types of relationships between words:</p>
 
@@ -191,8 +193,12 @@ graph LR
 </pre>
                 <p class="diagram-caption">Each transformer block processes all words simultaneously through attention and feed-forward layers</p>
             </div>
-            <h3>Multi-Head Attention</h3>
+            <h3>Multi-Head Attention: Understanding Relationships</h3>
+            <p>The first and most crucial stage is <strong>Multi-Head Attention</strong> - the breakthrough innovation that makes Transformers so powerful. This is where words learn to "pay attention" to other words that are important for understanding meaning.</p>
+            
             <p><strong>Why is this so powerful?</strong> Traditional models had to "remember" earlier words when processing later ones, which was both slow and led to forgetting important context. Transformers can instantly see all relationships, making them much better at understanding complex sentences and generating coherent text.</p>
+
+            <p>The magic happens through multiple "attention heads" working simultaneously - each one specialized to capture different types of relationships between words:</p>
 
             <!-- Attention Heads Explanation - moved closer to demo -->
             <div class="attention-heads-explanation">
@@ -217,10 +223,10 @@ graph LR
                 <!-- JavaScript will populate this with the interactive demo -->
             </div>
 
-            <h3>Feed Forward Networks</h3>
-            <p>After attention helps words understand their relationships, each word passes through a <strong>Feed Forward Network</strong> - think of it as the "thinking" layer where each word individually processes what it learned from attention.</p>
+            <h3>Feed Forward Networks: Individual Processing</h3>
+            <p>Once attention helps words understand their relationships, we move to the second stage: <strong>Feed Forward Networks</strong>. After the attention mechanism shows each word what other words are important, each word needs time to individually process and refine what it learned.</p>
             
-            <p>In our cooking analogy, if attention is like tasting and understanding how ingredients work together, the feed forward layer is like each ingredient being individually seasoned and refined based on that understanding. Each word gets two dense layers of processing:</p>
+            <p>Think of this like our cooking analogy: if attention is like tasting and understanding how ingredients work together, the feed forward layer is like each ingredient being individually seasoned and refined based on that understanding. Each word gets its own dedicated processing through two dense layers:</p>
             
             <ul>
                 <li><strong>🔺 Expansion Layer:</strong> Projects the word representation into a much larger space (typically 4x bigger) to allow for complex computations</li>
@@ -228,8 +234,10 @@ graph LR
                 <li><strong>⚡ Activation Function:</strong> Usually ReLU or GELU, which adds non-linearity and helps the network learn complex patterns</li>
             </ul>
 
-            <h3>Output Embeddings & Predictions</h3>
-            <p>The final step transforms the processed word representations back into something we can understand - actual words and probabilities. This is like a chef presenting the finished dish after all the preparation.</p>
+            <h3>Output Embeddings & Predictions: From Thoughts to Words</h3>
+            <p>The final stage transforms the processed word representations back into something we can understand - actual words and probabilities. This is where the model's "thoughts" become concrete predictions about what word should come next.</p>
+            
+            <p>After attention identified relationships and feed forward networks refined each word's understanding, we now need to convert these internal representations back into actual text. This final transformation happens in three steps:</p>
             
             <div class="process-flow">
                 <div class="process-step">
@@ -248,10 +256,20 @@ graph LR
                 </div>
             </div>
 
+            <h3>Putting It All Together: From Recipe to Dish</h3>
+            <p>Let's bring our cooking analogy full circle. Imagine you're running a smart kitchen where recipe ingredients (input tokens) need to be transformed into a finished dish recommendation (output prediction). The neural network below simulates this process - showing how "raw ingredients" flow through our kitchen's "processing stations" to become a final recommendation.</p>
+
+            <p>In this visualization, each layer represents a different stage of our culinary AI:</p>
+            <ul>
+                <li><strong>🥕 Input Layer (4 nodes):</strong> Raw ingredients - perhaps "chicken," "tomatoes," "herbs," and "pasta"</li>
+                <li><strong>👨‍🍳 Hidden Layers (6→8→6 nodes):</strong> Kitchen processing stations where ingredients are analyzed, combined, and refined - like our attention and feed-forward stages</li>
+                <li><strong>🍽️ Output Layer (3 nodes):</strong> Final dish categories - maybe "Italian," "Healthy," or "Comfort Food"</li>
+            </ul>
+
             <!-- Neural Network Visualization Demo -->
             <div class="diagram-container neural-network-demo" id="neural-network-demo">
-                <h4>🧠 5-Layer Neural Network Visualization</h4>
-                <p>See how information flows through a neural network, with weights visualized as connection strengths:</p>
+                <h4>🧠 Kitchen Neural Network: From Ingredients to Recommendations</h4>
+                <p><strong>Watch the magic happen:</strong> Click "▶️ Forward Pass" to see how ingredient information flows through our culinary AI. Thicker lines show stronger "flavor connections" (weights), while brighter nodes indicate more "activated" processing stations. This mirrors exactly how LLMs process language - but instead of words becoming predictions, we're watching ingredients become dish recommendations!</p>
                 <!-- JavaScript will populate this with the interactive neural network demo -->
             </div>
         </section>
